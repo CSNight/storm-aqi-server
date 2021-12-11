@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/csrf"
+	rcp "github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/utils"
 	"go.uber.org/zap"
 	"time"
@@ -14,6 +15,8 @@ import (
 func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 
 	logger := InitLogger(config.LogConf)
+
+	server.Use(rcp.New())
 
 	server.Use(New(LogConfig{
 		Next:     nil,
