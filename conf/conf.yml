@@ -1,0 +1,39 @@
+http_port: 9600
+aqi:
+  server: https://api.waqi.info
+  ws_server: wss://api.waqi.info/api/attws
+  ws_proxy:
+  token: d17911cdace2a053412abd5aceb6d4270f88ed9b
+  image_oss: https://aqicn.org/images/feeds/
+  station_index: aqi_stations
+  his_index: aqi_his_year_$year
+  realtime_index: aqi_real_time
+log:
+  level: debug
+  filename: aqiSyncer.log
+  max_size: 20
+  max_age: 10
+  max_backups: 10
+elastic:
+  uri: [ http://128.14.231.93:29200 ]
+  username: elastic
+  password: admin,./191
+  enable_debug_logger: true
+  max_retries: 3
+  lifo: true
+  max_total: 100
+  max_idle: 10
+  min_idle: 2
+  test_on_create: true
+  test_on_borrow: true
+  test_on_return: false
+  test_while_idle: true
+  block_when_exhausted: true
+  time_between_eviction_runs: 20
+  remove_abandoned_on_borrow: true
+  remove_abandoned_on_maintenance: true
+  remove_abandoned_timeout: 10
+minio:
+  server: 128.14.231.93:9000
+  account: csnight
+  secret: admin,./191
