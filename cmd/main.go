@@ -24,8 +24,8 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "aqi-syncer",
-	Short: "AQI Data Syncer",
-	Long:  `AQI Data Syncer.`,
+	Short: "AQI Data Server",
+	Long:  `AQI Data Server.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
