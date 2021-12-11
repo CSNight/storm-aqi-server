@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	_ "github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -80,7 +81,8 @@ func start(confFile string) {
 		fmt.Printf("init conf failed, err:%v\n", err)
 		return
 	}
-	logger := middleware.InitLogger(confIns.LogConf)
+	server := fiber.New()
+	logger := middleware.Use(server, confIns)
 	poolEs := elastic.InitEsPool(ctx, confIns.ESConf)
 
 	elasticApi := &elastic.EsAPI{
@@ -89,13 +91,7 @@ func start(confFile string) {
 		FailQueue: []elastic.BulkIndexerItem{},
 	}
 	elasticApi.Init()
-	server := fiber.New()
-	server.Use(middleware.New(middleware.LogConfig{
-		Next:     nil,
-		Logger:   logger,
-		Fields:   []string{"ip", "port", "path", "method", "status", "latency"},
-		Messages: []string{"Server error", "Client error", "Success"},
-	}))
+
 	go func() {
 		err = server.Listen(":" + strconv.Itoa(confIns.HttpPort))
 		if err != nil {
