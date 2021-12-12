@@ -2,11 +2,8 @@ package main
 
 import (
 	"aqi-server/conf"
-	"aqi-server/elastic"
-	"aqi-server/middleware"
-	"context"
+	"aqi-server/server"
 	"fmt"
-	"github.com/gofiber/fiber/v2"
 	_ "github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -72,8 +69,6 @@ func initConfig() {
 	}
 }
 
-var ctx = context.Background()
-
 func start(confFile string) {
 	confIns, err := conf.InitConf(confFile, func(config interface{}) {
 	})
@@ -81,30 +76,16 @@ func start(confFile string) {
 		fmt.Printf("init conf failed, err:%v\n", err)
 		return
 	}
-	server := fiber.New()
-	logger := middleware.Use(server, confIns)
-	poolEs := elastic.InitEsPool(ctx, confIns.ESConf)
-
-	elasticApi := &elastic.EsAPI{
-		Log:       logger.Sugar().Named("\u001B[33m[ESClient]\u001B[0m"),
-		EsPool:    poolEs,
-		FailQueue: []elastic.BulkIndexerItem{},
-	}
-	elasticApi.Init()
-
+	app := server.New(confIns)
 	go func() {
-		err = server.Listen(":" + strconv.Itoa(confIns.HttpPort))
+		err = app.App.Listen(":" + strconv.Itoa(confIns.HttpPort))
 		if err != nil {
 			return
 		}
 	}()
-
-	logger.Info("\u001B[32mStart aqi syncer complete\u001B[0m")
+	app.Log.Info("\u001B[32mStart aqi syncer complete\u001B[0m")
 	defer func() {
-		elasticApi.Close()
-		log.Printf(`elasticsearch api closed`)
-		poolEs.Close(ctx)
-		log.Printf(`elasticsearch pool closed`)
+		app.Close()
 	}()
 	handleProcessSignal()
 }
