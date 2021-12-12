@@ -111,28 +111,12 @@ func New(cfg LogConfig) fiber.Handler {
 		if latencyEnabled {
 			start = time.Now()
 		}
-
-		// Handle request, store err for logging
-		chainErr := c.Next()
-
-		// Manually call error handler
-		if chainErr != nil {
-			if err := errHandler(c, chainErr); err != nil {
-				_ = c.SendStatus(fiber.StatusInternalServerError)
-			}
-		}
-
-		// Set latency stop time
-		if latencyEnabled {
-			stop = time.Now()
-		}
-
 		// Add fields
 		fields := make([]zap.Field, 0, len(cfg.Fields))
 
 		for _, field := range cfg.Fields {
 			switch field {
-			case "refeer":
+			case "referer":
 				fields = append(fields, zap.String("referer", c.Get(fiber.HeaderReferer)))
 			case "protocol":
 				fields = append(fields, zap.String("protocol", c.Protocol()))
@@ -152,24 +136,45 @@ func New(cfg LogConfig) fiber.Handler {
 				fields = append(fields, zap.String("url", c.OriginalURL()))
 			case "ua":
 				fields = append(fields, zap.String("ua", c.Get(fiber.HeaderUserAgent)))
+			case "queryParams":
+				fields = append(fields, zap.String("queryParams", c.Request().URI().QueryArgs().String()))
+			case "body":
+				fields = append(fields, zap.ByteString("body", c.Body()))
+			case "route":
+				fields = append(fields, zap.String("route", c.Route().Path))
+			case "method":
+				fields = append(fields, zap.String("method", c.Method()))
+
+			}
+		}
+		cfg.Logger.Info("Request", fields...)
+		// Handle request, store err for logging
+		chainErr := c.Next()
+		fields = fields[:0]
+		// Manually call error handler
+		if chainErr != nil {
+			if err := errHandler(c, chainErr); err != nil {
+				_ = c.SendStatus(fiber.StatusInternalServerError)
+			}
+		}
+
+		// Set latency stop time
+		if latencyEnabled {
+			stop = time.Now()
+		}
+
+		for _, field := range cfg.Fields {
+			switch field {
 			case "latency":
 				fields = append(fields, zap.String("latency", stop.Sub(start).String()))
 			case "status":
 				fields = append(fields, zap.Int("status", c.Response().StatusCode()))
 			case "resBody":
 				fields = append(fields, zap.ByteString("resBody", c.Response().Body()))
-			case "queryParams":
-				fields = append(fields, zap.String("queryParams", c.Request().URI().QueryArgs().String()))
-			case "body":
-				fields = append(fields, zap.ByteString("body", c.Body()))
 			case "bytesReceived":
 				fields = append(fields, zap.Int("bytesReceived", len(c.Request().Body())))
 			case "bytesSent":
 				fields = append(fields, zap.Int("bytesSent", len(c.Response().Body())))
-			case "route":
-				fields = append(fields, zap.String("route", c.Route().Path))
-			case "method":
-				fields = append(fields, zap.String("method", c.Method()))
 			case "error":
 				if chainErr != nil {
 					fields = append(fields, zap.String("error", chainErr.Error()))
