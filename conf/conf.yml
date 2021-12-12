@@ -10,7 +10,7 @@ aqi:
   realtime_index: aqi_real_time
 log:
   level: debug
-  filename: aqiSyncer.log
+  filename: aqi-server.log
   max_size: 20
   max_age: 10
   max_backups: 10
