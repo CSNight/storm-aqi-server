@@ -116,19 +116,6 @@ func (t *EsAPI) ScrollSearch(req *esapi.SearchRequest) []gjson.Result {
 }
 
 func (t *EsAPI) CreateIndex(index string, mappings string, args string) bool {
-	ctx := context.Background()
-	cli, err := t.GetClient(ctx)
-	if err != nil {
-		t.Log.Errorf("CreateIndex(). GetClient(). \u001B[31merr: %v\u001B[0m", err)
-		return true
-	}
-	defer func() {
-		err = t.CloseClient(ctx, cli)
-		if err != nil {
-			t.Log.Errorf("CreateIndex(). CloseClient(). \u001B[31merr: %v\u001B[0m", err)
-			return
-		}
-	}()
 	indices := index
 	if strings.Contains(index, "$") && args != "" {
 		indices = strings.Split(index, "$")[0] + args
@@ -146,7 +133,7 @@ func (t *EsAPI) CreateIndex(index string, mappings string, args string) bool {
 		Pretty:        true,
 		ErrorTrace:    true,
 	}
-	_, err = ProcessResp(request, cli)
+	_, err := t.ProcessRespWithCli(request)
 	if err != nil {
 		t.Log.Errorf("CreateIndex(). \u001B[31merr: %v\u001B[0m", err)
 		return false
@@ -156,26 +143,13 @@ func (t *EsAPI) CreateIndex(index string, mappings string, args string) bool {
 }
 
 func (t *EsAPI) ExistIndex(index string) bool {
-	ctx := context.Background()
-	cli, err := t.GetClient(ctx)
-	if err != nil {
-		t.Log.Errorf("ExistIndex(). GetClient(). \u001B[31merr: %v\u001B[0m", err)
-		return true
-	}
-	defer func() {
-		err = t.CloseClient(ctx, cli)
-		if err != nil {
-			t.Log.Errorf("ExistIndex(). CloseClient(). \u001B[31merr: %v\u001B[0m", err)
-			return
-		}
-	}()
 	request := esapi.IndicesExistsRequest{
 		Index:      []string{index},
 		Pretty:     true,
 		Human:      true,
 		ErrorTrace: true,
 	}
-	_, err = ProcessResp(request, cli)
+	_, err := t.ProcessRespWithCli(request)
 	if err != nil {
 		if err.Error() == "404" {
 			return false
@@ -183,6 +157,39 @@ func (t *EsAPI) ExistIndex(index string) bool {
 		return true
 	}
 	return true
+}
+
+func (t *EsAPI) ProcessRespWithCli(req esapi.Request) ([]byte, error) {
+	ctx := context.Background()
+	cli, err := t.GetClient(ctx)
+	if err != nil {
+		t.Log.Errorf("CreateIndex(). GetClient(). \u001B[31merr: %v\u001B[0m", err)
+		return nil, err
+	}
+	defer func() {
+		err = t.CloseClient(ctx, cli)
+		if err != nil {
+			t.Log.Errorf("CreateIndex(). CloseClient(). \u001B[31merr: %v\u001B[0m", err)
+			return
+		}
+	}()
+	resp, err := req.Do(context.Background(), cli)
+	if err != nil {
+		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(strconv.Itoa(resp.StatusCode))
+	}
+	if resp.Body != nil {
+		defer func() {
+			_ = resp.Body.Close()
+		}()
+	}
+	respBytes, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return respBytes, nil
 }
 
 func ProcessResp(req esapi.Request, cli *elasticsearch.Client) ([]byte, error) {
