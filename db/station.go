@@ -1,22 +1,44 @@
 package db
 
 import (
-	"aqi-server/elastic"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"github.com/tidwall/gjson"
 	"strconv"
 	"strings"
 	"time"
 )
 
+type AqiStation struct {
+	Sid      string   `json:"sid"`
+	Idx      int      `json:"idx"`
+	Name     string   `json:"name"`
+	Loc      GeoPoint `json:"loc"`
+	UpTime   int64    `json:"up_time"`
+	Tms      string   `json:"tms"`
+	Tz       string   `json:"tz"`
+	CityName string   `json:"city_name,omitempty"`
+	HisRange string   `json:"his_range,omitempty"`
+	Sources  string   `json:"sources,omitempty"`
+}
+
 func (db *DB) GetStationById(idx string) *AqiStation {
-	query := `{
-       "query":{"match":{"sid":"` + idx + `"}}
-    }`
-	search := &esapi.SearchRequest{
-		Index: []string{db.Conf.StationIndex},
-		Body:  strings.NewReader(query),
+	search := &esapi.GetRequest{
+		Index:      db.Conf.StationIndex,
+		DocumentID: idx,
 	}
-	elastic.ProcessResp(search, nil)
+	resp, err := db.api.ProcessRespWithCli(search)
+	if err != nil {
+		return nil
+	}
+	res := gjson.ParseBytes(resp)
+	if res.Get("found").Bool() {
+		var station AqiStation
+		err = json.UnmarshalFromString(res.Get("_source").String(), &station)
+		if err != nil {
+			return nil
+		}
+		return &station
+	}
 	return nil
 }
 
