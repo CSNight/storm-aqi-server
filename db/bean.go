@@ -1,18 +1,5 @@
 package db
 
-type AqiStation struct {
-	Sid      string   `json:"sid"`
-	Idx      int      `json:"idx"`
-	Name     string   `json:"name"`
-	Loc      GeoPoint `json:"loc"`
-	UpTime   int64    `json:"up_time"`
-	Tms      string   `json:"tms"`
-	Tz       string   `json:"tz"`
-	CityName string   `json:"city_name,omitempty"`
-	HisRange string   `json:"his_range,omitempty"`
-	Sources  string   `json:"sources,omitempty"`
-}
-
 type GeoPoint struct {
 	Lon float64 `json:"lon"`
 	Lat float64 `json:"lat"`

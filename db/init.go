@@ -13,10 +13,10 @@ type DB struct {
 	Conf *conf.AQIConfig
 	api  *elastic.EsAPI
 	pool *pool.ObjectPool
-	log  *zap.Logger
+	log  *zap.SugaredLogger
+	ctx  context.Context
 }
 
-var ctx = context.Background()
 var json = jsoniter.Config{
 	EscapeHTML:             false,
 	SortMapKeys:            true,
@@ -24,10 +24,11 @@ var json = jsoniter.Config{
 }.Froze()
 
 func Init(conf *conf.GConfig, logger *zap.Logger) *DB {
+	var ctx = context.Background()
 	poolEs := elastic.InitEsPool(ctx, conf.ESConf)
 
 	elasticApi := &elastic.EsAPI{
-		Log:       logger.Sugar().Named("\u001B[33m[DB]\u001B[0m"),
+		Log:       logger.Sugar().Named("\u001B[33m[ES]\u001B[0m"),
 		EsPool:    poolEs,
 		FailQueue: []elastic.BulkIndexerItem{},
 	}
@@ -36,11 +37,12 @@ func Init(conf *conf.GConfig, logger *zap.Logger) *DB {
 		Conf: conf.AQIConf,
 		api:  elasticApi,
 		pool: poolEs,
-		log:  logger,
+		log:  logger.Sugar().Named("[DB]"),
+		ctx:  ctx,
 	}
 }
 
 func (db *DB) Close() {
 	db.api.Close()
-	db.pool.Close(ctx)
+	db.pool.Close(db.ctx)
 }
