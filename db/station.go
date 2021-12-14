@@ -42,6 +42,26 @@ func (db *DB) GetStationById(idx string) *AqiStation {
 	return nil
 }
 
+func (db *DB) GetStationByName(name string) *AqiStation {
+	return nil
+}
+
+func (db *DB) GetStationByCityName(name string) *AqiStation {
+	return nil
+}
+
+func (db *DB) GetStationByLoc(x float64, y float64) *AqiStation {
+	return nil
+}
+
+func (db *DB) GetStationByIp(ip string) *AqiStation {
+	return nil
+}
+
+func (db *DB) GetStationByArea(bounds Bounds) {
+
+}
+
 func (db *DB) GetAllStations() []AqiStation {
 	query := `{
        "query":{"match_all":{}}
