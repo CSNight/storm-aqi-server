@@ -3,7 +3,7 @@ module aqi-server
 go 1.17
 
 require (
-	github.com/elastic/go-elasticsearch/v8 v8.0.0-20211207161625-b8fa12c97f1d
+	github.com/elastic/go-elasticsearch/v8 v8.0.0-20211213154259-811d5144a98d
 	github.com/gofiber/fiber/v2 v2.23.0
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
