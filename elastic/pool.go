@@ -67,13 +67,6 @@ func (f *PoolFactory) ActivateObject(ctx context.Context, object *pool.PooledObj
 	if object.Object == nil {
 		return errors.New("empty pool object")
 	}
-	cli := object.Object.(*elasticsearch.Client)
-	if cli != nil {
-		ping, err := cli.Ping()
-		if err != nil || ping.IsError() {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -99,6 +92,7 @@ func InitEsPool(ctx context.Context, conf *conf.ESConfig) *pool.ObjectPool {
 		TestOnReturn:            conf.TestOnReturn,
 		TestWhileIdle:           conf.TestWhileIdle,
 		BlockWhenExhausted:      conf.BlockWhenExhausted,
+		NumTestsPerEvictionRun:  conf.NumTestsPerEvictionRun,
 		TimeBetweenEvictionRuns: time.Duration(conf.TimeBetweenEvictionRuns * int(time.Second)),
 		EvitionContext:          context.Background(),
 	}

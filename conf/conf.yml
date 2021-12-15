@@ -22,12 +22,13 @@ elastic:
   max_retries: 3
   lifo: true
   max_total: 100
-  max_idle: 10
-  min_idle: 2
-  test_on_create: true
-  test_on_borrow: true
-  test_on_return: false
+  max_idle: 100
+  min_idle: 10
+  test_on_create: false
+  test_on_borrow: false
+  test_on_return: true
   test_while_idle: true
+  num_tests_per_eviction_run: 10
   block_when_exhausted: true
   time_between_eviction_runs: 20
   remove_abandoned_on_borrow: true

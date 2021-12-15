@@ -52,6 +52,7 @@ type ESConfig struct {
 	TestOnBorrow                 bool     `yaml:"test_on_borrow" json:"test_on_borrow"`
 	TestOnReturn                 bool     `yaml:"test_on_return" json:"test_on_return"`
 	TestWhileIdle                bool     `yaml:"test_while_idle" json:"test_while_idle"`
+	NumTestsPerEvictionRun       int      `yaml:"num_tests_per_eviction_run" json:"num_tests_per_eviction_run"`
 	BlockWhenExhausted           bool     `yaml:"block_when_exhausted" json:"block_when_exhausted"`
 	TimeBetweenEvictionRuns      int      `yaml:"time_between_eviction_runs" json:"time_between_eviction_runs"`
 	RemoveAbandonedOnBorrow      bool     `yaml:"remove_abandoned_on_borrow" json:"remove_abandoned_on_borrow"`
