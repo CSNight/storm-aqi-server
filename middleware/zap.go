@@ -144,7 +144,8 @@ func New(cfg LogConfig) fiber.Handler {
 				fields = append(fields, zap.String("route", c.Route().Path))
 			case "method":
 				fields = append(fields, zap.String("method", c.Method()))
-
+			case "bytesReceived":
+				fields = append(fields, zap.Int("bytesReceived", len(c.Request().Body())))
 			}
 		}
 		cfg.Logger.Info("Request", fields...)
@@ -171,8 +172,6 @@ func New(cfg LogConfig) fiber.Handler {
 				fields = append(fields, zap.Int("status", c.Response().StatusCode()))
 			case "resBody":
 				fields = append(fields, zap.ByteString("resBody", c.Response().Body()))
-			case "bytesReceived":
-				fields = append(fields, zap.Int("bytesReceived", len(c.Request().Body())))
 			case "bytesSent":
 				fields = append(fields, zap.Int("bytesSent", len(c.Response().Body())))
 			case "error":
