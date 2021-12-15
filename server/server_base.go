@@ -43,13 +43,17 @@ func New(conf *conf.GConfig) *AQIServer {
 	if err != nil {
 		return nil
 	}
+	api := server.Group("/api")
+	v1 := api.Group("v1")
 
-	return &AQIServer{
+	app := &AQIServer{
 		App: server,
 		Log: logger,
 		DB:  dbEs,
 		Oss: ossCli,
 	}
+	app.Register(v1)
+	return app
 }
 
 func (app *AQIServer) Close() {
