@@ -1,7 +1,6 @@
 package db
 
 import (
-	"errors"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/tidwall/gjson"
 	"strconv"
@@ -48,7 +47,29 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 		}
 		return &station, nil
 	}
-	return nil, errors.New("record not found")
+	return nil, nil
+}
+
+func (db *DB) GetStationByName(name string) (*AqiStation, error) {
+	sts, err := db.SearchStationByName(name)
+	if err != nil {
+		return nil, err
+	}
+	if len(sts) > 0 {
+		return &sts[0], nil
+	}
+	return nil, nil
+}
+
+func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
+	sts, err := db.SearchStationByCityName(name)
+	if err != nil {
+		return nil, err
+	}
+	if len(sts) > 0 {
+		return &sts[0], nil
+	}
+	return nil, nil
 }
 
 func (db *DB) SearchStationByName(name string) ([]AqiStation, error) {
@@ -91,7 +112,7 @@ func (db *DB) SearchStationByName(name string) ([]AqiStation, error) {
 		}
 		return sts, nil
 	}
-	return []AqiStation{}, nil
+	return nil, nil
 }
 
 func (db *DB) SearchStationByCityName(name string) ([]AqiStation, error) {
@@ -134,7 +155,7 @@ func (db *DB) SearchStationByCityName(name string) ([]AqiStation, error) {
 		}
 		return sts, nil
 	}
-	return []AqiStation{}, nil
+	return nil, nil
 }
 
 func (db *DB) GetStationByLoc(x float64, y float64) *AqiStation {
