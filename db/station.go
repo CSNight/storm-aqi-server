@@ -2,7 +2,6 @@ package db
 
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
-	"github.com/tidwall/gjson"
 	"strconv"
 	"strings"
 	"time"
@@ -21,12 +20,23 @@ type AqiStation struct {
 	Sources  string   `json:"sources,omitempty"`
 }
 
-type EsSearchItem struct {
-	Index  string     `json:"_index"`
-	Type   string     `json:"_type"`
-	Id     string     `json:"_id"`
-	Score  float64    `json:"_score"`
+type StationGetResponse struct {
+	EsGetResponse
 	Source AqiStation `json:"_source"`
+}
+
+type StationItem struct {
+	EsSearchItem
+	Source AqiStation `json:"_source"`
+}
+
+type StationSearchResponse struct {
+	EsSearchRespMeta
+	Hits struct {
+		Total    EsRespTotal   `json:"total"`
+		MaxScore float64       `json:"max_score"`
+		Hits     []StationItem `json:"hits"`
+	} `json:"hits"`
 }
 
 func (db *DB) GetStationById(idx string) (*AqiStation, error) {
@@ -38,20 +48,19 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 	if err != nil {
 		return nil, err
 	}
-	res := gjson.ParseBytes(resp)
-	if res.Get("found").Bool() {
-		var station AqiStation
-		err = json.UnmarshalFromString(res.Get("_source").String(), &station)
-		if err != nil {
-			return nil, err
-		}
-		return &station, nil
+	var response StationGetResponse
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.Found {
+		return &response.Source, nil
 	}
 	return nil, nil
 }
 
 func (db *DB) GetStationByName(name string) (*AqiStation, error) {
-	sts, err := db.SearchStationByName(name)
+	sts, err := db.SearchStationByName(name, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +71,7 @@ func (db *DB) GetStationByName(name string) (*AqiStation, error) {
 }
 
 func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
-	sts, err := db.SearchStationByCityName(name)
+	sts, err := db.SearchStationByCityName(name, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -72,8 +81,7 @@ func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
 	return nil, nil
 }
 
-func (db *DB) SearchStationByName(name string) ([]AqiStation, error) {
-	size := 10000
+func (db *DB) SearchStationByName(name string, size int) ([]AqiStation, error) {
 	query := `{
         "query": {
             "wildcard": {
@@ -92,7 +100,7 @@ func (db *DB) SearchStationByName(name string) ([]AqiStation, error) {
 		Timeout: 20 * time.Second,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
-	var esSearchResp EsSearchResponse
+	var esSearchResp StationSearchResponse
 	if err != nil {
 		return nil, err
 	}
@@ -102,21 +110,15 @@ func (db *DB) SearchStationByName(name string) ([]AqiStation, error) {
 	}
 	var sts []AqiStation
 	if esSearchResp.Hits.Total.Value > 0 {
-		var esItem EsSearchItem
 		for _, item := range esSearchResp.Hits.Hits {
-			err = json.UnmarshalFromString(item, &esItem)
-			if err != nil {
-				continue
-			}
-			sts = append(sts, esItem.Source)
+			sts = append(sts, item.Source)
 		}
 		return sts, nil
 	}
 	return nil, nil
 }
 
-func (db *DB) SearchStationByCityName(name string) ([]AqiStation, error) {
-	size := 10000
+func (db *DB) SearchStationByCityName(name string, size int) ([]AqiStation, error) {
 	query := `{
         "query": {
             "wildcard": {
@@ -135,7 +137,7 @@ func (db *DB) SearchStationByCityName(name string) ([]AqiStation, error) {
 		Timeout: 20 * time.Second,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
-	var esSearchResp EsSearchResponse
+	var esSearchResp StationSearchResponse
 	if err != nil {
 		return nil, err
 	}
@@ -145,13 +147,8 @@ func (db *DB) SearchStationByCityName(name string) ([]AqiStation, error) {
 	}
 	var sts []AqiStation
 	if esSearchResp.Hits.Total.Value > 0 {
-		var esItem EsSearchItem
 		for _, item := range esSearchResp.Hits.Hits {
-			err = json.UnmarshalFromString(item, &esItem)
-			if err != nil {
-				continue
-			}
-			sts = append(sts, esItem.Source)
+			sts = append(sts, item.Source)
 		}
 		return sts, nil
 	}
