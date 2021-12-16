@@ -22,6 +22,14 @@ type AqiStation struct {
 	Sources  string   `json:"sources,omitempty"`
 }
 
+type EsSearchItem struct {
+	Index  string     `json:"_index"`
+	Type   string     `json:"_type"`
+	Id     string     `json:"_id"`
+	Score  float64    `json:"_score"`
+	Source AqiStation `json:"_source"`
+}
+
 func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 	search := &esapi.GetRequest{
 		Index:      db.Conf.StationIndex,
@@ -43,24 +51,90 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 	return nil, errors.New("record not found")
 }
 
-func (db *DB) GetStationByName(name string) ([]AqiStation, error) {
+func (db *DB) SearchStationByName(name string) ([]AqiStation, error) {
 	size := 10000
+	query := `{
+        "query": {
+            "wildcard": {
+                "name": {
+                    "case_insensitive": true,
+                    "value": "*` + name + `*"
+                }
+            }
+       }
+    }`
 	search := &esapi.SearchRequest{
 		Index:   []string{db.Conf.StationIndex},
-		Body:    nil,
+		Body:    strings.NewReader(query),
 		Size:    &size,
 		Sort:    nil,
 		Timeout: 20 * time.Second,
 	}
-	_, err := db.api.ProcessRespWithCli(search)
+	resp, err := db.api.ProcessRespWithCli(search)
+	var esSearchResp EsSearchResponse
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	err = json.Unmarshal(resp, &esSearchResp)
+	if err != nil {
+		return nil, err
+	}
+	var sts []AqiStation
+	if esSearchResp.Hits.Total.Value > 0 {
+		var esItem EsSearchItem
+		for _, item := range esSearchResp.Hits.Hits {
+			err = json.UnmarshalFromString(item, &esItem)
+			if err != nil {
+				continue
+			}
+			sts = append(sts, esItem.Source)
+		}
+		return sts, nil
+	}
+	return []AqiStation{}, nil
 }
 
-func (db *DB) GetStationByCityName(name string) *AqiStation {
-	return nil
+func (db *DB) SearchStationByCityName(name string) ([]AqiStation, error) {
+	size := 10000
+	query := `{
+        "query": {
+            "wildcard": {
+                "city_name": {
+                    "case_insensitive": true,
+                    "value": "*` + name + `*"
+                }
+            }
+       }
+    }`
+	search := &esapi.SearchRequest{
+		Index:   []string{db.Conf.StationIndex},
+		Body:    strings.NewReader(query),
+		Size:    &size,
+		Sort:    nil,
+		Timeout: 20 * time.Second,
+	}
+	resp, err := db.api.ProcessRespWithCli(search)
+	var esSearchResp EsSearchResponse
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(resp, &esSearchResp)
+	if err != nil {
+		return nil, err
+	}
+	var sts []AqiStation
+	if esSearchResp.Hits.Total.Value > 0 {
+		var esItem EsSearchItem
+		for _, item := range esSearchResp.Hits.Hits {
+			err = json.UnmarshalFromString(item, &esItem)
+			if err != nil {
+				continue
+			}
+			sts = append(sts, esItem.Source)
+		}
+		return sts, nil
+	}
+	return []AqiStation{}, nil
 }
 
 func (db *DB) GetStationByLoc(x float64, y float64) *AqiStation {
