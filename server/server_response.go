@@ -11,7 +11,7 @@ type Response struct {
 	Code   int         `json:"code"`
 	Body   interface{} `json:"body"`
 	Msg    string      `json:"msg"`
-	Time   time.Time   `json:"time"`
+	Time   int64       `json:"time"`
 }
 
 func Result(code int, data interface{}, msg string, c *fiber.Ctx) error {
@@ -20,7 +20,7 @@ func Result(code int, data interface{}, msg string, c *fiber.Ctx) error {
 		Code:   code,
 		Body:   data,
 		Msg:    msg,
-		Time:   time.Now(),
+		Time:   time.Now().UnixMilli(),
 	})
 }
 
