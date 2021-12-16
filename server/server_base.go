@@ -8,7 +8,11 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+	"github.com/pkg/errors"
 	"go.uber.org/zap"
+	"reflect"
+	"strconv"
+	"strings"
 )
 
 type AQIServer struct {
@@ -59,4 +63,20 @@ func New(conf *conf.GConfig) *AQIServer {
 func (app *AQIServer) Close() {
 	app.DB.Close()
 	app.Log.Info(`elasticsearch api closed`)
+}
+
+func paramsCheck(val string, ctx *fiber.Ctx, t reflect.Kind) (bool, error) {
+	if val == "" {
+		return false, FailWithMessage(400, "empty params", ctx)
+	}
+	if strings.Contains(val, "*") {
+		return false, FailWithMessage(400, "bad params", ctx)
+	}
+	if t == reflect.Int {
+		_, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			return false, FailWithMessage(400, errors.Wrap(err, "bad params").Error(), ctx)
+		}
+	}
+	return true, nil
 }
