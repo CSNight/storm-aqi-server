@@ -115,7 +115,7 @@ func (db *DB) SearchStationByName(name string, size int) ([]AqiStation, error) {
 		}
 		return sts, nil
 	}
-	return nil, nil
+	return []AqiStation{}, nil
 }
 
 func (db *DB) SearchStationByCityName(name string, size int) ([]AqiStation, error) {
@@ -152,7 +152,7 @@ func (db *DB) SearchStationByCityName(name string, size int) ([]AqiStation, erro
 		}
 		return sts, nil
 	}
-	return nil, nil
+	return []AqiStation{}, nil
 }
 
 func (db *DB) GetStationByLoc(x float64, y float64) *AqiStation {
