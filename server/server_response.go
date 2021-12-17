@@ -53,7 +53,7 @@ func OkWithNotFound(contentType string, c *fiber.Ctx) error {
 }
 
 func Fail(code int, c *fiber.Ctx) error {
-	return Result(code, nil, "操作失败", c)
+	return Result(code, nil, "Unknown error", c)
 }
 
 func FailWithMessage(code int, message string, c *fiber.Ctx) error {
