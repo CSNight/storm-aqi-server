@@ -3,7 +3,8 @@ module aqi-server
 go 1.17
 
 require (
-	github.com/elastic/go-elasticsearch/v8 v8.0.0-20211216134538-559cc6e4ee12
+	github.com/elastic/go-elasticsearch/v8 v8.0.0-20211216164834-aacf60d2a632
+	github.com/go-playground/validator/v10 v10.9.0
 	github.com/gofiber/fiber/v2 v2.23.0
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
@@ -23,11 +24,14 @@ require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211202110751-50105067ef27 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
+	github.com/go-playground/locales v0.14.0 // indirect
+	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/klauspost/compress v1.13.5 // indirect
 	github.com/klauspost/cpuid v1.3.1 // indirect
+	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/minio/md5-simd v1.1.0 // indirect
 	github.com/minio/sha256-simd v0.1.1 // indirect
