@@ -76,7 +76,11 @@ func start(confFile string) {
 		fmt.Printf("init conf failed, err:%v\n", err)
 		return
 	}
-	app := server.New(confIns)
+	app, err := server.New(confIns)
+	if err != nil {
+		fmt.Printf("init app failed, err:%v\n", err)
+		return
+	}
 	go func() {
 		err = app.App.Listen(":" + strconv.Itoa(confIns.HttpPort))
 		if err != nil {

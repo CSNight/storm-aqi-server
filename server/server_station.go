@@ -43,7 +43,7 @@ func (app *AQIServer) StationGet(ctx *fiber.Ctx) error {
 	} else if query.PType == "loc" {
 		return app.GetStationByCity(query.City, ctx)
 	} else {
-		return app.GetStationById(query.Ip, ctx)
+		return app.GetStationByIp(query.Ip, ctx)
 	}
 }
 
@@ -51,7 +51,7 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 	var query StationSearchRequest
 	err := ctx.QueryParser(&query)
 	if err != nil {
-		return FailWithMessage(http.StatusBadRequest, "can't parser params", ctx)
+		return FailWithMessage(http.StatusBadRequest, "can't parser paramsOh6ChfVOSqPq2IgQ", ctx)
 	}
 	errResp := ValidateStruct(query)
 	if errResp != nil {
@@ -90,6 +90,17 @@ func (app *AQIServer) GetStationByName(name string, ctx *fiber.Ctx) error {
 
 func (app *AQIServer) GetStationByCity(city string, ctx *fiber.Ctx) error {
 	st, err := app.DB.GetStationByCityName(city)
+	if err != nil {
+		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
+	}
+	if st == nil {
+		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
+	}
+	return OkWithData(st, ctx)
+}
+
+func (app *AQIServer) GetStationByIp(ip string, ctx *fiber.Ctx) error {
+	st, err := app.DB.GetStationByIp(ip)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}

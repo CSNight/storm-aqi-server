@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"net"
 	"strconv"
 	"strings"
 	"time"
@@ -155,12 +156,18 @@ func (db *DB) SearchStationByCityName(name string, size int) ([]AqiStation, erro
 	return []AqiStation{}, nil
 }
 
-func (db *DB) GetStationByLoc(x float64, y float64) *AqiStation {
-	return nil
+func (db *DB) GetStationByLoc(x float64, y float64) (*AqiStation, error) {
+	return nil, nil
 }
 
-func (db *DB) GetStationByIp(ip string) *AqiStation {
-	return nil
+func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
+	ipNet := net.ParseIP(ip)
+	city, err := db.ipDB.City(ipNet.To4())
+	if err != nil {
+		return nil, err
+	}
+	loc := city.Location
+	return db.GetStationByLoc(loc.Longitude, loc.Latitude)
 }
 
 func (db *DB) GetStationByArea(bounds Bounds) {

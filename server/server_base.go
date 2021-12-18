@@ -27,7 +27,7 @@ var json = jsoniter.Config{
 
 var validate = validator.New()
 
-func New(conf *conf.GConfig) *AQIServer {
+func New(conf *conf.GConfig) (*AQIServer, error) {
 	server := fiber.New(fiber.Config{
 		CaseSensitive:     true,
 		AppName:           "AQI-SERVER",
@@ -37,14 +37,17 @@ func New(conf *conf.GConfig) *AQIServer {
 	})
 	logger := middleware.Use(server, conf)
 
-	dbEs := db.Init(conf, logger)
+	dbEs, err := db.Init(conf, logger)
+	if err != nil {
+		return nil, err
+	}
 
 	ossCli, err := minio.New(conf.OssConf.Server, &minio.Options{
 		Creds:  credentials.NewStaticV4(conf.OssConf.Account, conf.OssConf.Secret, ""),
 		Secure: false,
 	})
 	if err != nil {
-		return nil
+		return nil, err
 	}
 	api := server.Group("/api")
 	v1 := api.Group("v1")
@@ -56,7 +59,7 @@ func New(conf *conf.GConfig) *AQIServer {
 		Oss: ossCli,
 	}
 	app.Register(v1)
-	return app
+	return app, nil
 }
 
 func (app *AQIServer) Close() {
