@@ -73,12 +73,12 @@ func (t *EsAPI) AddToBulk(ctx context.Context, req BulkIndexerItem) error {
 	return nil
 }
 
-func (t *EsAPI) ScrollSearch(req *esapi.SearchRequest) []gjson.Result {
+func (t *EsAPI) ScrollSearch(req *esapi.SearchRequest) ([]gjson.Result, error) {
 	ctx := context.Background()
 	cli, err := t.GetClient(ctx)
 	if err != nil {
 		t.Log.Errorf("ScrollSearch(). GetClient(). \u001B[31merr: %v\u001B[0m", err)
-		return nil
+		return nil, err
 	}
 	defer func() {
 		err = t.CloseClient(ctx, cli)
@@ -90,7 +90,7 @@ func (t *EsAPI) ScrollSearch(req *esapi.SearchRequest) []gjson.Result {
 	respBytes, err := ProcessResp(req, cli)
 	if err != nil {
 		t.Log.Errorf("ScrollSearch(). ProcessResp(). \u001B[31merr: %v\u001B[0m", err)
-		return nil
+		return nil, err
 	}
 	root := gjson.ParseBytes(respBytes)
 	rootHits := root.Get("hits")
@@ -104,7 +104,7 @@ func (t *EsAPI) ScrollSearch(req *esapi.SearchRequest) []gjson.Result {
 			respBytes, err = ProcessResp(scroll, cli)
 			if err != nil {
 				t.Log.Errorf("ScrollSearch(). ProcessResp(). \u001B[31merr: %v\u001B[0m", err)
-				return results
+				return nil, err
 			}
 			root = gjson.ParseBytes(respBytes)
 			rootHits = root.Get("hits")
@@ -112,7 +112,7 @@ func (t *EsAPI) ScrollSearch(req *esapi.SearchRequest) []gjson.Result {
 			break
 		}
 	}
-	return results
+	return results, nil
 }
 
 func (t *EsAPI) CreateIndex(index string, mappings string, args string) bool {
