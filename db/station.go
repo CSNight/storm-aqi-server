@@ -222,8 +222,24 @@ func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
 }
 
 func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
-	query := `
-    `
+	boundsBytes, err := json.Marshal(bounds)
+	if err != nil {
+		return nil, err
+	}
+	query := `{
+      "query": {
+        "bool": {
+          "must": {
+            "match_all": {}
+          },
+          "filter": {
+            "geo_bounding_box": {
+              "loc": ` + string(boundsBytes) + `
+            }
+          }
+        }
+      }
+    }`
 	size := 1000
 	search := &esapi.SearchRequest{
 		Index:   []string{db.Conf.StationIndex},

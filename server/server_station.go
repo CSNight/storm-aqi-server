@@ -13,7 +13,7 @@ type StationGetRequest struct {
 	Name  string `json:"name" validate:"required_if=PType name,omitempty,excludesall=@?*%"`
 	City  string `json:"city" validate:"required_if=PType city,omitempty,excludesall=@?*%"`
 	Ip    string `json:"ip" validate:"required_if=PType ip,omitempty,ip4_addr"`
-	Lng   string `json:"lng" validate:"required_if=PType loc,omitempty,longitude"`
+	Lon   string `json:"lon" validate:"required_if=PType loc,omitempty,longitude"`
 	Lat   string `json:"lat" validate:"required_if=PType loc,omitempty,latitude"`
 }
 
@@ -43,7 +43,7 @@ func (app *AQIServer) StationGet(ctx *fiber.Ctx) error {
 	} else if query.PType == "city" {
 		return app.GetStationByCity(query.City, ctx)
 	} else if query.PType == "loc" {
-		return app.GetStationByLoc(query.Lng, query.Lat, ctx)
+		return app.GetStationByLoc(query.Lon, query.Lat, ctx)
 	} else {
 		return app.GetStationByIp(query.Ip, ctx)
 	}
