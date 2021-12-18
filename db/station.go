@@ -61,7 +61,7 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 }
 
 func (db *DB) GetStationByName(name string) (*AqiStation, error) {
-	sts, err := db.SearchStationByName(name, 1)
+	sts, err := db.SearchStationsByName(name, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (db *DB) GetStationByName(name string) (*AqiStation, error) {
 }
 
 func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
-	sts, err := db.SearchStationByCityName(name, 1)
+	sts, err := db.SearchStationsByCityName(name, 1)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
 	return nil, nil
 }
 
-func (db *DB) SearchStationByName(name string, size int) ([]AqiStation, error) {
+func (db *DB) SearchStationsByName(name string, size int) ([]AqiStation, error) {
 	query := `{
         "query": {
             "wildcard": {
@@ -119,7 +119,7 @@ func (db *DB) SearchStationByName(name string, size int) ([]AqiStation, error) {
 	return []AqiStation{}, nil
 }
 
-func (db *DB) SearchStationByCityName(name string, size int) ([]AqiStation, error) {
+func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, error) {
 	query := `{
         "query": {
             "wildcard": {
@@ -156,8 +156,57 @@ func (db *DB) SearchStationByCityName(name string, size int) ([]AqiStation, erro
 	return []AqiStation{}, nil
 }
 
-func (db *DB) GetStationByLoc(x float64, y float64) (*AqiStation, error) {
+func (db *DB) GetStationByLoc(x string, y string) (*AqiStation, error) {
+	query := `{
+      "query": {
+        "bool": {
+          "must": {
+            "match_all": {}
+          },
+          "filter": {
+            "geo_distance": {
+              "distance": "10km",
+              "loc": {
+                "lat": ` + y + `,
+                "lon": ` + x + `
+              }
+            }
+          }
+        }
+      }
+    }`
+	size := 10
+	search := &esapi.SearchRequest{
+		Index: []string{db.Conf.StationIndex},
+		Body:  strings.NewReader(query),
+		Size:  &size,
+		Sort: []string{`{"_geo_distance": {
+        "loc": {
+          "lat": ` + y + `,
+          "lon": ` + x + `
+        }, 
+        "order": "asc",
+        "unit": "km"
+      }}`},
+	}
+	resp, err := db.api.ProcessRespWithCli(search)
+	var esSearchResp StationSearchResponse
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(resp, &esSearchResp)
+	if err != nil {
+		return nil, err
+	}
+	var sts []AqiStation
+	if esSearchResp.Hits.Total.Value > 0 {
+		for _, item := range esSearchResp.Hits.Hits {
+			sts = append(sts, item.Source)
+		}
+		return &sts[0], nil
+	}
 	return nil, nil
+
 }
 
 func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
@@ -167,21 +216,49 @@ func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
 		return nil, err
 	}
 	loc := city.Location
-	return db.GetStationByLoc(loc.Longitude, loc.Latitude)
+	x := strconv.FormatFloat(loc.Longitude, 'f', 10, 64)
+	y := strconv.FormatFloat(loc.Latitude, 'f', 10, 64)
+	return db.GetStationByLoc(x, y)
 }
 
-func (db *DB) GetStationByArea(bounds Bounds) {
-
+func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
+	query := `
+    `
+	size := 1000
+	search := &esapi.SearchRequest{
+		Index:   []string{db.Conf.StationIndex},
+		Body:    strings.NewReader(query),
+		Size:    &size,
+		Sort:    nil,
+		Timeout: 20 * time.Second,
+	}
+	resp, err := db.api.ProcessRespWithCli(search)
+	var esSearchResp StationSearchResponse
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(resp, &esSearchResp)
+	if err != nil {
+		return nil, err
+	}
+	var sts []AqiStation
+	if esSearchResp.Hits.Total.Value > 0 {
+		for _, item := range esSearchResp.Hits.Hits {
+			sts = append(sts, item.Source)
+		}
+		return sts, nil
+	}
+	return []AqiStation{}, nil
 }
 
-func (db *DB) GetAllStations() []AqiStation {
+func (db *DB) GetAllStations() ([]AqiStation, error) {
 	query := `{
        "query":{"match_all":{}}
     }`
 	return db.ScrollSearchStation(query)
 }
 
-func (db *DB) GetStationByRange(st int, et int) []AqiStation {
+func (db *DB) GetStationsByRange(st int, et int) ([]AqiStation, error) {
 	query := `{
        "query": {
            "range" : {
@@ -195,7 +272,7 @@ func (db *DB) GetStationByRange(st int, et int) []AqiStation {
 	return db.ScrollSearchStation(query)
 }
 
-func (db *DB) ScrollSearchStation(query string) []AqiStation {
+func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
 	size := 10000
 	search := &esapi.SearchRequest{
 		Index:  []string{db.Conf.StationIndex},
@@ -204,16 +281,18 @@ func (db *DB) ScrollSearchStation(query string) []AqiStation {
 		Size:   &size,
 		Sort:   []string{"idx"},
 	}
-	results := db.api.ScrollSearch(search)
-
+	results, err := db.api.ScrollSearch(search)
+	if err != nil {
+		return nil, err
+	}
 	var sts []AqiStation
 	for _, hit := range results {
 		var station AqiStation
-		err := json.UnmarshalFromString(hit.Raw, &station)
+		err = json.UnmarshalFromString(hit.Raw, &station)
 		if err != nil {
 			continue
 		}
 		sts = append(sts, station)
 	}
-	return sts
+	return sts, nil
 }

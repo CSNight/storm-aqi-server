@@ -1,13 +1,13 @@
 package db
 
 type GeoPoint struct {
-	Lon float64 `json:"lon"`
-	Lat float64 `json:"lat"`
+	Lon float64 `json:"lon" validate:"longitude"`
+	Lat float64 `json:"lat" validate:"latitude"`
 }
 
 type Bounds struct {
-	TopLeft     GeoPoint
-	BottomRight GeoPoint
+	TopLeft     GeoPoint `json:"top_left" validate:"required"`
+	BottomRight GeoPoint `json:"bottom_right" validate:"required"`
 }
 
 type EsGetResponse struct {
