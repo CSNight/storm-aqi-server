@@ -151,7 +151,7 @@ func (t *EsAPI) ExistIndex(index string) bool {
 	}
 	_, err := t.ProcessRespWithCli(request)
 	if err != nil {
-		if err.Error() == "404" {
+		if strings.Contains(err.Error(), "404") {
 			return false
 		}
 		return true
@@ -177,9 +177,6 @@ func (t *EsAPI) ProcessRespWithCli(req esapi.Request) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	if resp.IsError() {
-		return nil, errors.New(strconv.Itoa(resp.StatusCode))
-	}
 	if resp.Body != nil {
 		defer func() {
 			_ = resp.Body.Close()
@@ -188,6 +185,9 @@ func (t *EsAPI) ProcessRespWithCli(req esapi.Request) ([]byte, error) {
 	respBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
+	}
+	if resp.IsError() {
+		return nil, errors.New(strconv.Itoa(resp.StatusCode) + "," + string(respBytes))
 	}
 	return respBytes, nil
 }
