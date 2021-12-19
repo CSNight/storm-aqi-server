@@ -4,11 +4,12 @@ import (
 	"aqi-server/db"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
+	"strconv"
 )
 
 type StationGetRequest struct {
-	QType string `json:"qt" validate:"required,oneof=_get"`
-	PType string `json:"pt" validate:"required,oneof=sid ip name city loc"`
+	QType string `json:"qType" validate:"required,oneof=_get"`
+	PType string `json:"pType" validate:"required,oneof=sid ip name city loc"`
 	Sid   string `json:"sid" validate:"required_if=PType sid,omitempty,number"`
 	Name  string `json:"name" validate:"required_if=PType name,omitempty,excludesall=@?*%"`
 	City  string `json:"city" validate:"required_if=PType city,omitempty,excludesall=@?*%"`
@@ -18,12 +19,16 @@ type StationGetRequest struct {
 }
 
 type StationSearchRequest struct {
-	QType string    `json:"qt" validate:"required,oneof=_search"`
-	PType string    `json:"pt" validate:"required,oneof=name city area all"`
-	Size  int       `json:"size" validate:"required,number,min=1,max=10000"`
-	Name  string    `json:"name" validate:"required_if=PType name,omitempty,excludesall=@?*%"`
-	City  string    `json:"city" validate:"required_if=PType city,omitempty,excludesall=@?*%"`
-	Area  db.Bounds `json:"area" validate:"required_if=PType area,omitempty"`
+	QType       string    `json:"qType" validate:"required,oneof=_search"`
+	PType       string    `json:"pType" validate:"required,oneof=name city area radius all"`
+	Size        int       `json:"size" validate:"required,number,min=1,max=10000"`
+	Name        string    `json:"name" validate:"required_if=PType name,omitempty,excludesall=@?*%"`
+	City        string    `json:"city" validate:"required_if=PType city,omitempty,excludesall=@?*%"`
+	TopLeft     []float64 `json:"topLeft" validate:"required_if=PType area,omitempty,len=2"`
+	BottomRight []float64 `json:"bottomRight" validate:"required_if=PType area,omitempty,len=2"`
+	Center      []float64 `json:"center" validate:"required_if=PType radius,omitempty,len=2"`
+	Radius      float64   `json:"radius" validate:"required_if=PType radius,omitempty,gt=0,max=10000"`
+	Unit        string    `json:"unit" validate:"required_if=PType radius,omitempty,oneof=kilometers miles meters"`
 }
 
 func (app *AQIServer) StationGet(ctx *fiber.Ctx) error {
@@ -53,7 +58,7 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 	var query StationSearchRequest
 	err := ctx.QueryParser(&query)
 	if err != nil {
-		return FailWithMessage(http.StatusBadRequest, "can't parser paramsOh6ChfVOSqPq2IgQ", ctx)
+		return FailWithMessage(http.StatusBadRequest, "can't parser params", ctx)
 	}
 	errResp := ValidateStruct(query)
 	if errResp != nil {
@@ -64,7 +69,33 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 	} else if query.PType == "city" {
 		return app.SearchStationsByCityName(query.City, query.Size, ctx)
 	} else if query.PType == "area" {
-		return app.SearchStationsByArea(query.Area, ctx)
+		errResp = ValidateVar(query.TopLeft[0], "longitude")
+		if errResp != nil {
+			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
+		}
+		errResp = ValidateVar(query.TopLeft[1], "latitude")
+		if errResp != nil {
+			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
+		}
+		errResp = ValidateVar(query.BottomRight[0], "longitude")
+		if errResp != nil {
+			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
+		}
+		errResp = ValidateVar(query.BottomRight[1], "latitude")
+		if errResp != nil {
+			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
+		}
+		return app.SearchStationsByArea(query.TopLeft, query.BottomRight, ctx)
+	} else if query.PType == "radius" {
+		errResp = ValidateVar(query.Center[0], "longitude")
+		if errResp != nil {
+			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
+		}
+		errResp = ValidateVar(query.Center[1], "latitude")
+		if errResp != nil {
+			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
+		}
+		return app.SearchStationsByRadius(query.Center, query.Unit, query.Radius, query.Size, ctx)
 	} else {
 		return app.SearchAllStations(ctx)
 	}
@@ -104,7 +135,7 @@ func (app *AQIServer) GetStationByCity(city string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetStationByLoc(x string, y string, ctx *fiber.Ctx) error {
-	st, err := app.DB.GetStationByLoc(x, y)
+	st, err := app.DB.SearchStationByRadius(x, y, 10, "km", 10)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -130,9 +161,6 @@ func (app *AQIServer) SearchStationsByName(name string, size int, ctx *fiber.Ctx
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
-	if len(sts) == 0 {
-		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
-	}
 	return OkWithData(sts, ctx)
 }
 
@@ -141,19 +169,44 @@ func (app *AQIServer) SearchStationsByCityName(city string, size int, ctx *fiber
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
-	if len(sts) == 0 {
-		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
+	return OkWithData(sts, ctx)
+}
+
+func (app *AQIServer) SearchStationsByArea(topLeft []float64, bottomRight []float64, ctx *fiber.Ctx) error {
+	sts, err := app.DB.SearchStationsByArea(db.Bounds{
+		TopLeft: db.GeoPoint{
+			Lon: topLeft[0],
+			Lat: topLeft[1],
+		},
+		BottomRight: db.GeoPoint{
+			Lon: bottomRight[0],
+			Lat: bottomRight[1],
+		},
+	})
+	if err != nil {
+		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
 	return OkWithData(sts, ctx)
 }
 
-func (app *AQIServer) SearchStationsByArea(area db.Bounds, ctx *fiber.Ctx) error {
-	sts, err := app.DB.SearchStationsByArea(area)
+func (app *AQIServer) SearchStationsByRadius(center []float64, unit string, radius float64, size int, ctx *fiber.Ctx) error {
+	x := strconv.FormatFloat(center[0], 'f', 5, 64)
+	y := strconv.FormatFloat(center[1], 'f', 5, 64)
+	switch unit {
+	default:
+	case "kilometers":
+		unit = "km"
+		break
+	case "miles":
+		unit = "mi"
+		break
+	case "meters":
+		unit = "m"
+		break
+	}
+	sts, err := app.DB.SearchStationByRadius(x, y, radius, unit, size)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
-	}
-	if len(sts) == 0 {
-		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
 	}
 	return OkWithData(sts, ctx)
 }
@@ -162,9 +215,6 @@ func (app *AQIServer) SearchAllStations(ctx *fiber.Ctx) error {
 	sts, err := app.DB.GetAllStations()
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
-	}
-	if len(sts) == 0 {
-		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
 	}
 	return OkWithData(sts, ctx)
 }
