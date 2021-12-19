@@ -10,25 +10,25 @@ import (
 type StationGetRequest struct {
 	QType string `json:"qType" validate:"required,oneof=_get"`
 	PType string `json:"pType" validate:"required,oneof=sid ip name city loc"`
-	Sid   string `json:"sid" validate:"required_if=PType sid,omitempty,number"`
-	Name  string `json:"name" validate:"required_if=PType name,omitempty,excludesall=@?*%"`
-	City  string `json:"city" validate:"required_if=PType city,omitempty,excludesall=@?*%"`
-	Ip    string `json:"ip" validate:"required_if=PType ip,omitempty,ip4_addr"`
-	Lon   string `json:"lon" validate:"required_if=PType loc,omitempty,longitude"`
-	Lat   string `json:"lat" validate:"required_if=PType loc,omitempty,latitude"`
+	Sid   string `json:"sid" validate:"required_if=QType _get PType sid,omitempty,number"`
+	Name  string `json:"name" validate:"required_if=QType _get PType name,omitempty,excludesall=@?*%"`
+	City  string `json:"city" validate:"required_if=QType _get PType city,omitempty,excludesall=@?*%"`
+	Ip    string `json:"ip" validate:"required_if=QType _get PType ip,omitempty,ip4_addr"`
+	Lon   string `json:"lon" validate:"required_if=QType _get PType loc,omitempty,longitude"`
+	Lat   string `json:"lat" validate:"required_if=QType _get PType loc,omitempty,latitude"`
 }
 
 type StationSearchRequest struct {
-	QType       string    `json:"qType" validate:"required,oneof=_search"`
-	PType       string    `json:"pType" validate:"required,oneof=name city area radius all"`
-	Size        int       `json:"size" validate:"required,number,min=1,max=10000"`
-	Name        string    `json:"name" validate:"required_if=PType name,omitempty,excludesall=@?*%"`
-	City        string    `json:"city" validate:"required_if=PType city,omitempty,excludesall=@?*%"`
-	TopLeft     []float64 `json:"topLeft" validate:"required_if=PType area,omitempty,len=2"`
-	BottomRight []float64 `json:"bottomRight" validate:"required_if=PType area,omitempty,len=2"`
-	Center      []float64 `json:"center" validate:"required_if=PType radius,omitempty,len=2"`
-	Radius      float64   `json:"radius" validate:"required_if=PType radius,omitempty,gt=0,max=10000"`
-	Unit        string    `json:"unit" validate:"required_if=PType radius,omitempty,oneof=kilometers miles meters"`
+	QType       string    `json:"qType" validate:"required,oneof=_search _all"`
+	PType       string    `json:"pType" validate:"required_if=QType _search,omitempty,oneof=name city area radius"`
+	Size        int       `json:"size" validate:"required_if=QType _search,omitempty,number,min=1,max=10000"`
+	Name        string    `json:"name" validate:"required_if=QType _search PType name,omitempty,excludesall=@?*%"`
+	City        string    `json:"city" validate:"required_if=QType _search PType city,omitempty,excludesall=@?*%"`
+	TopLeft     []float64 `json:"topLeft" validate:"required_if=QType _search PType area,omitempty,len=2"`
+	BottomRight []float64 `json:"bottomRight" validate:"required_if=QType _search PType area,omitempty,len=2"`
+	Center      []float64 `json:"center" validate:"required_if=QType _search PType radius,omitempty,len=2"`
+	Radius      float64   `json:"radius" validate:"required_if=QType _search PType radius,omitempty,gt=0,max=10000"`
+	Unit        string    `json:"unit" validate:"required_if=QType _search PType radius,omitempty,oneof=kilometers miles meters"`
 }
 
 func (app *AQIServer) StationGet(ctx *fiber.Ctx) error {
@@ -64,6 +64,9 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 	if errResp != nil {
 		return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 	}
+	if query.QType == "_all" {
+		return app.SearchAllStations(ctx)
+	}
 	if query.PType == "name" {
 		return app.SearchStationsByName(query.Name, query.Size, ctx)
 	} else if query.PType == "city" {
@@ -86,7 +89,7 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 		}
 		return app.SearchStationsByArea(query.TopLeft, query.BottomRight, ctx)
-	} else if query.PType == "radius" {
+	} else {
 		errResp = ValidateVar(query.Center[0], "longitude")
 		if errResp != nil {
 			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
@@ -96,8 +99,6 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 		}
 		return app.SearchStationsByRadius(query.Center, query.Unit, query.Radius, query.Size, ctx)
-	} else {
-		return app.SearchAllStations(ctx)
 	}
 }
 
@@ -139,10 +140,10 @@ func (app *AQIServer) GetStationByLoc(x string, y string, ctx *fiber.Ctx) error 
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
-	if st == nil {
+	if len(st) == 0 {
 		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
 	}
-	return OkWithData(st, ctx)
+	return OkWithData(st[0], ctx)
 }
 
 func (app *AQIServer) GetStationByIp(ip string, ctx *fiber.Ctx) error {
