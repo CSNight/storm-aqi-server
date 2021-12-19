@@ -70,7 +70,7 @@ func (app *AQIServer) Close() {
 type ErrorResponse struct {
 	FailedField string
 	Tag         string
-	Value       string
+	Value       interface{}
 }
 
 func ValidateStruct(params interface{}) []*ErrorResponse {
@@ -81,7 +81,22 @@ func ValidateStruct(params interface{}) []*ErrorResponse {
 			var element ErrorResponse
 			element.FailedField = errItem.StructNamespace()
 			element.Tag = errItem.Tag()
-			element.Value = errItem.Param()
+			element.Value = errItem.Value()
+			errorResponses = append(errorResponses, &element)
+		}
+	}
+	return errorResponses
+}
+
+func ValidateVar(param interface{}, tag string) []*ErrorResponse {
+	var errorResponses []*ErrorResponse
+	err := validate.Var(param, tag)
+	if err != nil {
+		for _, errItem := range err.(validator.ValidationErrors) {
+			var element ErrorResponse
+			element.FailedField = errItem.StructNamespace()
+			element.Tag = errItem.Tag()
+			element.Value = errItem.Value()
 			errorResponses = append(errorResponses, &element)
 		}
 	}
