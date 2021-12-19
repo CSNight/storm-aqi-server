@@ -156,7 +156,8 @@ func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, err
 	return []AqiStation{}, nil
 }
 
-func (db *DB) GetStationByLoc(x string, y string) (*AqiStation, error) {
+func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string, size int) ([]AqiStation, error) {
+	disStr := strconv.FormatFloat(dis, 'f', 5, 64) + unit
 	query := `{
       "query": {
         "bool": {
@@ -165,7 +166,7 @@ func (db *DB) GetStationByLoc(x string, y string) (*AqiStation, error) {
           },
           "filter": {
             "geo_distance": {
-              "distance": "10km",
+              "distance": "` + disStr + `",
               "loc": {
                 "lat": ` + y + `,
                 "lon": ` + x + `
@@ -175,7 +176,6 @@ func (db *DB) GetStationByLoc(x string, y string) (*AqiStation, error) {
         }
       }
     }`
-	size := 10
 	search := &esapi.SearchRequest{
 		Index: []string{db.Conf.StationIndex},
 		Body:  strings.NewReader(query),
@@ -186,7 +186,7 @@ func (db *DB) GetStationByLoc(x string, y string) (*AqiStation, error) {
           "lon": ` + x + `
         }, 
         "order": "asc",
-        "unit": "km"
+        "unit": ` + unit + `
       }}`},
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
@@ -203,9 +203,9 @@ func (db *DB) GetStationByLoc(x string, y string) (*AqiStation, error) {
 		for _, item := range esSearchResp.Hits.Hits {
 			sts = append(sts, item.Source)
 		}
-		return &sts[0], nil
+		return sts, nil
 	}
-	return nil, nil
+	return []AqiStation{}, nil
 
 }
 
@@ -218,7 +218,14 @@ func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
 	loc := city.Location
 	x := strconv.FormatFloat(loc.Longitude, 'f', 10, 64)
 	y := strconv.FormatFloat(loc.Latitude, 'f', 10, 64)
-	return db.GetStationByLoc(x, y)
+	sts, err := db.SearchStationByRadius(x, y, 10, "km", 10)
+	if err != nil {
+		return nil, err
+	}
+	if len(sts) == 0 {
+		return nil, nil
+	}
+	return &sts[0], nil
 }
 
 func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
