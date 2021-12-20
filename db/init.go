@@ -30,7 +30,7 @@ var json = jsoniter.Config{
 	ValidateJsonRawMessage: true,
 }.Froze()
 
-var tick = time.NewTicker(time.Second * 10)
+var tick = time.NewTicker(time.Minute * 9)
 
 func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 	var ctx = context.Background()
