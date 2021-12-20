@@ -46,6 +46,9 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 		DocumentID: idx,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
+	defer func() {
+		resp = nil
+	}()
 	if err != nil {
 		return nil, err
 	}
@@ -101,6 +104,9 @@ func (db *DB) SearchStationsByName(name string, size int) ([]AqiStation, error) 
 		Timeout: 20 * time.Second,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
+	defer func() {
+		resp = nil
+	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
 		return nil, err
@@ -138,6 +144,9 @@ func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, err
 		Timeout: 20 * time.Second,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
+	defer func() {
+		resp = nil
+	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
 		return nil, err
@@ -190,6 +199,9 @@ func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string
       }}`},
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
+	defer func() {
+		resp = nil
+	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
 		return nil, err
@@ -256,6 +268,9 @@ func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
 		Timeout: 20 * time.Second,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
+	defer func() {
+		resp = nil
+	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
 		return nil, err
@@ -317,5 +332,8 @@ func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
 		}
 		sts = append(sts, station)
 	}
+	defer func() {
+		results = nil
+	}()
 	return sts, nil
 }
