@@ -191,21 +191,22 @@ func (app *AQIServer) SearchStationsByArea(topLeft []float64, bottomRight []floa
 }
 
 func (app *AQIServer) SearchStationsByRadius(center []float64, unit string, radius float64, size int, ctx *fiber.Ctx) error {
-	x := strconv.FormatFloat(center[0], 'f', 5, 64)
-	y := strconv.FormatFloat(center[1], 'f', 5, 64)
+	x := strconv.FormatFloat(center[0], 'f', 8, 64)
+	y := strconv.FormatFloat(center[1], 'f', 8, 64)
+	unitMark := "km"
 	switch unit {
 	default:
 	case "kilometers":
-		unit = "km"
+		unitMark = "km"
 		break
 	case "miles":
-		unit = "mi"
+		unitMark = "mi"
 		break
 	case "meters":
-		unit = "m"
+		unitMark = "m"
 		break
 	}
-	sts, err := app.DB.SearchStationByRadius(x, y, radius, unit, size)
+	sts, err := app.DB.SearchStationByRadius(x, y, radius, unitMark, size)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}

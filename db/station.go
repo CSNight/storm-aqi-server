@@ -157,7 +157,7 @@ func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, err
 }
 
 func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string, size int) ([]AqiStation, error) {
-	disStr := strconv.FormatFloat(dis, 'f', 5, 64) + unit
+	disStr := strconv.FormatFloat(dis, 'f', 8, 64) + unit
 	query := `{
       "query": {
         "bool": {
