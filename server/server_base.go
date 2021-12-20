@@ -41,6 +41,7 @@ func New(conf *conf.GConfig) (*AQIServer, error) {
 	if err != nil {
 		return nil, err
 	}
+	dbEs.RefreshCache()
 
 	ossCli, err := minio.New(conf.OssConf.Server, &minio.Options{
 		Creds:  credentials.NewStaticV4(conf.OssConf.Account, conf.OssConf.Secret, ""),
