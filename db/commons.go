@@ -42,3 +42,19 @@ type EsRespTotal struct {
 	Value    int    `json:"value"`
 	Relation string `json:"relation"`
 }
+
+func (db *DB) getStationFromCache(sid string) (*AqiStation, error) {
+	var st *AqiStation
+	stb, err := db.cache.Get([]byte(sid))
+	if err != nil {
+		st, err = db.GetStationById(sid)
+		if err != nil {
+			return nil, err
+		}
+	}
+	err = json.Unmarshal(stb, st)
+	if err != nil {
+		return nil, err
+	}
+	return st, nil
+}
