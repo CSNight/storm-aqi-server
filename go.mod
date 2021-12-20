@@ -3,6 +3,7 @@ module aqi-server
 go 1.17
 
 require (
+	github.com/coocood/freecache v1.2.0
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-20211217154309-2c4492af575e
 	github.com/go-playground/validator/v10 v10.9.0
 	github.com/gofiber/fiber/v2 v2.23.0
@@ -21,6 +22,7 @@ require (
 
 require (
 	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
