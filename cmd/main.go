@@ -69,6 +69,8 @@ func initConfig() {
 	}
 }
 
+var app *server.AQIServer
+
 func start(confFile string) {
 	confIns, err := conf.InitConf(confFile, func(config interface{}) {
 	})
@@ -76,7 +78,7 @@ func start(confFile string) {
 		fmt.Printf("init conf failed, err:%v\n", err)
 		return
 	}
-	app, err := server.New(confIns)
+	app, err = server.New(confIns)
 	if err != nil {
 		fmt.Printf("init app failed, err:%v\n", err)
 		return
@@ -111,10 +113,8 @@ func handleProcessSignal() {
 		log.Printf(`signal received: %s`, sig.String())
 		switch sig {
 		// Shutdown the servers.
-		case syscall.SIGINT, syscall.SIGQUIT, syscall.SIGABRT, syscall.SIGTERM:
-			return
-		case syscall.SIGKILL:
-			log.Printf(`signal kill received: %s`, sig.String())
+		case syscall.SIGINT, syscall.SIGQUIT, syscall.SIGABRT, syscall.SIGTERM, syscall.SIGKILL:
+			app.Close()
 			return
 		default:
 		}
