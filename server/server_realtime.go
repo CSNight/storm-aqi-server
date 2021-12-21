@@ -57,3 +57,14 @@ func (app *AQIServer) GetSingleRealtime(sid string, pol string, ctx *fiber.Ctx) 
 	}
 	return OkWithData(rt, ctx)
 }
+
+func (app *AQIServer) GetAllForecast(sid string, ctx *fiber.Ctx) error {
+	rt, err := app.DB.GetForecast(sid)
+	if err != nil {
+		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
+	}
+	if rt == nil {
+		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
+	}
+	return OkWithData(rt, ctx)
+}
