@@ -34,6 +34,11 @@ type ForecastInfo struct {
 	Daily map[string][]ForecastItem `json:"daily"`
 }
 
+type RealtimeGetResponse struct {
+	EsGetResponse
+	Source AqiRealtime `json:"_source"`
+}
+
 type ForecastResp struct {
 	Idx      int                       `json:"idx"`
 	Sid      string                    `json:"sid"`
@@ -74,7 +79,7 @@ type RealtimeSearchResponse struct {
 
 func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 	st, err := db.getStationFromCache(sid)
-	if err != nil {
+	if err != nil || st == nil {
 		return nil, err
 	}
 	response := &RealtimeResp{
@@ -125,4 +130,50 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 		return response, nil
 	}
 	return response, nil
+}
+
+func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, error) {
+	st, err := db.getStationFromCache(sid)
+	if err != nil || st == nil {
+		return nil, err
+	}
+	infoResp := &RealtimeResp{
+		Idx:      st.Idx,
+		Sid:      st.Sid,
+		Name:     st.Name,
+		Loc:      st.Loc,
+		CityName: st.CityName,
+		Realtime: []RealtimeInfo{},
+	}
+	search := &esapi.GetRequest{
+		Index:          db.Conf.RealtimeIndex,
+		DocumentID:     "rt_" + sid + "$" + pol,
+		SourceExcludes: []string{"forecast", "daily"},
+	}
+	resp, err := db.api.ProcessRespWithCli(search)
+	defer func() {
+		resp = nil
+	}()
+	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			return infoResp, nil
+		}
+		return nil, err
+	}
+	var response RealtimeGetResponse
+	err = json.Unmarshal(resp, &response)
+	if err != nil {
+		return nil, err
+	}
+	if response.Found {
+		info := RealtimeInfo{
+			Pol:  response.Source.Pol,
+			Data: response.Source.Data,
+		}
+		infoResp.Realtime = []RealtimeInfo{info}
+		infoResp.Tz = response.Source.Tz
+		infoResp.Tm = response.Source.Tm
+		infoResp.Tms = response.Source.Tms
+	}
+	return infoResp, nil
 }

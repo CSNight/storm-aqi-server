@@ -163,13 +163,13 @@ func (t *EsAPI) ProcessRespWithCli(req esapi.Request) ([]byte, error) {
 	ctx := context.Background()
 	cli, err := t.GetClient(ctx)
 	if err != nil {
-		t.Log.Errorf("CreateIndex(). GetClient(). \u001B[31merr: %v\u001B[0m", err)
+		t.Log.Errorf("ProcessRespWithCli(). GetClient(). \u001B[31merr: %v\u001B[0m", err)
 		return nil, err
 	}
 	defer func() {
 		err = t.CloseClient(ctx, cli)
 		if err != nil {
-			t.Log.Errorf("CreateIndex(). CloseClient(). \u001B[31merr: %v\u001B[0m", err)
+			t.Log.Errorf("ProcessRespWithCli(). CloseClient(). \u001B[31merr: %v\u001B[0m", err)
 			return
 		}
 	}()
