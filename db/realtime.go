@@ -177,3 +177,57 @@ func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, e
 	}
 	return infoResp, nil
 }
+
+func (db *DB) GetForecast(sid string) (*ForecastResp, error) {
+	st, err := db.getStationFromCache(sid)
+	if err != nil || st == nil {
+		return nil, err
+	}
+	response := &ForecastResp{
+		Idx:      st.Idx,
+		Sid:      st.Sid,
+		Name:     st.Name,
+		Loc:      st.Loc,
+		CityName: st.CityName,
+	}
+
+	size := 10
+	query := `{
+        "query": {
+            "match": {
+                "sid": ` + sid + `
+            }
+       }
+    }`
+	search := &esapi.SearchRequest{
+		Index:          []string{db.Conf.RealtimeIndex},
+		Body:           strings.NewReader(query),
+		Size:           &size,
+		SourceExcludes: []string{"data", "pol", "daily"},
+		Timeout:        20 * time.Second,
+	}
+	resp, err := db.api.ProcessRespWithCli(search)
+	var esSearchResp RealtimeSearchResponse
+	if err != nil {
+		return nil, err
+	}
+	err = json.Unmarshal(resp, &esSearchResp)
+	if err != nil {
+		return nil, err
+	}
+
+	if esSearchResp.Hits.Total.Value > 0 {
+		forecastStr := esSearchResp.Hits.Hits[0].Source.Forecast
+		var forecastSource ForecastInfo
+		err = json.Unmarshal([]byte(forecastStr), &forecastSource)
+		if err != nil {
+			return nil, err
+		}
+		response.Forecast = forecastSource.Daily
+		response.Tz = esSearchResp.Hits.Hits[0].Source.Tz
+		response.Tm = esSearchResp.Hits.Hits[0].Source.Tm
+		response.Tms = esSearchResp.Hits.Hits[0].Source.Tms
+		return response, nil
+	}
+	return response, nil
+}
