@@ -4,8 +4,6 @@ import (
 	"aqi-server/conf"
 	"aqi-server/server"
 	"fmt"
-	_ "github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"log"
@@ -54,7 +52,7 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	} else {
 		// Find home directory.
-		home, err := homedir.Dir()
+		home, err := os.Getwd()
 		cobra.CheckErr(err)
 		// Search config in home directory with name ".gin-test" (without extension).
 		viper.AddConfigPath(home)
