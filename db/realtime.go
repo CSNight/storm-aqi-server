@@ -178,7 +178,7 @@ func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, e
 	return infoResp, nil
 }
 
-func (db *DB) GetForecast(sid string) (*ForecastResp, error) {
+func (db *DB) GetForecast(sid string, pol string) (*ForecastResp, error) {
 	st, err := db.getStationFromCache(sid)
 	if err != nil || st == nil {
 		return nil, err
@@ -223,7 +223,11 @@ func (db *DB) GetForecast(sid string) (*ForecastResp, error) {
 		if err != nil {
 			return nil, err
 		}
-		response.Forecast = forecastSource.Daily
+		if pol == "all" {
+			response.Forecast = forecastSource.Daily
+		} else {
+			response.Forecast = map[string][]ForecastItem{pol: forecastSource.Daily[pol]}
+		}
 		response.Tz = esSearchResp.Hits.Hits[0].Source.Tz
 		response.Tm = esSearchResp.Hits.Hits[0].Source.Tm
 		response.Tms = esSearchResp.Hits.Hits[0].Source.Tms
