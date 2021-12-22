@@ -172,7 +172,6 @@ func (db *DB) GetHistoryYear(sid string, pol string) (*AqiHistoryResp, error) {
 
 func BuildResp(list []AqiHistory) map[string][]AqiHisItem {
 	var items map[string][]AqiHisItem
-
 	for _, pol := range pols {
 		items[pol] = []AqiHisItem{}
 	}
@@ -189,6 +188,7 @@ func BuildResp(list []AqiHistory) map[string][]AqiHisItem {
 			Tms:   item.Tms,
 		})
 	}
+	list = nil
 	return items
 }
 
@@ -220,6 +220,9 @@ func (db *DB) getHistoryByRange(sid string, pol string, st time.Time, et time.Ti
 	resp, err := db.api.ProcessRespWithCli(request)
 	var esSearchResp HistorySearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
@@ -233,5 +236,8 @@ func (db *DB) getHistoryByRange(sid string, pol string, st time.Time, et time.Ti
 		}
 		return hisList, nil
 	}
+	defer func() {
+		resp = nil
+	}()
 	return nil, nil
 }

@@ -50,6 +50,9 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 		resp = nil
 	}()
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
 		return nil, err
 	}
 	var response StationGetResponse
@@ -109,6 +112,9 @@ func (db *DB) SearchStationsByName(name string, size int) ([]AqiStation, error) 
 	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
@@ -149,6 +155,9 @@ func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, err
 	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
@@ -204,6 +213,9 @@ func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string
 	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)

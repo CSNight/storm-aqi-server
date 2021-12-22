@@ -108,8 +108,14 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 	resp, err := db.api.ProcessRespWithCli(search)
 	var esSearchResp RealtimeSearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return response, nil
+		}
 		return nil, err
 	}
+	defer func() {
+		resp = nil
+	}()
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
 		return nil, err
@@ -155,7 +161,7 @@ func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, e
 		resp = nil
 	}()
 	if err != nil {
-		if strings.Contains(err.Error(), "404") {
+		if strings.HasPrefix(err.Error(), "404") {
 			return infoResp, nil
 		}
 		return nil, err
@@ -209,8 +215,14 @@ func (db *DB) GetForecast(sid string, pol string) (*ForecastResp, error) {
 	resp, err := db.api.ProcessRespWithCli(search)
 	var esSearchResp RealtimeSearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return response, nil
+		}
 		return nil, err
 	}
+	defer func() {
+		resp = nil
+	}()
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
 		return nil, err
