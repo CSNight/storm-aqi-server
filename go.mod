@@ -9,7 +9,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.23.0
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
-	github.com/minio/minio-go/v7 v7.0.18
+	github.com/minio/minio-go/v7 v7.0.19
 	github.com/oschwald/geoip2-golang v1.5.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
