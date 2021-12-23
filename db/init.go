@@ -3,11 +3,11 @@ package db
 import (
 	"aqi-server/conf"
 	"aqi-server/elastic"
+	"aqi-server/tools"
 	"context"
 	"github.com/coocood/freecache"
 	pool "github.com/jolestar/go-commons-pool/v2"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/oschwald/geoip2-golang"
 	"go.uber.org/zap"
 	"os"
 	"runtime"
@@ -17,7 +17,7 @@ import (
 type DB struct {
 	Conf  *conf.AQIConfig
 	api   *elastic.EsAPI
-	ipDB  *geoip2.Reader
+	ipDB  *tools.Reader
 	pool  *pool.ObjectPool
 	log   *zap.Logger
 	cache *freecache.Cache
@@ -46,7 +46,7 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	ipDB, err := geoip2.Open(pwd + string(os.PathSeparator) + "assets" + string(os.PathSeparator) + "GeoLite2-City.mmdb")
+	ipDB, err := tools.Open(pwd + string(os.PathSeparator) + "assets" + string(os.PathSeparator) + "GeoLite2-City.mmdb")
 	if err != nil {
 		return nil, err
 	}
