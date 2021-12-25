@@ -7,7 +7,7 @@ import (
 
 type HistoryRequest struct {
 	QType string `json:"qType" validate:"required,oneof=_get"`
-	PType string `json:"pType" validate:"required,oneof=time"`
+	PType string `json:"pType" validate:"required,oneof=quick range"`
 	Sid   string `json:"sid" validate:"required_if=QType _get,number"`
 	Pol   string `json:"pol" validate:"required_if=QType _get,oneof=all no2 pm25 pm10 o3 so2 co"`
 	Range string `json:"range" validate:"required_if=QType _get PType time,omitempty,oneof=lastDay lastWeek lastMonth lastQuarter lastYear"`
@@ -23,7 +23,7 @@ func (app *AQIServer) HistoryGet(ctx *fiber.Ctx) error {
 	if errResp != nil {
 		return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 	}
-	if query.PType == "time" {
+	if query.PType == "quick" {
 		if query.Range == "lastDay" {
 			return app.GetHistoryYesterday(query.Sid, query.Pol, ctx)
 		} else if query.Range == "lastWeek" {
