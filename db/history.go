@@ -61,8 +61,8 @@ func (db *DB) GetHistoryYesterday(sid string, pol string) (*AqiHistoryResp, erro
 		return nil, err
 	}
 	now := time.Now().UTC()
-	st := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
-	et := st.AddDate(0, 0, -1)
+	et := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	st := et.AddDate(0, 0, -1)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
 		return nil, err
@@ -84,8 +84,8 @@ func (db *DB) GetHistoryLastWeek(sid string, pol string) (*AqiHistoryResp, error
 		return nil, err
 	}
 	now := time.Now().UTC()
-	st := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
-	et := st.AddDate(0, 0, -7)
+	et := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	st := et.AddDate(0, 0, -7)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
 		return nil, err
@@ -107,8 +107,8 @@ func (db *DB) GetHistoryLastMonth(sid string, pol string) (*AqiHistoryResp, erro
 		return nil, err
 	}
 	now := time.Now().UTC()
-	st := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
-	et := st.AddDate(0, -1, 0)
+	et := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	st := et.AddDate(0, -1, 0)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
 		return nil, err
@@ -124,14 +124,14 @@ func (db *DB) GetHistoryLastMonth(sid string, pol string) (*AqiHistoryResp, erro
 	}, nil
 }
 
-func (db *DB) GetHistoryLastSeason(sid string, pol string) (*AqiHistoryResp, error) {
+func (db *DB) GetHistoryLastQuarter(sid string, pol string) (*AqiHistoryResp, error) {
 	station, err := db.getStationFromCache(sid)
 	if err != nil || station == nil {
 		return nil, err
 	}
 	now := time.Now().UTC()
-	st := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
-	et := st.AddDate(0, -3, 0)
+	et := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	st := et.AddDate(0, -3, 0)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
 		return nil, err
@@ -153,8 +153,8 @@ func (db *DB) GetHistoryYear(sid string, pol string) (*AqiHistoryResp, error) {
 		return nil, err
 	}
 	now := time.Now().UTC()
-	st := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
-	et := st.AddDate(-1, 0, 0)
+	et := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.UTC)
+	st := et.AddDate(-1, 0, 0)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
 		return nil, err
@@ -171,7 +171,7 @@ func (db *DB) GetHistoryYear(sid string, pol string) (*AqiHistoryResp, error) {
 }
 
 func BuildResp(list []AqiHistory) map[string][]AqiHisItem {
-	var items map[string][]AqiHisItem
+	items := map[string][]AqiHisItem{}
 	for _, pol := range pols {
 		items[pol] = []AqiHisItem{}
 	}
@@ -215,7 +215,7 @@ func (db *DB) getHistoryByRange(sid string, pol string, st time.Time, et time.Ti
 		Body:    strings.NewReader(query),
 		Size:    &size,
 		Timeout: 20 * time.Second,
-		Sort:    []string{"{tm:desc"},
+		Sort:    []string{`{"tm":"desc"}`},
 	}
 	resp, err := db.api.ProcessRespWithCli(request)
 	var esSearchResp HistorySearchResponse
