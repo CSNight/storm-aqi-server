@@ -206,7 +206,7 @@ func (db *DB) getHistoryByRange(sid string, pol string, st time.Time, et time.Ti
                     {"match": {"sid": "` + sid + `"}},
                     {"range": {"tm":{"gte": ` + strconv.Itoa(int(st.UnixMilli())) + `,"lte": ` + strconv.Itoa(int(et.UnixMilli())) + `}}}`
 	if pol != "all" {
-		query += `{"match": {"pol": "` + pol + `"}}`
+		query += `,{"match": {"pol": "` + pol + `"}}`
 	}
 	query += "]}}}"
 	size := 10000
