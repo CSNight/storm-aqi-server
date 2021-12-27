@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -188,6 +189,11 @@ func BuildResp(list []AqiHistory) map[string][]AqiHisItem {
 			Tms:   item.Tms,
 		})
 	}
+	for _, v := range items {
+		sort.Slice(v, func(i, j int) bool {
+			return v[i].Tm > v[j].Tm
+		})
+	}
 	list = nil
 	return items
 }
@@ -215,7 +221,6 @@ func (db *DB) getHistoryByRange(sid string, pol string, st time.Time, et time.Ti
 		Body:    strings.NewReader(query),
 		Size:    &size,
 		Timeout: 20 * time.Second,
-		Sort:    []string{`{"tm":"desc"}`},
 	}
 	resp, err := db.api.ProcessRespWithCli(request)
 	var esSearchResp HistorySearchResponse
