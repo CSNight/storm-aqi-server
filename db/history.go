@@ -171,6 +171,26 @@ func (db *DB) GetHistoryYear(sid string, pol string) (*AqiHistoryResp, error) {
 	}, nil
 }
 
+func (db *DB) GetHistoryRange(sid string, pol string, st time.Time, et time.Time) (*AqiHistoryResp, error) {
+	station, err := db.getStationFromCache(sid)
+	if err != nil || station == nil {
+		return nil, err
+	}
+	hisList, err := db.getHistoryByRange(sid, pol, st, et)
+	if err != nil {
+		return nil, err
+	}
+	items := BuildResp(hisList)
+	return &AqiHistoryResp{
+		Idx:      station.Idx,
+		Sid:      station.Sid,
+		Name:     station.Name,
+		Loc:      station.Loc,
+		CityName: station.CityName,
+		History:  items,
+	}, nil
+}
+
 func BuildResp(list []AqiHistory) map[string][]AqiHisItem {
 	items := map[string][]AqiHisItem{}
 	for _, pol := range pols {
