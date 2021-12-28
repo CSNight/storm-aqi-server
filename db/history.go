@@ -2,9 +2,11 @@ package db
 
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"github.com/tidwall/gjson"
 	"sort"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -189,6 +191,51 @@ func (db *DB) GetHistoryRange(sid string, pol string, st time.Time, et time.Time
 		CityName: station.CityName,
 		History:  items,
 	}, nil
+}
+
+func (db *DB) GetNoneStation() []string {
+	stations, _ := db.GetAllStations()
+	var wg = sync.WaitGroup{}
+	ch := make(chan string, 20)
+	var indexes []string
+	for i := 2014; i <= 2021; i++ {
+		indexes = append(indexes, strings.Replace(db.Conf.HisIndex, "$year", strconv.Itoa(i), -1))
+	}
+	empty := make(chan string, 600)
+	for _, st := range stations {
+		wg.Add(1)
+		ch <- st.Sid
+		go func() {
+			sd := <-ch
+			req := esapi.CountRequest{
+				Index: indexes,
+				Body:  strings.NewReader(`{"query":{"match":{"sid":"` + sd + `"}}}`),
+			}
+			defer wg.Done()
+			resp, err := db.api.ProcessRespWithCli(req)
+			if err != nil {
+				return
+			}
+			result := gjson.ParseBytes(resp)
+			if result.Get("count").Int() == 0 {
+				empty <- sd
+			}
+		}()
+	}
+	var sidx []string
+	go func() {
+		for sid := range empty {
+			sidx = append(sidx, sid)
+		}
+	}()
+	wg.Wait()
+	close(empty)
+	sort.Slice(sidx, func(i, j int) bool {
+		a, _ := strconv.ParseInt(sidx[i], 10, 64)
+		b, _ := strconv.ParseInt(sidx[j], 10, 64)
+		return a < b
+	})
+	return sidx
 }
 
 func BuildResp(list []AqiHistory) map[string][]AqiHisItem {

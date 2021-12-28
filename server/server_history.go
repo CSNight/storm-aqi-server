@@ -101,6 +101,11 @@ func (app *AQIServer) GetHistoryYear(sid string, pol string, ctx *fiber.Ctx) err
 	return OkWithData(rt, ctx)
 }
 
+func (app *AQIServer) GetNoneStation(ctx *fiber.Ctx) error {
+	sidx := app.DB.GetNoneStation()
+	return OkWithData(sidx, ctx)
+}
+
 func (app *AQIServer) GetHistoryRange(sid string, pol string, st string, et string, ctx *fiber.Ctx) error {
 	stTime, err := time.ParseInLocation("2006-01-02", st, time.UTC)
 	if err != nil {
