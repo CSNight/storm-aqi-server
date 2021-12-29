@@ -102,8 +102,8 @@ func (app *AQIServer) GetHistoryYear(sid string, pol string, ctx *fiber.Ctx) err
 }
 
 func (app *AQIServer) GetNoneStation(ctx *fiber.Ctx) error {
-	sidx := app.DB.GetNoneStation()
-	return OkWithData(sidx, ctx)
+	idx := app.DB.GetNoneStation()
+	return OkWithData(idx, ctx)
 }
 
 func (app *AQIServer) GetHistoryRange(sid string, pol string, st string, et string, ctx *fiber.Ctx) error {
