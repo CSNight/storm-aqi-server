@@ -51,7 +51,7 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 		return nil, err
 	}
 
-	cache := freecache.NewCache(100 * 1024 * 1024)
+	cache := freecache.NewCache(20 * 1024 * 1024)
 
 	return &DB{
 		Conf:  conf.AQIConf,
