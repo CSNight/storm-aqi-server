@@ -7,8 +7,6 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/minio/minio-go/v7"
-	"github.com/minio/minio-go/v7/pkg/credentials"
 	"go.uber.org/zap"
 )
 
@@ -16,7 +14,6 @@ type AQIServer struct {
 	App *fiber.App
 	Log *zap.Logger
 	DB  *db.DB
-	Oss *minio.Client
 }
 
 var json = jsoniter.Config{
@@ -43,13 +40,6 @@ func New(conf *conf.GConfig) (*AQIServer, error) {
 	}
 	dbEs.RefreshCache()
 
-	ossCli, err := minio.New(conf.OssConf.Server, &minio.Options{
-		Creds:  credentials.NewStaticV4(conf.OssConf.Account, conf.OssConf.Secret, ""),
-		Secure: false,
-	})
-	if err != nil {
-		return nil, err
-	}
 	api := server.Group("/api")
 	v1 := api.Group("v1")
 
@@ -57,7 +47,6 @@ func New(conf *conf.GConfig) (*AQIServer, error) {
 		App: server,
 		Log: logger,
 		DB:  dbEs,
-		Oss: ossCli,
 	}
 	app.Register(v1)
 	return app, nil

@@ -8,6 +8,8 @@ import (
 	"github.com/coocood/freecache"
 	pool "github.com/jolestar/go-commons-pool/v2"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/minio/minio-go/v7"
+	"github.com/minio/minio-go/v7/pkg/credentials"
 	"go.uber.org/zap"
 	"os"
 	"runtime"
@@ -22,6 +24,7 @@ type DB struct {
 	log   *zap.Logger
 	cache *freecache.Cache
 	ctx   context.Context
+	oss   *minio.Client
 }
 
 var json = jsoniter.Config{
@@ -51,6 +54,14 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 		return nil, err
 	}
 
+	ossCli, err := minio.New(conf.OssConf.Server, &minio.Options{
+		Creds:  credentials.NewStaticV4(conf.OssConf.Account, conf.OssConf.Secret, ""),
+		Secure: false,
+	})
+	if err != nil {
+		return nil, err
+	}
+
 	cache := freecache.NewCache(20 * 1024 * 1024)
 
 	return &DB{
@@ -61,6 +72,7 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 		cache: cache,
 		log:   logger.Named("\u001B[33m[DB]\u001B[0m"),
 		ctx:   ctx,
+		oss:   ossCli,
 	}, nil
 }
 
