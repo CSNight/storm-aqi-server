@@ -14,6 +14,11 @@ import (
 	"time"
 )
 
+type AppConfig struct {
+	Port           int  `yaml:"port" json:"port"`
+	EnableCompress bool `yaml:"enable_compress" json:"enable_compress"`
+}
+
 type LogConfig struct {
 	Level      string `yaml:"level" json:"level"`
 	Filename   string `yaml:"filename" json:"filename"`
@@ -21,11 +26,8 @@ type LogConfig struct {
 	MaxAge     int    `yaml:"max_age" json:"max_age"`
 	MaxBackups int    `yaml:"max_backups" json:"max_backups"`
 }
+
 type AQIConfig struct {
-	Server        string `yaml:"server" json:"server"`
-	WsServer      string `yaml:"ws_server" json:"ws_server"`
-	WsProxy       string `yaml:"ws_proxy" json:"ws_proxy"`
-	Token         string `yaml:"token" json:"token"`
 	ImageOss      string `yaml:"image_oss" json:"image_oss"`
 	StationIndex  string `yaml:"station_index" json:"station_index"`
 	HisIndex      string `yaml:"his_index" json:"his_index"`
@@ -61,11 +63,11 @@ type ESConfig struct {
 }
 
 type GConfig struct {
-	HttpPort int          `yaml:"http_port"`
-	AQIConf  *AQIConfig   `yaml:"aqi"`
-	ESConf   *ESConfig    `yaml:"elastic"`
-	LogConf  *LogConfig   `yaml:"log"`
-	OssConf  *MinIOConfig `yaml:"minio"`
+	AppConf *AppConfig   `yaml:"app"`
+	AQIConf *AQIConfig   `yaml:"aqi"`
+	ESConf  *ESConfig    `yaml:"elastic"`
+	LogConf *LogConfig   `yaml:"log"`
+	OssConf *MinIOConfig `yaml:"minio"`
 }
 
 type Config struct {

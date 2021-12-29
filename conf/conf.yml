@@ -1,9 +1,7 @@
-http_port: 9600
+app:
+  port: 9600
+  enable_compress: true
 aqi:
-  server: https://api.waqi.info
-  ws_server: wss://api.waqi.info/api/attws
-  ws_proxy:
-  token: d17911cdace2a053412abd5aceb6d4270f88ed9b
   image_oss: https://aqicn.org/images/feeds/
   station_index: aqi_stations
   his_index: aqi_his_year_$year
