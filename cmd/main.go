@@ -82,7 +82,7 @@ func start(confFile string) {
 		return
 	}
 	go func() {
-		err = app.App.Listen(":" + strconv.Itoa(confIns.HttpPort))
+		err = app.App.Listen(":" + strconv.Itoa(confIns.AppConf.Port))
 		if err != nil {
 			return
 		}
