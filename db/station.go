@@ -1,7 +1,10 @@
 package db
 
 import (
+	"aqi-server/tools"
+	"fmt"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"github.com/tidwall/gjson"
 	"net"
 	"strconv"
 	"strings"
@@ -348,4 +351,22 @@ func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
 		results = nil
 	}()
 	return sts, nil
+}
+
+func (db *DB) SyncStationLogos() error {
+	stations, err := db.GetAllStations()
+	if err != nil {
+		return err
+	}
+	tools.PutObject(db.oss)
+	for _, st := range stations {
+		if st.Sources != "" {
+			root := gjson.Parse(st.Sources).Array()
+			for _, source := range root {
+				fmt.Println(source.Str)
+			}
+		}
+	}
+
+	return nil
 }

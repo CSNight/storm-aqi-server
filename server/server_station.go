@@ -220,3 +220,11 @@ func (app *AQIServer) SearchAllStations(ctx *fiber.Ctx) error {
 	}
 	return OkWithData(sts, ctx)
 }
+
+func (app *AQIServer) SyncStationLog(ctx *fiber.Ctx) error {
+	err := app.DB.SyncStationLogos()
+	if err != nil {
+		return err
+	}
+	return nil
+}
