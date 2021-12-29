@@ -5,12 +5,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/csrf"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	rcp "github.com/gofiber/fiber/v2/middleware/recover"
-	"github.com/gofiber/fiber/v2/utils"
 	"go.uber.org/zap"
-	"time"
 )
 
 func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
@@ -22,7 +19,7 @@ func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 	server.Use(New(LogConfig{
 		Next:     nil,
 		Logger:   logger,
-		Fields:   []string{"ip", "port", "path", "method", "status", "latency", "resBody", "queryParams", "body"},
+		Fields:   []string{"ip", "port", "url", "method", "status", "latency", "resBody", "queryParams", "body"},
 		Messages: []string{"Server error", "Client error", "Success"},
 	}))
 
@@ -32,17 +29,17 @@ func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 		AllowCredentials: true,
 	}))
 
-	server.Use(csrf.New(csrf.Config{
-		KeyLookup:      "header:X-Csrf-Token",
-		CookieName:     "csrf_",
-		CookieSameSite: "Lax",
-		Expiration:     1 * time.Hour,
-		KeyGenerator:   utils.UUID,
+	server.Use(NewCache(CacheConfig{
+		Expiration:  300,
+		Compress:    config.AppConf.EnableCompress,
+		CacheHeader: "X-Cache-Storm",
 	}))
 
-	server.Use(compress.New(compress.Config{
-		Level: compress.LevelBestSpeed, // 1
-	}))
+	if config.AppConf.EnableCompress {
+		server.Use(compress.New(compress.Config{
+			Level: compress.LevelBestSpeed, // 1
+		}))
+	}
 
 	server.Get("/monitor", monitor.New())
 
