@@ -2,12 +2,13 @@ package db
 
 import (
 	"aqi-server/tools"
-	"fmt"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/tidwall/gjson"
+	"go.uber.org/zap"
 	"net"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -358,15 +359,43 @@ func (db *DB) SyncStationLogos() error {
 	if err != nil {
 		return err
 	}
-	tools.PutObject(db.oss)
+	queue := make(chan string, 50)
+	wg := sync.WaitGroup{}
+	var logos = map[string]string{}
 	for _, st := range stations {
 		if st.Sources != "" {
 			root := gjson.Parse(st.Sources).Array()
 			for _, source := range root {
-				fmt.Println(source.Str)
+				logoName := source.Get("logo").String()
+				if logoName != "" {
+					logos[logoName] = logoName
+				}
 			}
 		}
 	}
-
+	for _, logo := range logos {
+		if !tools.ExistObject(db.oss, "aqi/"+logo) {
+			wg.Add(1)
+			queue <- logo
+			go func(logoImg string) {
+				defer func() {
+					<-queue
+					wg.Done()
+				}()
+				image, err := tools.DownloadImage(db.Conf.ImageOss + logoImg)
+				if err != nil {
+					db.log.Sugar().Error(err)
+					return
+				}
+				status := tools.PutObject(db.oss, image, "aqi/"+logoImg)
+				if status {
+					db.log.Info("save to oss success", zap.String("object", logoImg))
+				} else {
+					db.log.Error("save to oss failed", zap.String("object", logoImg))
+				}
+			}(logo)
+		}
+	}
+	wg.Wait()
 	return nil
 }
