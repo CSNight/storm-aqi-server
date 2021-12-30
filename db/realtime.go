@@ -2,6 +2,7 @@ package db
 
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"go.uber.org/zap"
 	"strings"
 	"time"
 )
@@ -111,6 +112,7 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 		if strings.HasPrefix(err.Error(), "404") {
 			return response, nil
 		}
+		db.log.Error("GetAqiRealtimeById(). es.ProcessRespWithCli(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	defer func() {
@@ -118,6 +120,7 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 	}()
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
+		db.log.Error("GetAqiRealtimeById(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	var rts []RealtimeInfo
@@ -164,11 +167,13 @@ func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, e
 		if strings.HasPrefix(err.Error(), "404") {
 			return infoResp, nil
 		}
+		db.log.Error("GetAqiRealtimeByIdAndPol(). es.ProcessRespWithCli(). err:", zap.Error(err))
 		return nil, err
 	}
 	var response RealtimeGetResponse
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
+		db.log.Error("GetAqiRealtimeByIdAndPol(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	if response.Found {
@@ -218,6 +223,7 @@ func (db *DB) GetForecast(sid string, pol string) (*ForecastResp, error) {
 		if strings.HasPrefix(err.Error(), "404") {
 			return response, nil
 		}
+		db.log.Error("GetForecast(). es.ProcessRespWithCli(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	defer func() {
@@ -225,6 +231,7 @@ func (db *DB) GetForecast(sid string, pol string) (*ForecastResp, error) {
 	}()
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
+		db.log.Error("GetForecast(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 
@@ -233,6 +240,7 @@ func (db *DB) GetForecast(sid string, pol string) (*ForecastResp, error) {
 		var forecastSource ForecastInfo
 		err = json.Unmarshal([]byte(forecastStr), &forecastSource)
 		if err != nil {
+			db.log.Error("GetForecast(). json.Unmarshal(). err:", zap.Error(err))
 			return nil, err
 		}
 		if pol == "all" {
