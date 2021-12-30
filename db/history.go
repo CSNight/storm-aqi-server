@@ -3,6 +3,7 @@ package db
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/tidwall/gjson"
+	"go.uber.org/zap"
 	"sort"
 	"strconv"
 	"strings"
@@ -68,6 +69,7 @@ func (db *DB) GetHistoryYesterday(sid string, pol string) (*AqiHistoryResp, erro
 	st := et.AddDate(0, 0, -1)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
+		db.log.Error("GetHistoryYesterday(). db.getHistoryByRange(). err:", zap.Error(err))
 		return nil, err
 	}
 	items := BuildResp(hisList)
@@ -91,6 +93,7 @@ func (db *DB) GetHistoryLastWeek(sid string, pol string) (*AqiHistoryResp, error
 	st := et.AddDate(0, 0, -7)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
+		db.log.Error("GetHistoryLastWeek(). db.getHistoryByRange(). err:", zap.Error(err))
 		return nil, err
 	}
 	items := BuildResp(hisList)
@@ -114,6 +117,7 @@ func (db *DB) GetHistoryLastMonth(sid string, pol string) (*AqiHistoryResp, erro
 	st := et.AddDate(0, -1, 0)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
+		db.log.Error("GetHistoryLastMonth(). db.getHistoryByRange(). err:", zap.Error(err))
 		return nil, err
 	}
 	items := BuildResp(hisList)
@@ -137,6 +141,7 @@ func (db *DB) GetHistoryLastQuarter(sid string, pol string) (*AqiHistoryResp, er
 	st := et.AddDate(0, -3, 0)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
+		db.log.Error("GetHistoryLastQuarter(). db.getHistoryByRange(). err:", zap.Error(err))
 		return nil, err
 	}
 	items := BuildResp(hisList)
@@ -160,6 +165,7 @@ func (db *DB) GetHistoryYear(sid string, pol string) (*AqiHistoryResp, error) {
 	st := et.AddDate(-1, 0, 0)
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
+		db.log.Error("GetHistoryYear(). db.getHistoryByRange(). err:", zap.Error(err))
 		return nil, err
 	}
 	items := BuildResp(hisList)
@@ -180,6 +186,7 @@ func (db *DB) GetHistoryRange(sid string, pol string, st time.Time, et time.Time
 	}
 	hisList, err := db.getHistoryByRange(sid, pol, st, et)
 	if err != nil {
+		db.log.Error("GetHistoryRange(). db.getHistoryByRange(). err:", zap.Error(err))
 		return nil, err
 	}
 	items := BuildResp(hisList)

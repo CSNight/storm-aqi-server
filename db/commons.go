@@ -1,5 +1,7 @@
 package db
 
+import "go.uber.org/zap"
+
 type GeoPoint struct {
 	Lon float64 `json:"lon" validate:"longitude"`
 	Lat float64 `json:"lat" validate:"latitude"`
@@ -49,12 +51,14 @@ func (db *DB) getStationFromCache(sid string) (*AqiStation, error) {
 	if err != nil {
 		stp, err := db.GetStationById(sid)
 		if err != nil {
+			db.log.Error("getStationFromCache(). GetStationById(). err:", zap.Error(err))
 			return nil, err
 		}
 		return stp, nil
 	}
 	err = json.Unmarshal(stb, &st)
 	if err != nil {
+		db.log.Error("getStationFromCache(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	return &st, nil
