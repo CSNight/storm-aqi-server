@@ -57,11 +57,13 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 		if strings.HasPrefix(err.Error(), "404") {
 			return nil, nil
 		}
+		db.log.Error("GetStationById(). es.ProcessRespWithCli(). err:", zap.Error(err))
 		return nil, err
 	}
 	var response StationGetResponse
 	err = json.Unmarshal(resp, &response)
 	if err != nil {
+		db.log.Error("GetStationById(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	if response.Found {
@@ -73,6 +75,7 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 func (db *DB) GetStationByName(name string) (*AqiStation, error) {
 	sts, err := db.SearchStationsByName(name, 1)
 	if err != nil {
+		db.log.Error("GetStationByName(). SearchStationsByName("+name+"). err:", zap.Error(err))
 		return nil, err
 	}
 	if len(sts) > 0 {
@@ -84,6 +87,7 @@ func (db *DB) GetStationByName(name string) (*AqiStation, error) {
 func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
 	sts, err := db.SearchStationsByCityName(name, 1)
 	if err != nil {
+		db.log.Error("GetStationByCityName(). SearchStationsByCityName("+name+"). err:", zap.Error(err))
 		return nil, err
 	}
 	if len(sts) > 0 {
@@ -119,10 +123,12 @@ func (db *DB) SearchStationsByName(name string, size int) ([]AqiStation, error) 
 		if strings.HasPrefix(err.Error(), "404") {
 			return nil, nil
 		}
+		db.log.Error("SearchStationsByName(). es.ProcessRespWithCli(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
+		db.log.Error("SearchStationsByName(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	var sts []AqiStation
@@ -162,10 +168,12 @@ func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, err
 		if strings.HasPrefix(err.Error(), "404") {
 			return nil, nil
 		}
+		db.log.Error("SearchStationsByCityName(). es.ProcessRespWithCli(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
+		db.log.Error("SearchStationsByCityName(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	var sts []AqiStation
@@ -220,10 +228,12 @@ func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string
 		if strings.HasPrefix(err.Error(), "404") {
 			return nil, nil
 		}
+		db.log.Error("SearchStationByRadius(). es.ProcessRespWithCli(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
+		db.log.Error("SearchStationByRadius(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	var sts []AqiStation
@@ -241,6 +251,7 @@ func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
 	ipNet := net.ParseIP(ip)
 	city, err := db.ipDB.City(ipNet.To4())
 	if err != nil {
+		db.log.Error("GetStationByIp(). ipDB.City(). err:", zap.Error(err))
 		return nil, err
 	}
 	loc := city.Location
@@ -248,6 +259,7 @@ func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
 	y := strconv.FormatFloat(loc.Latitude, 'f', 10, 64)
 	sts, err := db.SearchStationByRadius(x, y, 10, "km", 10)
 	if err != nil {
+		db.log.Error("GetStationByIp(). db.SearchStationByRadius(). err:", zap.Error(err))
 		return nil, err
 	}
 	if len(sts) == 0 {
@@ -289,10 +301,15 @@ func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
 	}()
 	var esSearchResp StationSearchResponse
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
+		db.log.Error("SearchStationsByArea(). es.ProcessRespWithCli(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	err = json.Unmarshal(resp, &esSearchResp)
 	if err != nil {
+		db.log.Error("SearchStationsByArea(). json.Unmarshal(). err:", zap.Error(err))
 		return nil, err
 	}
 	var sts []AqiStation
@@ -337,6 +354,10 @@ func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
 	}
 	results, err := db.api.ScrollSearch(search)
 	if err != nil {
+		if strings.HasPrefix(err.Error(), "404") {
+			return nil, nil
+		}
+		db.log.Error("ScrollSearchStation(). es.ScrollSearch(). err:", zap.String("query", strings.ReplaceAll(query, " ", "")), zap.Error(err))
 		return nil, err
 	}
 	var sts []AqiStation
@@ -384,7 +405,7 @@ func (db *DB) SyncStationLogos() error {
 				}()
 				image, err := tools.DownloadImage(db.Conf.ImageOss + logoImg)
 				if err != nil {
-					db.log.Sugar().Error(err)
+					db.log.Error("download station logo failed, err:", zap.Error(err))
 					return
 				}
 				status := tools.PutObject(db.oss, image, "aqi/"+logoImg)
