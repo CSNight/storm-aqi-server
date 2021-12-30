@@ -9,5 +9,6 @@ func (app *AQIServer) Register(root fiber.Router) {
 	root.Get("/aqi/forecast", app.ForecastGet)
 	root.Get("/aqi/history", app.HistoryGet)
 	root.Get("/aqi/none", app.GetNoneStation)
-	root.Post("/aqi/logo", app.SyncStationLog)
+	root.Get("/aqi/logo/:logo", app.StationLogoGet)
+	root.Post("/aqi/sync_logo", app.SyncStationLog)
 }

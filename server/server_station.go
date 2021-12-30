@@ -221,10 +221,22 @@ func (app *AQIServer) SearchAllStations(ctx *fiber.Ctx) error {
 	return OkWithData(sts, ctx)
 }
 
+func (app *AQIServer) StationLogoGet(ctx *fiber.Ctx) error {
+	logo := ctx.Params("logo")
+	if logo == "" {
+		return FailWithMessage(http.StatusNotFound, "empty logo", ctx)
+	}
+	img, err := app.DB.GetStationLogo(logo)
+	if logo == "" {
+		return FailWithMessage(http.StatusBadRequest, err.Error(), ctx)
+	}
+	return OkWithRaw("image/png", img, ctx)
+}
+
 func (app *AQIServer) SyncStationLog(ctx *fiber.Ctx) error {
 	err := app.DB.SyncStationLogos()
 	if err != nil {
-		return err
+		return FailWithMessage(http.StatusBadRequest, err.Error(), ctx)
 	}
-	return nil
+	return Ok(ctx)
 }
