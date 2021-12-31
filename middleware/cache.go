@@ -106,6 +106,10 @@ func getContentType(ct uint8) string {
 		return "application/javascript; charset=utf-8"
 	case 17:
 		return "application/x-www-form-urlencoded; charset=utf-8"
+	case 18:
+		return "image/png"
+	case 19:
+		return "image/png; charset=utf-8"
 	default:
 		return "text/plain"
 	}
@@ -160,6 +164,10 @@ func getContentTypeByte(ct []byte) uint8 {
 		return 16
 	case "application/x-www-form-urlencoded; charset=utf-8":
 		return 17
+	case "image/png":
+		return 18
+	case "image/png; charset=utf-8":
+		return 19
 	default:
 		return 0
 	}

@@ -41,15 +41,15 @@ func OkWithDetailed(data interface{}, message string, c *fiber.Ctx) error {
 }
 
 func OkWithRaw(contentType string, data []byte, c *fiber.Ctx) error {
-	return c.Status(200).Type(contentType, "utf-8").Send(data)
+	return c.Status(200).Type(contentType).Send(data)
 }
 
 func OkWithEmptyRaw(contentType string, c *fiber.Ctx) error {
-	return c.Status(204).Type(contentType, "utf-8").Send(nil)
+	return c.Status(204).Type(contentType).Send(nil)
 }
 
 func OkWithNotFound(contentType string, c *fiber.Ctx) error {
-	return c.Status(404).Type(contentType, "utf-8").Send(nil)
+	return c.Status(404).Type(contentType).Send(nil)
 }
 
 func Fail(code int, c *fiber.Ctx) error {
