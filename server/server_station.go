@@ -230,7 +230,7 @@ func (app *AQIServer) StationLogoGet(ctx *fiber.Ctx) error {
 	if logo == "" {
 		return FailWithMessage(http.StatusBadRequest, err.Error(), ctx)
 	}
-	return OkWithRaw("image/png", img, ctx)
+	return OkWithRaw("png", img, ctx)
 }
 
 func (app *AQIServer) SyncStationLog(ctx *fiber.Ctx) error {

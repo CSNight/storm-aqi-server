@@ -7,6 +7,7 @@ import (
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 )
@@ -171,7 +172,9 @@ func New(cfg LogConfig) fiber.Handler {
 			case "status":
 				fields = append(fields, zap.Int("status", c.Response().StatusCode()))
 			case "resBody":
-				fields = append(fields, zap.ByteString("resBody", c.Response().Body()))
+				if !strings.Contains(c.Path(), "logo") {
+					fields = append(fields, zap.ByteString("resBody", c.Response().Body()))
+				}
 			case "bytesSent":
 				fields = append(fields, zap.Int("bytesSent", len(c.Response().Body())))
 			case "error":

@@ -57,11 +57,14 @@ func NewCache(cfg CacheConfig) fiber.Handler {
 				ct := utils.CopyBytes(c.Response().Header.ContentType())
 				encoding := utils.CopyBytes(c.Response().Header.Peek(fiber.HeaderContentEncoding))
 				var cacheBytes = make([]byte, 2)
-				cacheBytes[0] = getContentTypeByte(ct)
-				cacheBytes[1] = getEncodingByte(encoding)
-				cacheBytes = append(cacheBytes, body...)
-				_ = manager.Set([]byte(key), cacheBytes, cfg.Expiration)
-				cacheBytes = nil
+				ctB := getContentTypeByte(ct)
+				if ctB != 0 {
+					cacheBytes[0] = ctB
+					cacheBytes[1] = getEncodingByte(encoding)
+					cacheBytes = append(cacheBytes, body...)
+					_ = manager.Set([]byte(key), cacheBytes, cfg.Expiration)
+					cacheBytes = nil
+				}
 			}
 			body = nil
 		}
