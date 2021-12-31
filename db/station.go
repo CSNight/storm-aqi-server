@@ -376,7 +376,7 @@ func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
 }
 
 func (db *DB) GetStationLogo(logo string) ([]byte, error) {
-	return nil, nil
+	return tools.GetObject(db.oss, logo)
 }
 
 func (db *DB) SyncStationLogos() error {

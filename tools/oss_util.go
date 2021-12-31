@@ -25,6 +25,20 @@ var httpClient = http.Client{
 	Timeout: time.Minute,
 }
 
+func GetObject(cli *minio.Client, name string) ([]byte, error) {
+	ctx := context.Background()
+	object, err := cli.GetObject(ctx, bucketName, "aqi/"+name, minio.GetObjectOptions{})
+	if err != nil {
+		return nil, err
+	}
+	defer object.Close()
+	data, err := io.ReadAll(object)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
 func PutObject(cli *minio.Client, object []byte, name string) bool {
 	ctx := context.Background()
 	_, err := cli.PutObject(ctx, bucketName, name, bytes.NewReader(object), int64(len(object)),
