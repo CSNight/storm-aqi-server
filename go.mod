@@ -11,6 +11,7 @@ require (
 	github.com/json-iterator/go v1.1.12
 	github.com/minio/minio-go/v7 v7.0.20
 	github.com/oschwald/maxminddb-golang v1.8.0
+	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/tidwall/gjson v1.12.1
