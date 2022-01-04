@@ -7,16 +7,13 @@ import (
 	"github.com/minio/minio-go/v7"
 	"io"
 	"net/http"
-	"net/url"
 	"time"
 )
 
 var bucketName = "sys-image"
 var httpClient = http.Client{
 	Transport: &http.Transport{
-		Proxy: func(req *http.Request) (*url.URL, error) {
-			return url.Parse("http://172.16.1.135:3128")
-		},
+		Proxy:               http.ProxyFromEnvironment,
 		ForceAttemptHTTP2:   false,
 		MaxIdleConns:        100,
 		MaxIdleConnsPerHost: 100,
