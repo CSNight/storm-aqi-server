@@ -1,7 +1,11 @@
 package main
 
 import (
-	"github.com/russross/blackfriday/v2"
+	"bytes"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -19,23 +23,35 @@ func main() {
 		log.Println(err.Error())
 		return
 	}
-	blackfriday.Run(f)
+	md := goldmark.New(
+		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		),
+		goldmark.WithRendererOptions(
+			html.WithHardWraps(),
+			html.WithXHTML(),
+		),
+	)
+	var buf bytes.Buffer
+	if err := md.Convert(f, &buf); err != nil {
+		panic(err)
+	}
 	d, err := os.Getwd()
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	fs, err := os.OpenFile(d+"/assets/index.html", os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	fs, err := os.OpenFile(d+"/assets/index.html", os.O_CREATE|os.O_APPEND|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
 
 	defer fs.Close()
-	content := template.HTML(blackfriday.Run(f))
-	mk := MK{Content: content}
+	mk := MK{Content: template.HTML(buf.String())}
 
-	t, _ := template.ParseFiles(d + "/doc/index.html")
+	t, _ := template.ParseFiles(d + "/docs/index.html")
 	err = t.Execute(fs, mk)
 	if err != nil {
 		return
