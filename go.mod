@@ -5,8 +5,8 @@ go 1.17
 require (
 	github.com/coocood/freecache v1.2.0
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
-	github.com/go-playground/validator/v10 v10.9.0
-	github.com/gofiber/fiber/v2 v2.23.0
+	github.com/go-playground/validator/v10 v10.10.0
+	github.com/gofiber/fiber/v2 v2.24.0
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
 	github.com/minio/minio-go/v7 v7.0.20
