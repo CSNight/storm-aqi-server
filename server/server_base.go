@@ -6,6 +6,7 @@ import (
 	"aqi-server/middleware"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html"
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
 )
@@ -26,6 +27,7 @@ var validate = validator.New()
 
 func New(conf *conf.GConfig) (*AQIServer, error) {
 	server := fiber.New(fiber.Config{
+		Views:             html.New("./assets", ".html"),
 		CaseSensitive:     true,
 		AppName:           "AQI-SERVER",
 		ReduceMemoryUsage: true,
