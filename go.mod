@@ -7,14 +7,15 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/gofiber/fiber/v2 v2.24.0
+	github.com/gofiber/template v1.6.21
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
 	github.com/minio/minio-go/v7 v7.0.20
 	github.com/oschwald/maxminddb-golang v1.8.0
-	github.com/russross/blackfriday/v2 v2.1.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/tidwall/gjson v1.12.1
+	github.com/yuin/goldmark v1.3.5
 	go.uber.org/zap v1.19.1
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v2 v2.4.0
