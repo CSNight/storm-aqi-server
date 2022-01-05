@@ -6,6 +6,7 @@ func (app *AQIServer) Register(root fiber.Router) {
 	root.Get("/", func(c *fiber.Ctx) error {
 		return c.Render("index", fiber.Map{})
 	})
+	root.Static("/static", "./assets/static")
 	root.Get("/aqi/station", app.StationGet)
 	root.Get("/aqi/stations", app.StationSearch)
 	root.Get("/aqi/realtime", app.RealtimeGet)

@@ -172,7 +172,7 @@ func New(cfg LogConfig) fiber.Handler {
 			case "status":
 				fields = append(fields, zap.Int("status", c.Response().StatusCode()))
 			case "resBody":
-				if !strings.Contains(c.Path(), "logo") {
+				if strings.Contains(string(c.Response().Header.ContentType()), "application/json") {
 					fields = append(fields, zap.ByteString("resBody", c.Response().Body()))
 				}
 			case "bytesSent":
