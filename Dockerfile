@@ -10,12 +10,15 @@ RUN go mod download
 # 把全部文件添加到/usr/local/go目录
 ADD . .
 # 编译：把cmd/main.go编译成可执行的二进制文件，命名为app
-RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  aqi-server aqi-server/cmd
+RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  aqi-server aqi-server/cmd/server
+RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  doc-gen aqi-server/cmd/tools
+
+RUN ./doc-gen
 
 FROM centos
 WORKDIR /usr/local/go
 
 COPY --from=build /usr/local/go/aqi-server .
-COPY assets .
+COPY --from=build /usr/local/go/assets /usr/local/go/assets
 
 CMD ["./aqi-server","--config","conf.yml"]
