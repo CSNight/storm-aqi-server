@@ -29,9 +29,9 @@ GET /aqi/station
 #### Sample 
 ##### Request
 ```http request
-GET http://127.0.0.1:9600/api/v1/aqi/station?qType=_get&pType=sid&sid=0
+GET http://aqiserver/api/v1/aqi/station?qType=_get&pType=sid&sid=0
 ```
-##### Response <font color=#2fc>OK</font>
+##### Response <font color=#2f5>OK</font>
 ```json lines
 {
   "status": "OK",
