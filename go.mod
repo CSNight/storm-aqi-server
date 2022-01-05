@@ -3,6 +3,8 @@ module aqi-server
 go 1.17
 
 require (
+	github.com/abhinav/goldmark-toc v0.2.1
+	github.com/alecthomas/chroma v0.7.2-0.20200305040604-4f3623dce67a
 	github.com/coocood/freecache v1.2.0
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
 	github.com/go-playground/validator/v10 v10.10.0
@@ -23,7 +25,6 @@ require (
 )
 
 require (
-	github.com/alecthomas/chroma v0.7.2-0.20200305040604-4f3623dce67a // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
