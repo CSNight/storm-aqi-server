@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
+	ht "github.com/alecthomas/chroma/formatters/html"
 	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark-highlighting"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
@@ -24,25 +26,33 @@ func main() {
 		return
 	}
 	md := goldmark.New(
-		goldmark.WithExtensions(extension.GFM),
+		goldmark.WithExtensions(extension.GFM, highlighting.NewHighlighting(
+			highlighting.WithStyle("dracula"),
+			highlighting.WithFormatOptions(
+				ht.WithLineNumbers(true),
+			),
+		)),
 		goldmark.WithParserOptions(
 			parser.WithAutoHeadingID(),
+			parser.WithAttribute(),
+			parser.WithHeadingAttribute(),
 		),
 		goldmark.WithRendererOptions(
 			html.WithHardWraps(),
 			html.WithXHTML(),
+			html.WithUnsafe(),
 		),
 	)
 	var buf bytes.Buffer
-	if err := md.Convert(f, &buf); err != nil {
-		panic(err)
+	if err = md.Convert(f, &buf); err != nil {
+		return
 	}
-	d, err := os.Getwd()
+	pwd, err := os.Getwd()
 	if err != nil {
 		log.Println(err.Error())
 		return
 	}
-	fs, err := os.OpenFile(d+"/assets/index.html", os.O_CREATE|os.O_APPEND|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
+	fs, err := os.OpenFile(pwd+"/assets/index.html", os.O_CREATE|os.O_APPEND|os.O_WRONLY|os.O_TRUNC, os.ModePerm)
 	if err != nil {
 		log.Println(err.Error())
 		return
@@ -51,10 +61,13 @@ func main() {
 	defer fs.Close()
 	mk := MK{Content: template.HTML(buf.String())}
 
-	t, _ := template.ParseFiles(d + "/docs/index.html")
+	t, _ := template.ParseFiles(pwd + "/docs/index.html")
 	err = t.Execute(fs, mk)
 	if err != nil {
 		return
 	}
-	fs.Sync()
+	err = fs.Sync()
+	if err != nil {
+		return
+	}
 }

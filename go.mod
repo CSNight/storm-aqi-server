@@ -15,15 +15,19 @@ require (
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/tidwall/gjson v1.12.1
-	github.com/yuin/goldmark v1.3.5
-	go.uber.org/zap v1.19.1
+	github.com/yuin/goldmark v1.4.4
+	github.com/yuin/goldmark-highlighting v0.0.0-20210516132338-9216f9c5aa01
+	go.uber.org/zap v1.20.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
+	github.com/alecthomas/chroma v0.7.2-0.20200305040604-4f3623dce67a // indirect
 	github.com/andybalholm/brotli v1.0.2 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
+	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
+	github.com/dlclark/regexp2 v1.2.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-alpha // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
