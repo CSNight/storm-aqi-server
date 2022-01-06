@@ -19,7 +19,7 @@ func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 	server.Use(New(LogConfig{
 		Next:     nil,
 		Logger:   logger,
-		Fields:   []string{"ip", "port", "url", "method", "status", "latency", "resBody", "queryParams", "body"},
+		Fields:   []string{"ip", "port", "url", "method", "status", "latency", "queryParams", "body"},
 		Messages: []string{"Server error", "Client error", "Success"},
 	}))
 
