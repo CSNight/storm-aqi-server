@@ -88,7 +88,7 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 		if errResp != nil {
 			return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 		}
-		return app.SearchStationsByArea(query.TopLeft, query.BottomRight, ctx)
+		return app.SearchStationsByArea(query.TopLeft, query.BottomRight, query.Size, ctx)
 	} else {
 		errResp = ValidateVar(query.Center[0], "longitude")
 		if errResp != nil {
@@ -173,7 +173,7 @@ func (app *AQIServer) SearchStationsByCityName(city string, size int, ctx *fiber
 	return OkWithData(sts, ctx)
 }
 
-func (app *AQIServer) SearchStationsByArea(topLeft []float64, bottomRight []float64, ctx *fiber.Ctx) error {
+func (app *AQIServer) SearchStationsByArea(topLeft []float64, bottomRight []float64, size int, ctx *fiber.Ctx) error {
 	sts, err := app.DB.SearchStationsByArea(db.Bounds{
 		TopLeft: db.GeoPoint{
 			Lon: topLeft[0],
@@ -183,7 +183,7 @@ func (app *AQIServer) SearchStationsByArea(topLeft []float64, bottomRight []floa
 			Lon: bottomRight[0],
 			Lat: bottomRight[1],
 		},
-	})
+	}, size)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
