@@ -461,9 +461,7 @@ GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-
     },
     "city_name": "CA:Ontario/Barrie",
     "history": {
-      "co": [
-
-      ],
+      "co": [],
       "no2": [
         {
           "pol": "no2",
@@ -488,9 +486,7 @@ GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-
           "tms": "2022-01-04T19:00:00-05:00"
         }
       ],
-      "pm10": [
-
-      ],
+      "pm10": [],
       "pm25": [
         {
           "pol": "pm25",
@@ -520,3 +516,7 @@ GET /aqi/logo/{logoName}
 |----------|--------|----------|:---------------------------------|
 | logoName | string | true     | logoName in station source field |
 #### Sample
+##### Request
+```http request
+GET http://aqiserver/api/v1/aqi/logo/Ontario-Ministry-of-the-Environment-and-Climate-Change.png
+```
