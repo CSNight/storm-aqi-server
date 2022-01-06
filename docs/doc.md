@@ -37,22 +37,35 @@ GET http://aqiserver/api/v1/aqi/station?qType=_get&pType=sid&sid=0
   "status": "OK",
   "code": 200,
   "body": {
-    "sid": "0", // station identify
-    "idx": 0, // station identify number
-    "name": "Barrie, Ontario, Canada", // station name
+    "sid": "0",
+    "idx": 0,
+    "name": "Barrie, Ontario, Canada",
     "loc": {
-      "lon": -79.702306, // station longitude
-      "lat": 44.382361  // station latitude
-    }, 
-    "up_time": 1641358800000, // station update time utc
-    "tms": "2022-01-05T00:00:00-05:00", // station update time format
-    "tz": "-05:00", // station timezone
-    "city_name": "CA:Ontario/Barrie",  // station city name with country brief 
-    "his_range": "2014-01~2021-12", 
-    "sources": "[{\"name\":\"Citizen Weather Observer Program (CWOP/APRS)\",\"url\":\"http://wxqa.com/\",\"pols\":[\"weather\"],\"logo\":\"\"},{\"name\":\"Air Quality Ontario - the Ontario Ministry of the Environment and Climate Change\",\"url\":\"http://www.airqualityontario.com/\",\"pols\":null,\"logo\":\"Ontario-Ministry-of-the-Environment-and-Climate-Change.png\"}]"
+      "lon": -79.702306,
+      "lat": 44.382361
+    },
+    "up_time": 1641445200000,
+    "tms": "2022-01-06T00:00:00-05:00",
+    "tz": "-05:00",
+    "city_name": "CA:Ontario/Barrie",
+    "his_range": "2014-01~2021-12",
+    "sources": [
+      {
+        "name": "Citizen Weather Observer Program (CWOP/APRS)",
+        "url": "http://wxqa.com/",
+        "pols": [
+          "weather"
+        ]
+      },
+      {
+        "logo": "Ontario-Ministry-of-the-Environment-and-Climate-Change.png",
+        "name": "Air Quality Ontario - the Ontario Ministry of the Environment and Climate Change",
+        "url": "http://www.airqualityontario.com/"
+      }
+    ]
   },
   "msg": "Success",
-  "time": 1641360645662
+  "time": 1641448426986
 }
 ```
 ##### Response <font color=#f22>ERROR</font>
