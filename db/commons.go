@@ -45,8 +45,8 @@ type EsRespTotal struct {
 	Relation string `json:"relation"`
 }
 
-func (db *DB) getStationFromCache(sid string) (*AqiStation, error) {
-	var st AqiStation
+func (db *DB) getStationFromCache(sid string) (*AqiStationResp, error) {
+	var st AqiStationResp
 	stb, err := db.cache.Get([]byte(sid))
 	if err != nil {
 		stp, err := db.GetStationById(sid)

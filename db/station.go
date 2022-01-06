@@ -3,7 +3,6 @@ package db
 import (
 	"aqi-server/tools"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
-	"github.com/tidwall/gjson"
 	"go.uber.org/zap"
 	"net"
 	"strconv"
@@ -25,6 +24,26 @@ type AqiStation struct {
 	Sources  string   `json:"sources,omitempty"`
 }
 
+type Source struct {
+	Logo string   `json:"logo,omitempty"`
+	Name string   `json:"name,omitempty"`
+	Url  string   `json:"url,omitempty"`
+	Pols []string `json:"pols,omitempty"`
+}
+
+type AqiStationResp struct {
+	Sid      string   `json:"sid"`
+	Idx      int      `json:"idx"`
+	Name     string   `json:"name"`
+	Loc      GeoPoint `json:"loc"`
+	UpTime   int64    `json:"up_time"`
+	Tms      string   `json:"tms"`
+	Tz       string   `json:"tz"`
+	CityName string   `json:"city_name,omitempty"`
+	HisRange string   `json:"his_range,omitempty"`
+	Sources  []Source `json:"sources,omitempty"`
+}
+
 type StationGetResponse struct {
 	EsGetResponse
 	Source AqiStation `json:"_source"`
@@ -44,7 +63,7 @@ type StationSearchResponse struct {
 	} `json:"hits"`
 }
 
-func (db *DB) GetStationById(idx string) (*AqiStation, error) {
+func (db *DB) GetStationById(idx string) (*AqiStationResp, error) {
 	search := &esapi.GetRequest{
 		Index:      db.Conf.StationIndex,
 		DocumentID: idx,
@@ -67,12 +86,12 @@ func (db *DB) GetStationById(idx string) (*AqiStation, error) {
 		return nil, err
 	}
 	if response.Found {
-		return &response.Source, nil
+		return buildResponse(&response.Source)
 	}
 	return nil, nil
 }
 
-func (db *DB) GetStationByName(name string) (*AqiStation, error) {
+func (db *DB) GetStationByName(name string) (*AqiStationResp, error) {
 	sts, err := db.SearchStationsByName(name, 1)
 	if err != nil {
 		db.log.Error("GetStationByName(). SearchStationsByName("+name+"). err:", zap.Error(err))
@@ -84,7 +103,7 @@ func (db *DB) GetStationByName(name string) (*AqiStation, error) {
 	return nil, nil
 }
 
-func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
+func (db *DB) GetStationByCityName(name string) (*AqiStationResp, error) {
 	sts, err := db.SearchStationsByCityName(name, 1)
 	if err != nil {
 		db.log.Error("GetStationByCityName(). SearchStationsByCityName("+name+"). err:", zap.Error(err))
@@ -96,7 +115,7 @@ func (db *DB) GetStationByCityName(name string) (*AqiStation, error) {
 	return nil, nil
 }
 
-func (db *DB) SearchStationsByName(name string, size int) ([]AqiStation, error) {
+func (db *DB) SearchStationsByName(name string, size int) ([]AqiStationResp, error) {
 	query := `{
         "query": {
             "wildcard": {
@@ -136,12 +155,12 @@ func (db *DB) SearchStationsByName(name string, size int) ([]AqiStation, error) 
 		for _, item := range esSearchResp.Hits.Hits {
 			sts = append(sts, item.Source)
 		}
-		return sts, nil
+		return buildResponses(sts), nil
 	}
-	return []AqiStation{}, nil
+	return []AqiStationResp{}, nil
 }
 
-func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, error) {
+func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStationResp, error) {
 	query := `{
         "query": {
             "wildcard": {
@@ -181,12 +200,12 @@ func (db *DB) SearchStationsByCityName(name string, size int) ([]AqiStation, err
 		for _, item := range esSearchResp.Hits.Hits {
 			sts = append(sts, item.Source)
 		}
-		return sts, nil
+		return buildResponses(sts), nil
 	}
-	return []AqiStation{}, nil
+	return []AqiStationResp{}, nil
 }
 
-func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string, size int) ([]AqiStation, error) {
+func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string, size int) ([]AqiStationResp, error) {
 	disStr := strconv.FormatFloat(dis, 'f', 8, 64) + unit
 	query := `{
       "query": {
@@ -241,13 +260,13 @@ func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string
 		for _, item := range esSearchResp.Hits.Hits {
 			sts = append(sts, item.Source)
 		}
-		return sts, nil
+		return buildResponses(sts), nil
 	}
-	return []AqiStation{}, nil
+	return []AqiStationResp{}, nil
 
 }
 
-func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
+func (db *DB) GetStationByIp(ip string) (*AqiStationResp, error) {
 	ipNet := net.ParseIP(ip)
 	city, err := db.ipDB.City(ipNet.To4())
 	if err != nil {
@@ -268,7 +287,7 @@ func (db *DB) GetStationByIp(ip string) (*AqiStation, error) {
 	return &sts[0], nil
 }
 
-func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
+func (db *DB) SearchStationsByArea(bounds Bounds, size int) ([]AqiStationResp, error) {
 	boundsBytes, err := json.Marshal(bounds)
 	if err != nil {
 		return nil, err
@@ -287,7 +306,6 @@ func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
         }
       }
     }`
-	size := 1000
 	search := &esapi.SearchRequest{
 		Index:   []string{db.Conf.StationIndex},
 		Body:    strings.NewReader(query),
@@ -317,19 +335,19 @@ func (db *DB) SearchStationsByArea(bounds Bounds) ([]AqiStation, error) {
 		for _, item := range esSearchResp.Hits.Hits {
 			sts = append(sts, item.Source)
 		}
-		return sts, nil
+		return buildResponses(sts), nil
 	}
-	return []AqiStation{}, nil
+	return []AqiStationResp{}, nil
 }
 
-func (db *DB) GetAllStations() ([]AqiStation, error) {
+func (db *DB) GetAllStations() ([]AqiStationResp, error) {
 	query := `{
        "query":{"match_all":{}}
     }`
 	return db.ScrollSearchStation(query)
 }
 
-func (db *DB) GetStationsByRange(st int, et int) ([]AqiStation, error) {
+func (db *DB) GetStationsByRange(st int, et int) ([]AqiStationResp, error) {
 	query := `{
        "query": {
            "range" : {
@@ -343,7 +361,7 @@ func (db *DB) GetStationsByRange(st int, et int) ([]AqiStation, error) {
 	return db.ScrollSearchStation(query)
 }
 
-func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
+func (db *DB) ScrollSearchStation(query string) ([]AqiStationResp, error) {
 	size := 10000
 	search := &esapi.SearchRequest{
 		Index:  []string{db.Conf.StationIndex},
@@ -372,7 +390,7 @@ func (db *DB) ScrollSearchStation(query string) ([]AqiStation, error) {
 	defer func() {
 		results = nil
 	}()
-	return sts, nil
+	return buildResponses(sts), nil
 }
 
 func (db *DB) GetStationLogo(logo string) ([]byte, error) {
@@ -388,10 +406,9 @@ func (db *DB) SyncStationLogos() error {
 	wg := sync.WaitGroup{}
 	var logos = map[string]string{}
 	for _, st := range stations {
-		if st.Sources != "" {
-			root := gjson.Parse(st.Sources).Array()
-			for _, source := range root {
-				logoName := source.Get("logo").String()
+		if len(st.Sources) > 0 {
+			for _, source := range st.Sources {
+				logoName := source.Logo
 				if logoName != "" {
 					logos[logoName] = logoName
 				}
@@ -423,4 +440,34 @@ func (db *DB) SyncStationLogos() error {
 	}
 	wg.Wait()
 	return nil
+}
+func buildResponse(st *AqiStation) (*AqiStationResp, error) {
+	var sources []Source
+	err := json.UnmarshalFromString(st.Sources, &sources)
+	if err != nil {
+		return nil, err
+	}
+	return &AqiStationResp{
+		Sid:      st.Sid,
+		Idx:      st.Idx,
+		Name:     st.Name,
+		Loc:      st.Loc,
+		UpTime:   st.UpTime,
+		Tms:      st.Tms,
+		Tz:       st.Tz,
+		CityName: st.CityName,
+		HisRange: st.HisRange,
+		Sources:  sources,
+	}, nil
+}
+func buildResponses(sts []AqiStation) []AqiStationResp {
+	var stResp []AqiStationResp
+	for _, st := range sts {
+		stn, err := buildResponse(&st)
+		if err != nil {
+			continue
+		}
+		stResp = append(stResp, *stn)
+	}
+	return stResp
 }
