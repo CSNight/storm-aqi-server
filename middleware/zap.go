@@ -29,6 +29,8 @@ type LogConfig struct {
 	// Custom response messages.
 	// Optional. Default: {"Server error", "Client error", "Success"}
 	Messages []string
+
+	CompressBody bool
 }
 
 func InitLogger(cfg *conf.LogConfig) *zap.Logger {
@@ -172,7 +174,7 @@ func New(cfg LogConfig) fiber.Handler {
 			case "status":
 				fields = append(fields, zap.Int("status", c.Response().StatusCode()))
 			case "resBody":
-				if strings.Contains(string(c.Response().Header.ContentType()), "application/json") {
+				if strings.Contains(string(c.Response().Header.ContentType()), "application/json") && !cfg.CompressBody {
 					fields = append(fields, zap.ByteString("resBody", c.Response().Body()))
 				}
 			case "bytesSent":

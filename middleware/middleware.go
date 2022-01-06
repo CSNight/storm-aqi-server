@@ -17,10 +17,11 @@ func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 	server.Use(rcp.New())
 
 	server.Use(New(LogConfig{
-		Next:     nil,
-		Logger:   logger,
-		Fields:   []string{"ip", "port", "url", "method", "status", "latency", "queryParams", "body"},
-		Messages: []string{"Server error", "Client error", "Success"},
+		Next:         nil,
+		Logger:       logger,
+		Fields:       []string{"ip", "port", "url", "method", "status", "latency", "queryParams", "body"},
+		Messages:     []string{"Server error", "Client error", "Success"},
+		CompressBody: config.AppConf.EnableCompress,
 	}))
 
 	server.Use(cors.New(cors.Config{
