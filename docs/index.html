@@ -8,9 +8,11 @@
     <link href="static/vue.css" rel="stylesheet">
 </head>
 <body>
-<div style="float: left;width:20%;height: 100%;box-sizing: border-box;padding: 16px">{{.Toc}}</div>
-<div style="float: right;width:80%;height:100vh;box-sizing: border-box;padding: 16px;overflow: auto;">
-    <div style="">{{.Content}}</div>
+<div style="float: left;width:20%;height:100vh;box-sizing: border-box;padding: 16px;overflow: scroll">
+    <div>{{.Toc}}</div>
+</div>
+<div style="float: right;width:80%;height:100vh;box-sizing: border-box;padding: 16px;overflow: scroll;">
+    <div>{{.Content}}</div>
 </div>
 </body>
 </html>
