@@ -16,7 +16,7 @@ This API can be used to get/search for the station by many way
 ```http request
 GET /aqi/station
 ```
-#### Params
+#### Query Params
 | Field | Type   | Required        | Description                                                |
 |-------|--------|-----------------|:-----------------------------------------------------------|
 | qType | string | true            | The query type for request, must be "_get"                 |
@@ -100,7 +100,7 @@ GET http://aqiserver/api/v1/aqi/station?qType=_get&pType=sid&sid=0
 ```http request
 GET /aqi/stations
 ```
-#### Params
+#### Query Params
 | Field       | Type     | Required          | Description                                                 |
 |-------------|----------|-------------------|:------------------------------------------------------------|
 | qType       | string   | true              | The query type for request, must be "_search"               |
@@ -170,7 +170,7 @@ GET http://aqiserver/api/v1/aqi/stations?qType=_search&pType=name&size=1&name=be
 ```http request
 GET /aqi/realtime
 ```
-#### Params
+#### Query Params
 | Field | Type   | Required          | Description                                                                          |
 |-------|--------|-------------------|:-------------------------------------------------------------------------------------|
 | qType | string | true              | The query type for request, must be "_get"                                           |
@@ -227,7 +227,7 @@ GET http://aqiserver/api/v1/aqi/realtime?qType=_get&pType=all&sid=0
 ```http request
 GET /aqi/forecast
 ```
-#### Params
+#### Query Params
 | Field | Type   | Required          | Description                                                                          |
 |-------|--------|-------------------|:-------------------------------------------------------------------------------------|
 | qType | string | true              | The query type for request, must be "_get"                                           |
@@ -312,7 +312,7 @@ GET http://aqiserver/api/v1/aqi/forecast?qType=_get&pType=single&sid=0&pol=pm25
 ```http request
 GET /aqi/history
 ```
-#### Params
+#### Query Params
 | Field  | Type   | Required          | Description                                                                                                 |
 |--------|--------|-------------------|:------------------------------------------------------------------------------------------------------------|
 | qType  | string | true              | The query type for request, must be "_get"                                                                  |
@@ -441,10 +441,10 @@ GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-
   "time": 1641458411235
 }
 ```
-#### Sample by Range
+#### Sample by Recent
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-09-02&end=2021-09-03&pol=all
+GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=recent&sid=0&recent=lastDay&pol=all
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json lines
@@ -511,7 +511,7 @@ GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-
 ```http request
 GET /aqi/logo/{logoName}
 ```
-#### Params
+#### Path Params
 | Field    | Type   | Required | Description                      |
 |----------|--------|----------|:---------------------------------|
 | logoName | string | true     | logoName in station source field |
