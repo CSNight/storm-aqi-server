@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/abhinav/goldmark-toc v0.2.1
-	github.com/alecthomas/chroma v0.7.2-0.20200305040604-4f3623dce67a
+	github.com/alecthomas/chroma v0.9.4
 	github.com/coocood/freecache v1.2.0
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
 	github.com/go-playground/validator/v10 v10.10.0
@@ -27,8 +27,7 @@ require (
 require (
 	github.com/andybalholm/brotli v1.0.2 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
-	github.com/danwakefield/fnmatch v0.0.0-20160403171240-cbb64ac3d964 // indirect
-	github.com/dlclark/regexp2 v1.2.0 // indirect
+	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-alpha // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
