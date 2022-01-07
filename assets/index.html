@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="static/vue.css" rel="stylesheet">
+</head>
+<body>
+<div style="float: left;width:20%;height:100vh;box-sizing: border-box;padding: 16px;overflow: scroll">
+    <div>
+        <ul>
+            <li>
+                <a href="#aqi-server-api">AQI Server API</a>
+                <ul>
+                    <li>
+                        <a href="#common-enum">Common Enum</a>
+                        <ul>
+                            <li>
+                                <a href="#pollutant-enum">Pollutant Enum</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#aqi-station">AQI Station</a>
+                        <ul>
+                            <li>
+                                <a href="#aqi-station-get">AQI Station Get</a>
+                                <ul>
+                                    <li>
+                                        <a href="#params">Params</a></li>
+                                    <li>
+                                        <a href="#ptype-enum">PType Enum</a></li>
+                                    <li>
+                                        <a href="#sample">Sample</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request">Request</a></li>
+                                            <li>
+                                                <a href="#response-200-font-color2f5okfont">Response 200 OK</a></li>
+                                            <li>
+                                                <a href="#response-font-colorf22errorfont">Response ERROR</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#aqi-station-search">AQI Station Search</a>
+                                <ul>
+                                    <li>
+                                        <a href="#params-1">Params</a></li>
+                                    <li>
+                                        <a href="#ptype-enum-1">PType Enum</a></li>
+                                    <li>
+                                        <a href="#sample-1">Sample</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request-1">Request</a></li>
+                                            <li>
+                                                <a href="#response-200-font-color2f5okfont-1">Response 200 OK</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#aqi-realtime">AQI Realtime</a>
+                        <ul>
+                            <li>
+                                <a href="#aqi-realtime-get">AQI Realtime Get</a>
+                                <ul>
+                                    <li>
+                                        <a href="#params-2">Params</a></li>
+                                    <li>
+                                        <a href="#sample-2">Sample</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request-2">Request</a></li>
+                                            <li>
+                                                <a href="#response-200-font-color2f5okfont-2">Response 200 OK</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#aqi-forecast">AQI Forecast</a>
+                        <ul>
+                            <li>
+                                <a href="#aqi-forecast-get">AQI Forecast Get</a>
+                                <ul>
+                                    <li>
+                                        <a href="#params-3">Params</a></li>
+                                    <li>
+                                        <a href="#sample-3">Sample</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request-3">Request</a></li>
+                                            <li>
+                                                <a href="#response-200-font-color2f5okfont-3">Response 200 OK</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#aqi-history">AQI History</a>
+                        <ul>
+                            <li>
+                                <a href="#aqi-history-get">AQI History Get</a>
+                                <ul>
+                                    <li>
+                                        <a href="#params-4">Params</a></li>
+                                    <li>
+                                        <a href="#ptype-enum-2">PType Enum</a></li>
+                                    <li>
+                                        <a href="#recent-enum">Recent Enum</a></li>
+                                    <li>
+                                        <a href="#sample-by-range">Sample by Range</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request-4">Request</a></li>
+                                            <li>
+                                                <a href="#response-200-font-color2f5okfont-4">Response 200 OK</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#sample-by-range-1">Sample by Range</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request-5">Request</a></li>
+                                            <li>
+                                                <a href="#response-200-font-color2f5okfont-5">Response 200 OK</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#aqi-logo">AQI Logo</a>
+                        <ul>
+                            <li>
+                                <a href="#aqi-station-logo-get">AQI Station Logo Get</a>
+                                <ul>
+                                    <li>
+                                        <a href="#params-5">Params</a></li>
+                                    <li>
+                                        <a href="#sample-4">Sample</a>
+                                        <ul>
+                                            <li>
+                                                <a href="#request-6">Request</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div style="float: right;width:80%;height:100vh;box-sizing: border-box;padding: 16px;overflow: scroll;">
+    <div><h1 id="aqi-server-api">AQI Server API</h1>
+        <h2 id="common-enum">Common Enum</h2>
+        <h3 id="pollutant-enum">Pollutant Enum</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>co</td>
+                <td>carbon monoxide</td>
+            </tr>
+            <tr>
+                <td>no2</td>
+                <td>Nitrogen dioxide</td>
+            </tr>
+            <tr>
+                <td>pm25</td>
+                <td>Pulmonary particulate matter 2.5</td>
+            </tr>
+            <tr>
+                <td>pm10</td>
+                <td>Pulmonary particulate matter 10</td>
+            </tr>
+            <tr>
+                <td>o3</td>
+                <td>ozone</td>
+            </tr>
+            <tr>
+                <td>so2</td>
+                <td>sulfur dioxide</td>
+            </tr>
+            </tbody>
+        </table>
+        <h2 id="aqi-station">AQI Station</h2>
+        <p>This API can be used to get/search for the station by many way</p>
+        <h3 id="aqi-station-get">AQI Station Get</h3>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET /aqi/station
+</pre>
+        <h4 id="params">Params</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th align="left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>qType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query type for request, must be &quot;_get&quot;</td>
+            </tr>
+            <tr>
+                <td>pType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query method. See pType enum</td>
+            </tr>
+            <tr>
+                <td>sid</td>
+                <td>string</td>
+                <td>when pType=sid</td>
+                <td align="left">The station sequence id number, from 0</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>string</td>
+                <td>when pType=name</td>
+                <td align="left">The full name or brief name of the station, like &quot;beijing&quot;</td>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>string</td>
+                <td>when pType=city</td>
+                <td align="left">The full name or brief name of a city, like &quot;beijing&quot;</td>
+            </tr>
+            <tr>
+                <td>ip</td>
+                <td>string</td>
+                <td>when pType=ip</td>
+                <td align="left">Can be ipv4/ipv6 like 192.168.1.1 or ipv6 address</td>
+            </tr>
+            <tr>
+                <td>lon</td>
+                <td>double</td>
+                <td>when pType=loc</td>
+                <td align="left">longitude, between -180 to 180 degree</td>
+            </tr>
+            <tr>
+                <td>lat</td>
+                <td>double</td>
+                <td>when pType=loc</td>
+                <td align="left">latitude, between -90 to 90 degree</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="ptype-enum">PType Enum</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>sid</td>
+                <td>station unique identify</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>station name</td>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>the city where station locate at</td>
+            </tr>
+            <tr>
+                <td>ip</td>
+                <td>get station by ip address</td>
+            </tr>
+            <tr>
+                <td>loc</td>
+                <td>get station by longitude/latitude location</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="sample">Sample</h4>
+        <h5 id="request">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/station?qType=_get&amp;pType=sid&amp;sid=0
+</pre>
+        <h5 id="response-200-font-color2f5okfont">Response 200 <font color=#2f5>OK</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;OK&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">200</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">&#34;sid&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;0&#34;</span>, // the station sequence id number
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">&#34;idx&#34;</span>: <span
+                    style="color:#bd93f9">0</span>, // the station sequence id number
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Barrie, Ontario, Canada&#34;</span>, // the station name
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">&#34;loc&#34;</span>: {  // the station location coordinate
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">&#34;lon&#34;</span>: <span
+                    style="color:#bd93f9">-79.702306</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      <span style="color:#ff79c6">&#34;lat&#34;</span>: <span
+                    style="color:#bd93f9">44.382361</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">&#34;up_time&#34;</span>: <span
+                    style="color:#bd93f9">1641445200000</span>, // the station update timestamp in utc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-06T00:00:00-05:00&#34;</span>, // the station update time in rfc2822 format
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>    <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-05:00&#34;</span>, // the station update timezone
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#ff79c6">&#34;city_name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;CA:Ontario/Barrie&#34;</span>, // the city where station belongs
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>    <span style="color:#ff79c6">&#34;his_range&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2014-01~2021-12&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>    <span style="color:#ff79c6">&#34;sources&#34;</span>: [ // the station metadata
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>      {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Citizen Weather Observer Program (CWOP/APRS)&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        <span style="color:#ff79c6">&#34;url&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;http://wxqa.com/&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>        <span style="color:#ff79c6">&#34;pols&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>          <span style="color:#f1fa8c">&#34;weather&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>        ]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>      },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>      {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>        <span style="color:#ff79c6">&#34;logo&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Ontario-Ministry-of-the-Environment-and-Climate-Change.png&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>        <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Air Quality Ontario - the Ontario Ministry of the Environment and Climate Change&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>        <span style="color:#ff79c6">&#34;url&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;http://www.airqualityontario.com/&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>      }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>    ]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>  },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641448426986</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>}
+</pre>
+        <h5 id="response-font-colorf22errorfont">Response <font color=#f22>ERROR</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Bad Request&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">400</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>      <span style="color:#ff79c6">&#34;FailedField&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;StationGetRequest.Sid&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>      <span style="color:#ff79c6">&#34;Rule&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;number&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>      <span style="color:#ff79c6">&#34;ErrValue&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-1&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>  ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641360974723</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>}
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>
+</pre>
+        <h3 id="aqi-station-search">AQI Station Search</h3>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET /aqi/stations
+</pre>
+        <h4 id="params-1">Params</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th align="left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>qType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query type for request, must be &quot;_search&quot;</td>
+            </tr>
+            <tr>
+                <td>pType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query method. See pType enum</td>
+            </tr>
+            <tr>
+                <td>size</td>
+                <td>int</td>
+                <td>true</td>
+                <td align="left">size of stations in response, maximum support 10000</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>string</td>
+                <td>when pType=name</td>
+                <td align="left">The full name or brief name of the station, like &quot;beijing&quot;</td>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>string</td>
+                <td>when pType=city</td>
+                <td align="left">The full name or brief name of a city, like &quot;beijing&quot;</td>
+            </tr>
+            <tr>
+                <td>topLeft</td>
+                <td>[]double</td>
+                <td>when pType=area</td>
+                <td align="left">The bound top left corner lon/lat coordinate like 80,39</td>
+            </tr>
+            <tr>
+                <td>bottomRight</td>
+                <td>[]double</td>
+                <td>when pType=area</td>
+                <td align="left">The bound bottom right corner lon/lat coordinate like 80,39</td>
+            </tr>
+            <tr>
+                <td>center</td>
+                <td>[]double</td>
+                <td>when pType=radius</td>
+                <td align="left">The center of cycle area lon/lat coordinate like 80,39</td>
+            </tr>
+            <tr>
+                <td>radius</td>
+                <td>double</td>
+                <td>when pType=radius</td>
+                <td align="left">The radius of cycle area to search, maximum support 10000</td>
+            </tr>
+            <tr>
+                <td>unit</td>
+                <td>string</td>
+                <td>when pType=radius</td>
+                <td align="left">The unit of radius, must be one of kilometers miles meters</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="ptype-enum-1">PType Enum</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>name</td>
+                <td>search stations name</td>
+            </tr>
+            <tr>
+                <td>city</td>
+                <td>search stations by city</td>
+            </tr>
+            <tr>
+                <td>area</td>
+                <td>search stations by envelope</td>
+            </tr>
+            <tr>
+                <td>radius</td>
+                <td>search stations by cycle</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="sample-1">Sample</h4>
+        <h5 id="request-1">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/stations?qType=_search&amp;pType=name&amp;size=1&amp;name=beijing
+</pre>
+        <h5 id="response-200-font-color2f5okfont-1">Response 200 <font color=#2f5>OK</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;OK&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">200</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>      <span style="color:#ff79c6">&#34;sid&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;1451&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>      <span style="color:#ff79c6">&#34;idx&#34;</span>: <span
+                    style="color:#bd93f9">1451</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>      <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Beijing (北京)&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">&#34;loc&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>        <span style="color:#ff79c6">&#34;lon&#34;</span>: <span
+                    style="color:#bd93f9">116.468117</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>        <span style="color:#ff79c6">&#34;lat&#34;</span>: <span
+                    style="color:#bd93f9">39.954592</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>      },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>      <span style="color:#ff79c6">&#34;up_time&#34;</span>: <span
+                    style="color:#bd93f9">1641445200000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-06T13:00:00+08:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>      <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;+08:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>      <span style="color:#ff79c6">&#34;city_name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Beijing&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      <span style="color:#ff79c6">&#34;his_range&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2014-01~2021-12&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>      <span style="color:#ff79c6">&#34;sources&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Citizen Weather Observer Program (CWOP/APRS)&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>          <span style="color:#ff79c6">&#34;url&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;http://wxqa.com/&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>          <span style="color:#ff79c6">&#34;pols&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>            <span style="color:#f1fa8c">&#34;weather&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>          ]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Beijing Environmental Protection Monitoring Center (北京市环境保护监测中心)&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>          <span style="color:#ff79c6">&#34;url&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;http://www.bjmemc.com.cn/&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>      ]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>  ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641453247827</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>}
+</pre>
+        <h2 id="aqi-realtime">AQI Realtime</h2>
+        <h3 id="aqi-realtime-get">AQI Realtime Get</h3>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET /aqi/realtime
+</pre>
+        <h4 id="params-2">Params</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th align="left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>qType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query type for request, must be &quot;_get&quot;</td>
+            </tr>
+            <tr>
+                <td>pType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query method, must be one of all/single means all pollutants or single pollutant
+                </td>
+            </tr>
+            <tr>
+                <td>sid</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The station sequence id number, from 0</td>
+            </tr>
+            <tr>
+                <td>pol</td>
+                <td>string</td>
+                <td>when pType=single</td>
+                <td align="left">The pollutant type want to get. See Pollutant Enum</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="sample-2">Sample</h4>
+        <h5 id="request-2">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/realtime?qType=_get&amp;pType=all&amp;sid=0
+</pre>
+        <h5 id="response-200-font-color2f5okfont-2">Response 200 <font color=#2f5>OK</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;OK&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">200</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">&#34;idx&#34;</span>: <span
+                    style="color:#bd93f9">0</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">&#34;sid&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;0&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Barrie, Ontario, Canada&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">&#34;loc&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">&#34;lon&#34;</span>: <span
+                    style="color:#bd93f9">-79.702306</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      <span style="color:#ff79c6">&#34;lat&#34;</span>: <span
+                    style="color:#bd93f9">44.382361</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">&#34;city_name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;CA:Ontario/Barrie&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">&#34;realtime&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;o3&#34;</span>, // pollutant type
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">17.6</span> // value
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>      },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>      {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>        <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;no2&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">3.4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>      },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>      {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>        <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;pm25&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>        <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">25</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>      },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>      {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>        <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;so2&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>        <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">0.2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>      }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>    ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>    <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-05:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>    <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1641445200000</span>, //  pollutant value last update timestamp in utc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>    <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-06T00:00:00-05:00&#34;</span> // last update time in rfc<span
+                    style="color:#bd93f9">2822</span> format
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>  },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641455505471</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>}
+</pre>
+        <h2 id="aqi-forecast">AQI Forecast</h2>
+        <h3 id="aqi-forecast-get">AQI Forecast Get</h3>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET /aqi/forecast
+</pre>
+        <h4 id="params-3">Params</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th align="left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>qType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query type for request, must be &quot;_get&quot;</td>
+            </tr>
+            <tr>
+                <td>pType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query method, must be one of all/single means all pollutants or single pollutant
+                </td>
+            </tr>
+            <tr>
+                <td>sid</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The station sequence id number, from 0</td>
+            </tr>
+            <tr>
+                <td>pol</td>
+                <td>string</td>
+                <td>when pType=single</td>
+                <td align="left">The pollutant type want to get. See Pollutant Enum</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="sample-3">Sample</h4>
+        <h5 id="request-3">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/forecast?qType=_get&amp;pType=single&amp;sid=0&amp;pol=pm25
+</pre>
+        <h5 id="response-200-font-color2f5okfont-3">Response 200 <font color=#2f5>OK</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;OK&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">200</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">&#34;idx&#34;</span>: <span
+                    style="color:#bd93f9">0</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">&#34;sid&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;0&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Barrie, Ontario, Canada&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">&#34;loc&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">&#34;lon&#34;</span>: <span
+                    style="color:#bd93f9">-79.702306</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      <span style="color:#ff79c6">&#34;lat&#34;</span>: <span
+                    style="color:#bd93f9">44.382361</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">&#34;city_name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;CA:Ontario/Barrie&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">&#34;forecast&#34;</span>: { // aqi forecast value mapped by pollutant
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      <span style="color:#ff79c6">&#34;pm25&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">35</span>, // average value
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-04&#34;</span>, // forecast day
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">40</span>, // maximum value
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">19</span> // minimum value
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">19</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-05&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">45</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">3</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-06&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">3</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">3</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-07&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">3</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">12</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-08&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">33</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-09&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">17</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span>          <span style="color:#ff79c6">&#34;avg&#34;</span>: <span
+                    style="color:#bd93f9">3</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span>          <span style="color:#ff79c6">&#34;day&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-10&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span>          <span style="color:#ff79c6">&#34;max&#34;</span>: <span
+                    style="color:#bd93f9">3</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span>          <span style="color:#ff79c6">&#34;min&#34;</span>: <span
+                    style="color:#bd93f9">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span>      ]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span>    },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span>    <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-05:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span>    <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1641452400000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span>    <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-06T02:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span>  },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641457408192</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span>}
+</pre>
+        <h2 id="aqi-history">AQI History</h2>
+        <h3 id="aqi-history-get">AQI History Get</h3>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET /aqi/history
+</pre>
+        <h4 id="params-4">Params</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th align="left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>qType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query type for request, must be &quot;_get&quot;</td>
+            </tr>
+            <tr>
+                <td>pType</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The query method, must be one of recent range</td>
+            </tr>
+            <tr>
+                <td>sid</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The station sequence id number, from 0</td>
+            </tr>
+            <tr>
+                <td>pol</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">The pollutant type want to get. must be Pollutant Enum or &quot;all&quot; for all
+                    pollutant
+                </td>
+            </tr>
+            <tr>
+                <td>recent</td>
+                <td>string</td>
+                <td>when pType=recent</td>
+                <td align="left">The recent time range. See Recent Enum</td>
+            </tr>
+            <tr>
+                <td>start</td>
+                <td>string</td>
+                <td>when pType=range</td>
+                <td align="left">The custom time range start point with format like 2022-01-01 <br/>search will include
+                    endpoint of therange
+                </td>
+            </tr>
+            <tr>
+                <td>end</td>
+                <td>string</td>
+                <td>when pType=range</td>
+                <td align="left">The custom time range end point with format like 2022-01-01</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="ptype-enum-2">PType Enum</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>recent</td>
+                <td>Search the station history by a shortcut time range from now</td>
+            </tr>
+            <tr>
+                <td>range</td>
+                <td>Search the station by custom time range</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="recent-enum">Recent Enum</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Value</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>lastDay</td>
+                <td>yesterday</td>
+            </tr>
+            <tr>
+                <td>lastWeek</td>
+                <td>last week</td>
+            </tr>
+            <tr>
+                <td>lastMonth</td>
+                <td>last month</td>
+            </tr>
+            <tr>
+                <td>lastQuarter</td>
+                <td>last three month</td>
+            </tr>
+            <tr>
+                <td>lastYear</td>
+                <td>last year</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="sample-by-range">Sample by Range</h4>
+        <h5 id="request-4">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/history?qType=_get&amp;pType=range&amp;sid=0&amp;start=2021-09-02&amp;end=2021-09-03&amp;pol=all
+</pre>
+        <h5 id="response-200-font-color2f5okfont-4">Response 200 <font color=#2f5>OK</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;OK&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">200</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">&#34;idx&#34;</span>: <span
+                    style="color:#bd93f9">0</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">&#34;sid&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;0&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Barrie, Ontario, Canada&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">&#34;loc&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">&#34;lon&#34;</span>: <span
+                    style="color:#bd93f9">-79.702306</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      <span style="color:#ff79c6">&#34;lat&#34;</span>: <span
+                    style="color:#bd93f9">44.382361</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">&#34;city_name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;CA:Ontario/Barrie&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">&#34;history&#34;</span>: { // station history info mapped by pollutant
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      <span style="color:#ff79c6">&#34;co&#34;</span>: [], // not found history for specification pollutant and time range
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>      <span style="color:#ff79c6">&#34;no2&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;no2&#34;</span>, // pollutant type
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;NO&lt;sub&gt;2&lt;/sub&gt;&#34;</span>, // pollutant name with subscript
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">3</span>, //value
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>, // timezone
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>, // history in month
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>, // history in year
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630627200000</span>, // history timestamp in utc
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-02T19:00:00-05:00&#34;</span> // history time in rfc<span
+                    style="color:#bd93f9">2822</span> format
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;no2&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;NO&lt;sub&gt;2&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">2</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630540800000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-01T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>      ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>      <span style="color:#ff79c6">&#34;o3&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;o3&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;O&lt;sub&gt;3&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">13</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630627200000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-02T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;o3&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;O&lt;sub&gt;3&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">18</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630540800000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-01T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span>      ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span>      <span style="color:#ff79c6">&#34;pm10&#34;</span>: [],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span>      <span style="color:#ff79c6">&#34;pm25&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;pm25&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;PM&lt;sub&gt;2.5&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">15</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630627200000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-02T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70</span>        },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;pm25&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;PM&lt;sub&gt;2.5&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">24</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630540800000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-01T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81</span>      ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82</span>      <span style="color:#ff79c6">&#34;so2&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;so2&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;SO&lt;sub&gt;2&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">86</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">0</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">87</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-5.00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">88</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">9</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">89</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2021</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">90</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1630627200000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">91</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2021-09-02T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">92</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">93</span>      ]
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">94</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">95</span>  },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">96</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">97</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641458411235</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">98</span>}
+</pre>
+        <h4 id="sample-by-range-1">Sample by Range</h4>
+        <h5 id="request-5">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/history?qType=_get&amp;pType=range&amp;sid=0&amp;start=2021-09-02&amp;end=2021-09-03&amp;pol=all
+</pre>
+        <h5 id="response-200-font-color2f5okfont-5">Response 200 <font color=#2f5>OK</font></h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span>{
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>  <span style="color:#ff79c6">&#34;status&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;OK&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>  <span style="color:#ff79c6">&#34;code&#34;</span>: <span
+                    style="color:#bd93f9">200</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>  <span style="color:#ff79c6">&#34;body&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#ff79c6">&#34;idx&#34;</span>: <span
+                    style="color:#bd93f9">0</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>    <span style="color:#ff79c6">&#34;sid&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;0&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>    <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Barrie, Ontario, Canada&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#ff79c6">&#34;loc&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>      <span style="color:#ff79c6">&#34;lon&#34;</span>: <span
+                    style="color:#bd93f9">-79.702306</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>      <span style="color:#ff79c6">&#34;lat&#34;</span>: <span
+                    style="color:#bd93f9">44.382361</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>    <span style="color:#ff79c6">&#34;city_name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;CA:Ontario/Barrie&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>    <span style="color:#ff79c6">&#34;history&#34;</span>: {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>      <span style="color:#ff79c6">&#34;co&#34;</span>: [],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>      <span style="color:#ff79c6">&#34;no2&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;no2&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;NO&lt;sub&gt;2&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">9.02</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-05:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2022</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1641340800000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-04T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>      ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>      <span style="color:#ff79c6">&#34;o3&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;o3&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;O&lt;sub&gt;3&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">14.78</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-05:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2022</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1641340800000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-04T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span>      ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>      <span style="color:#ff79c6">&#34;pm10&#34;</span>: [],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>      <span style="color:#ff79c6">&#34;pm25&#34;</span>: [
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>        {
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span>          <span style="color:#ff79c6">&#34;pol&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;pm25&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span>          <span style="color:#ff79c6">&#34;name&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;PM&lt;sub&gt;2.5&lt;/sub&gt;&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>          <span style="color:#ff79c6">&#34;data&#34;</span>: <span
+                    style="color:#bd93f9">26.36</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>          <span style="color:#ff79c6">&#34;tz&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;-05:00&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span>          <span style="color:#ff79c6">&#34;month&#34;</span>: <span
+                    style="color:#bd93f9">1</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span>          <span style="color:#ff79c6">&#34;year&#34;</span>: <span
+                    style="color:#bd93f9">2022</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span>          <span style="color:#ff79c6">&#34;tm&#34;</span>: <span
+                    style="color:#bd93f9">1641340800000</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span>          <span style="color:#ff79c6">&#34;tms&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;2022-01-04T19:00:00-05:00&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span>        }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span>      ],
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span>      <span style="color:#ff79c6">&#34;so2&#34;</span>: []
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span>    }
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span>  },
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span>  <span style="color:#ff79c6">&#34;msg&#34;</span>: <span
+                    style="color:#f1fa8c">&#34;Success&#34;</span>,
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span>  <span style="color:#ff79c6">&#34;time&#34;</span>: <span
+                    style="color:#bd93f9">1641458815507</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span>}
+</pre>
+        <h2 id="aqi-logo">AQI Logo</h2>
+        <h3 id="aqi-station-logo-get">AQI Station Logo Get</h3>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET /aqi/logo/{logoName}
+</pre>
+        <h4 id="params-5">Params</h4>
+        <table>
+            <thead>
+            <tr>
+                <th>Field</th>
+                <th>Type</th>
+                <th>Required</th>
+                <th align="left">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>logoName</td>
+                <td>string</td>
+                <td>true</td>
+                <td align="left">logoName in station source field</td>
+            </tr>
+            </tbody>
+        </table>
+        <h4 id="sample-4">Sample</h4>
+        <h5 id="request-6">Request</h5>
+        <pre style="color:#f8f8f2;background-color:#282a36"><span
+                style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span>GET http://aqiserver/api/v1/aqi/logo/Ontario-Ministry-of-the-Environment-and-Climate-Change.png
+</pre>
+    </div>
+</div>
+</body>
+</html>
