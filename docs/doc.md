@@ -87,8 +87,8 @@ GET http://aqiserver/api/v1/aqi/station?qType=_get&pType=sid&sid=0
   "body": [
     {
       "FailedField": "StationGetRequest.Sid",
-      "Tag": "number",
-      "Value": "-1"
+      "Rule": "number",
+      "ErrValue": "-1"
     }
   ],
   "msg": "",
