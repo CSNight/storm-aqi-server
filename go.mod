@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/abhinav/goldmark-toc v0.2.1
-	github.com/alecthomas/chroma v0.9.4
+	github.com/alecthomas/chroma v0.10.0
 	github.com/coocood/freecache v1.2.0
 	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
 	github.com/go-playground/validator/v10 v10.10.0
@@ -12,7 +12,7 @@ require (
 	github.com/gofiber/template v1.6.21
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
-	github.com/minio/minio-go/v7 v7.0.20
+	github.com/minio/minio-go/v7 v7.0.21
 	github.com/oschwald/maxminddb-golang v1.8.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
