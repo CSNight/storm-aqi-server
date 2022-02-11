@@ -6,10 +6,10 @@ require (
 	github.com/abhinav/goldmark-toc v0.2.1
 	github.com/alecthomas/chroma v0.10.0
 	github.com/coocood/freecache v1.2.0
-	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
+	github.com/elastic/go-elasticsearch/v8 v8.0.0
 	github.com/go-playground/validator/v10 v10.10.0
 	github.com/gofiber/fiber/v2 v2.26.0
-	github.com/gofiber/template v1.6.21
+	github.com/gofiber/template v1.6.22
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
 	github.com/minio/minio-go/v7 v7.0.21
@@ -17,9 +17,9 @@ require (
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/tidwall/gjson v1.14.0
-	github.com/yuin/goldmark v1.4.4
-	github.com/yuin/goldmark-highlighting v0.0.0-20210516132338-9216f9c5aa01
-	go.uber.org/zap v1.20.0
+	github.com/yuin/goldmark v1.4.5
+	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594
+	go.uber.org/zap v1.21.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v2 v2.4.0
 )
@@ -62,7 +62,7 @@ require (
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
+	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
 	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
