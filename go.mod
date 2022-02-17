@@ -6,26 +6,26 @@ require (
 	github.com/abhinav/goldmark-toc v0.2.1
 	github.com/alecthomas/chroma v0.10.0
 	github.com/coocood/freecache v1.2.0
-	github.com/elastic/go-elasticsearch/v8 v8.0.0-alpha
+	github.com/elastic/go-elasticsearch/v8 v8.0.0
 	github.com/go-playground/validator/v10 v10.10.0
-	github.com/gofiber/fiber/v2 v2.25.0
-	github.com/gofiber/template v1.6.21
+	github.com/gofiber/fiber/v2 v2.27.0
+	github.com/gofiber/template v1.6.23
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
-	github.com/minio/minio-go/v7 v7.0.21
+	github.com/minio/minio-go/v7 v7.0.22
 	github.com/oschwald/maxminddb-golang v1.8.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
-	github.com/tidwall/gjson v1.13.0
-	github.com/yuin/goldmark v1.4.4
-	github.com/yuin/goldmark-highlighting v0.0.0-20210516132338-9216f9c5aa01
-	go.uber.org/zap v1.20.0
+	github.com/tidwall/gjson v1.14.0
+	github.com/yuin/goldmark v1.4.6
+	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594
+	go.uber.org/zap v1.21.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (
-	github.com/andybalholm/brotli v1.0.2 // indirect
+	github.com/andybalholm/brotli v1.0.4 // indirect
 	github.com/cespare/xxhash v1.1.0 // indirect
 	github.com/dlclark/regexp2 v1.4.0 // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
@@ -36,7 +36,7 @@ require (
 	github.com/google/uuid v1.1.2 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
-	github.com/klauspost/compress v1.13.5 // indirect
+	github.com/klauspost/compress v1.14.1 // indirect
 	github.com/klauspost/cpuid v1.3.1 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
@@ -57,13 +57,13 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
-	github.com/valyala/fasthttp v1.32.0 // indirect
+	github.com/valyala/fasthttp v1.33.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
-	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
-	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
-	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
+	golang.org/x/crypto v0.0.0-20220112180741-5e0467b6c7ce // indirect
+	golang.org/x/net v0.0.0-20220111093109-d55c255bac03 // indirect
+	golang.org/x/sys v0.0.0-20220111092808-5a964db01320 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 )
