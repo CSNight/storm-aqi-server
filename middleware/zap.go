@@ -1,11 +1,11 @@
 package middleware
 
 import (
+	"github.com/csnight/storm-aqi-server/conf"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"os"
-	"storm-aqi-server/conf"
 	"strconv"
 	"strings"
 	"sync"

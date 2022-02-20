@@ -3,10 +3,10 @@ package elastic
 import (
 	"context"
 	"errors"
+	"github.com/csnight/storm-aqi-server/conf"
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/jolestar/go-commons-pool/v2"
 	"net/http"
-	"storm-aqi-server/conf"
 	"time"
 )
 

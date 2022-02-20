@@ -1,14 +1,14 @@
 package server
 
 import (
+	"github.com/csnight/storm-aqi-server/conf"
+	"github.com/csnight/storm-aqi-server/db"
+	"github.com/csnight/storm-aqi-server/middleware"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
-	"storm-aqi-server/conf"
-	"storm-aqi-server/db"
-	"storm-aqi-server/middleware"
 )
 
 type AQIServer struct {
@@ -41,7 +41,7 @@ func New(conf *conf.GConfig) (*AQIServer, error) {
 		return nil, err
 	}
 	dbEs.RefreshCache()
-
+	server.Static("/static", "./assets/static")
 	api := server.Group("/api")
 	v1 := api.Group("v1")
 

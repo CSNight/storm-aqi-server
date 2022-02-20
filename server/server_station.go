@@ -1,9 +1,9 @@
 package server
 
 import (
+	"github.com/csnight/storm-aqi-server/db"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
-	"storm-aqi-server/db"
 	"strconv"
 )
 

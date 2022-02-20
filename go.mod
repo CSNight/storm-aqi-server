@@ -1,4 +1,4 @@
-module storm-aqi-server
+module github.com/csnight/storm-aqi-server
 
 go 1.17
 

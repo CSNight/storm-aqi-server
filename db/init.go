@@ -3,6 +3,9 @@ package db
 import (
 	"context"
 	"github.com/coocood/freecache"
+	"github.com/csnight/storm-aqi-server/conf"
+	"github.com/csnight/storm-aqi-server/elastic"
+	"github.com/csnight/storm-aqi-server/tools"
 	pool "github.com/jolestar/go-commons-pool/v2"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/minio/minio-go/v7"
@@ -10,9 +13,6 @@ import (
 	"go.uber.org/zap"
 	"os"
 	"runtime"
-	"storm-aqi-server/conf"
-	"storm-aqi-server/elastic"
-	"storm-aqi-server/tools"
 	"time"
 )
 
