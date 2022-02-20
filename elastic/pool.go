@@ -1,12 +1,12 @@
 package elastic
 
 import (
-	"aqi-server/conf"
 	"context"
 	"errors"
 	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/jolestar/go-commons-pool/v2"
 	"net/http"
+	"storm-aqi-server/conf"
 	"time"
 )
 

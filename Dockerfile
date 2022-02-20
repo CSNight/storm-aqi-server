@@ -10,8 +10,8 @@ RUN go mod download
 # 把全部文件添加到/usr/local/go目录
 ADD . .
 # 编译：把cmd/main.go编译成可执行的二进制文件，命名为app
-RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  aqi-server aqi-server/cmd/server
-RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  doc-gen aqi-server/cmd/tools
+RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  storm-aqi-server storm-aqi-server/cmd/server
+RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-s -w" -installsuffix cgo -o  doc-gen storm-aqi-server/cmd/tools
 
 RUN ./doc-gen
 

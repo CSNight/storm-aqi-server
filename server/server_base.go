@@ -1,14 +1,14 @@
 package server
 
 import (
-	"aqi-server/conf"
-	"aqi-server/db"
-	"aqi-server/middleware"
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
+	"storm-aqi-server/conf"
+	"storm-aqi-server/db"
+	"storm-aqi-server/middleware"
 )
 
 type AQIServer struct {

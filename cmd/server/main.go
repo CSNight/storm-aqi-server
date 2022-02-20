@@ -1,8 +1,6 @@
 package main
 
 import (
-	"aqi-server/conf"
-	"aqi-server/server"
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -11,6 +9,8 @@ import (
 	"os/signal"
 	"runtime"
 	"runtime/debug"
+	"storm-aqi-server/conf"
+	"storm-aqi-server/server"
 	"strconv"
 	"syscall"
 )

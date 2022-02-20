@@ -1,9 +1,9 @@
 package server
 
 import (
-	"aqi-server/db"
 	"github.com/gofiber/fiber/v2"
 	"net/http"
+	"storm-aqi-server/db"
 	"strconv"
 )
 

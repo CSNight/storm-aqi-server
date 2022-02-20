@@ -1,9 +1,6 @@
 package db
 
 import (
-	"aqi-server/conf"
-	"aqi-server/elastic"
-	"aqi-server/tools"
 	"context"
 	"github.com/coocood/freecache"
 	pool "github.com/jolestar/go-commons-pool/v2"
@@ -13,6 +10,9 @@ import (
 	"go.uber.org/zap"
 	"os"
 	"runtime"
+	"storm-aqi-server/conf"
+	"storm-aqi-server/elastic"
+	"storm-aqi-server/tools"
 	"time"
 )
 
