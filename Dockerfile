@@ -18,7 +18,7 @@ RUN ./doc-gen
 FROM centos
 WORKDIR /usr/local/go
 
-COPY --from=build /usr/local/go/aqi-server .
+COPY --from=build /usr/local/go/storm-aqi-server .
 COPY --from=build /usr/local/go/assets /usr/local/go/assets
 
-CMD ["./aqi-server","--config","conf.yml"]
+CMD ["./storm-aqi-server","--config","conf.yml"]
