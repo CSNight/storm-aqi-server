@@ -12,7 +12,7 @@ require (
 	github.com/gofiber/template v1.6.23
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
-	github.com/minio/minio-go/v7 v7.0.22
+	github.com/minio/minio-go/v7 v7.0.23
 	github.com/oschwald/maxminddb-golang v1.8.0
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
