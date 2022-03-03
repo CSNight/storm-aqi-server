@@ -8,8 +8,8 @@ require (
 	github.com/coocood/freecache v1.2.0
 	github.com/elastic/go-elasticsearch/v8 v8.0.0
 	github.com/go-playground/validator/v10 v10.10.0
-	github.com/gofiber/fiber/v2 v2.27.0
-	github.com/gofiber/template v1.6.23
+	github.com/gofiber/fiber/v2 v2.28.0
+	github.com/gofiber/template v1.6.24
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
 	github.com/minio/minio-go/v7 v7.0.23
