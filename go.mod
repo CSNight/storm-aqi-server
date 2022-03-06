@@ -17,7 +17,7 @@ require (
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/viper v1.10.1
 	github.com/tidwall/gjson v1.14.0
-	github.com/yuin/goldmark v1.4.7
+	github.com/yuin/goldmark v1.4.8
 	github.com/yuin/goldmark-highlighting v0.0.0-20220208100518-594be1970594
 	go.uber.org/zap v1.21.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
