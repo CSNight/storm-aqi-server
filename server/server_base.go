@@ -9,12 +9,14 @@ import (
 	"github.com/gofiber/template/html"
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
+	"strconv"
 )
 
 type AQIServer struct {
-	App *fiber.App
-	Log *zap.Logger
-	DB  *db.DB
+	app *fiber.App
+	log *zap.Logger
+	db  *db.DB
+	cfg *conf.GConfig
 }
 
 var json = jsoniter.Config{
@@ -46,17 +48,27 @@ func New(conf *conf.GConfig) (*AQIServer, error) {
 	v1 := api.Group("v1")
 
 	app := &AQIServer{
-		App: server,
-		Log: logger,
-		DB:  dbEs,
+		app: server,
+		log: logger,
+		db:  dbEs,
+		cfg: conf,
 	}
 	app.Register(v1)
 	return app, nil
 }
 
+func (app *AQIServer) StartHttpServer() {
+	err := app.app.Listen(":" + strconv.Itoa(app.cfg.AppConf.Port))
+	if err != nil {
+		app.log.Error("start aqi server err:", zap.Error(err))
+		return
+	}
+	app.log.Info("\u001B[32mStart aqi syncer complete\u001B[0m")
+}
+
 func (app *AQIServer) Close() {
-	app.DB.Close()
-	app.Log.Info(`elasticsearch api closed`)
+	app.db.Close()
+	app.log.Info(`elasticsearch api closed`)
 }
 
 type ErrorResponse struct {

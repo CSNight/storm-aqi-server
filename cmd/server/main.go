@@ -11,7 +11,6 @@ import (
 	"os/signal"
 	"runtime"
 	"runtime/debug"
-	"strconv"
 	"syscall"
 )
 
@@ -81,13 +80,7 @@ func start(confFile string) {
 		fmt.Printf("init app failed, err:%v\n", err)
 		return
 	}
-	go func() {
-		err = app.App.Listen(":" + strconv.Itoa(confIns.AppConf.Port))
-		if err != nil {
-			return
-		}
-	}()
-	app.Log.Info("\u001B[32mStart aqi syncer complete\u001B[0m")
+	go app.StartHttpServer()
 	defer func() {
 		app.Close()
 	}()

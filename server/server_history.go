@@ -47,7 +47,7 @@ func (app *AQIServer) HistoryGet(ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetHistoryYesterday(sid string, pol string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetHistoryYesterday(sid, pol)
+	rt, err := app.db.GetHistoryYesterday(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -58,7 +58,7 @@ func (app *AQIServer) GetHistoryYesterday(sid string, pol string, ctx *fiber.Ctx
 }
 
 func (app *AQIServer) GetHistoryWeek(sid string, pol string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetHistoryLastWeek(sid, pol)
+	rt, err := app.db.GetHistoryLastWeek(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -69,7 +69,7 @@ func (app *AQIServer) GetHistoryWeek(sid string, pol string, ctx *fiber.Ctx) err
 }
 
 func (app *AQIServer) GetHistoryMonth(sid string, pol string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetHistoryLastMonth(sid, pol)
+	rt, err := app.db.GetHistoryLastMonth(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -80,7 +80,7 @@ func (app *AQIServer) GetHistoryMonth(sid string, pol string, ctx *fiber.Ctx) er
 }
 
 func (app *AQIServer) GetHistoryQuarter(sid string, pol string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetHistoryLastQuarter(sid, pol)
+	rt, err := app.db.GetHistoryLastQuarter(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -91,7 +91,7 @@ func (app *AQIServer) GetHistoryQuarter(sid string, pol string, ctx *fiber.Ctx) 
 }
 
 func (app *AQIServer) GetHistoryYear(sid string, pol string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetHistoryYear(sid, pol)
+	rt, err := app.db.GetHistoryYear(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -102,7 +102,7 @@ func (app *AQIServer) GetHistoryYear(sid string, pol string, ctx *fiber.Ctx) err
 }
 
 func (app *AQIServer) GetNoneStation(ctx *fiber.Ctx) error {
-	idx := app.DB.GetNoneStation()
+	idx := app.db.GetNoneStation()
 	return OkWithData(idx, ctx)
 }
 
@@ -118,7 +118,7 @@ func (app *AQIServer) GetHistoryRange(sid string, pol string, st string, et stri
 	if etTime.Before(stTime) {
 		return FailWithMessage(http.StatusBadRequest, "end time can't less then start time", ctx)
 	}
-	rt, err := app.DB.GetHistoryRange(sid, pol, stTime, etTime)
+	rt, err := app.db.GetHistoryRange(sid, pol, stTime, etTime)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}

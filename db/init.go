@@ -70,7 +70,7 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 		ipDB:  ipDB,
 		pool:  poolEs,
 		cache: cache,
-		log:   logger.Named("\u001B[33m[DB]\u001B[0m"),
+		log:   logger.Named("\u001B[33m[db]\u001B[0m"),
 		ctx:   ctx,
 		oss:   ossCli,
 	}, nil

@@ -103,7 +103,7 @@ func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetStationById(sid string, ctx *fiber.Ctx) error {
-	st, err := app.DB.GetStationById(sid)
+	st, err := app.db.GetStationById(sid)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -114,7 +114,7 @@ func (app *AQIServer) GetStationById(sid string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetStationByName(name string, ctx *fiber.Ctx) error {
-	st, err := app.DB.GetStationByName(name)
+	st, err := app.db.GetStationByName(name)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -125,7 +125,7 @@ func (app *AQIServer) GetStationByName(name string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetStationByCity(city string, ctx *fiber.Ctx) error {
-	st, err := app.DB.GetStationByCityName(city)
+	st, err := app.db.GetStationByCityName(city)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -136,7 +136,7 @@ func (app *AQIServer) GetStationByCity(city string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetStationByLoc(x string, y string, ctx *fiber.Ctx) error {
-	st, err := app.DB.SearchStationByRadius(x, y, 10, "km", 10)
+	st, err := app.db.SearchStationByRadius(x, y, 10, "km", 10)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -147,7 +147,7 @@ func (app *AQIServer) GetStationByLoc(x string, y string, ctx *fiber.Ctx) error 
 }
 
 func (app *AQIServer) GetStationByIp(ip string, ctx *fiber.Ctx) error {
-	st, err := app.DB.GetStationByIp(ip)
+	st, err := app.db.GetStationByIp(ip)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -158,7 +158,7 @@ func (app *AQIServer) GetStationByIp(ip string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) SearchStationsByName(name string, size int, ctx *fiber.Ctx) error {
-	sts, err := app.DB.SearchStationsByName(name, size)
+	sts, err := app.db.SearchStationsByName(name, size)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -166,7 +166,7 @@ func (app *AQIServer) SearchStationsByName(name string, size int, ctx *fiber.Ctx
 }
 
 func (app *AQIServer) SearchStationsByCityName(city string, size int, ctx *fiber.Ctx) error {
-	sts, err := app.DB.SearchStationsByCityName(city, size)
+	sts, err := app.db.SearchStationsByCityName(city, size)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -174,7 +174,7 @@ func (app *AQIServer) SearchStationsByCityName(city string, size int, ctx *fiber
 }
 
 func (app *AQIServer) SearchStationsByArea(topLeft []float64, bottomRight []float64, size int, ctx *fiber.Ctx) error {
-	sts, err := app.DB.SearchStationsByArea(db.Bounds{
+	sts, err := app.db.SearchStationsByArea(db.Bounds{
 		TopLeft: db.GeoPoint{
 			Lon: topLeft[0],
 			Lat: topLeft[1],
@@ -206,7 +206,7 @@ func (app *AQIServer) SearchStationsByRadius(center []float64, unit string, radi
 		unitMark = "m"
 		break
 	}
-	sts, err := app.DB.SearchStationByRadius(x, y, radius, unitMark, size)
+	sts, err := app.db.SearchStationByRadius(x, y, radius, unitMark, size)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -214,7 +214,7 @@ func (app *AQIServer) SearchStationsByRadius(center []float64, unit string, radi
 }
 
 func (app *AQIServer) SearchAllStations(ctx *fiber.Ctx) error {
-	sts, err := app.DB.GetAllStations()
+	sts, err := app.db.GetAllStations()
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -226,7 +226,7 @@ func (app *AQIServer) StationLogoGet(ctx *fiber.Ctx) error {
 	if logo == "" {
 		return FailWithMessage(http.StatusNotFound, "empty logo", ctx)
 	}
-	img, err := app.DB.GetStationLogo(logo)
+	img, err := app.db.GetStationLogo(logo)
 	if logo == "" {
 		return FailWithMessage(http.StatusBadRequest, err.Error(), ctx)
 	}
@@ -234,7 +234,7 @@ func (app *AQIServer) StationLogoGet(ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) SyncStationLog(ctx *fiber.Ctx) error {
-	err := app.DB.SyncStationLogos()
+	err := app.db.SyncStationLogos()
 	if err != nil {
 		return FailWithMessage(http.StatusBadRequest, err.Error(), ctx)
 	}

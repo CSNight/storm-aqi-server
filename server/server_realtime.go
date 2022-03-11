@@ -47,7 +47,7 @@ func (app *AQIServer) ForecastGet(ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetAllRealtime(sid string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetAqiRealtimeById(sid)
+	rt, err := app.db.GetAqiRealtimeById(sid)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -58,7 +58,7 @@ func (app *AQIServer) GetAllRealtime(sid string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetSingleRealtime(sid string, pol string, ctx *fiber.Ctx) error {
-	rt, err := app.DB.GetAqiRealtimeByIdAndPol(sid, pol)
+	rt, err := app.db.GetAqiRealtimeByIdAndPol(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -69,7 +69,7 @@ func (app *AQIServer) GetSingleRealtime(sid string, pol string, ctx *fiber.Ctx) 
 }
 
 func (app *AQIServer) GetAllForecast(sid string, ctx *fiber.Ctx) error {
-	fore, err := app.DB.GetForecast(sid, "all")
+	fore, err := app.db.GetForecast(sid, "all")
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
@@ -80,7 +80,7 @@ func (app *AQIServer) GetAllForecast(sid string, ctx *fiber.Ctx) error {
 }
 
 func (app *AQIServer) GetForecastByPol(sid string, pol string, ctx *fiber.Ctx) error {
-	fore, err := app.DB.GetForecast(sid, pol)
+	fore, err := app.db.GetForecast(sid, pol)
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}
