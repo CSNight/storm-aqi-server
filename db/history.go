@@ -203,7 +203,8 @@ func (db *DB) GetHistoryRange(sid string, pol string, st time.Time, et time.Time
 func (db *DB) GetNoneStation() []string {
 	stations, _ := db.GetAllStations()
 	var wg = sync.WaitGroup{}
-	ch := make(chan string, 20)
+	ch := make(chan bool, 20)
+	defer close(ch)
 	var indexes []string
 	for i := 2014; i <= 2021; i++ {
 		indexes = append(indexes, strings.Replace(db.Conf.HisIndex, "$year", strconv.Itoa(i), -1))
@@ -211,14 +212,16 @@ func (db *DB) GetNoneStation() []string {
 	empty := make(chan string, 600)
 	for _, st := range stations {
 		wg.Add(1)
-		ch <- st.Sid
-		go func() {
-			sd := <-ch
+		ch <- true
+		go func(sd string) {
+			defer func() {
+				<-ch
+				wg.Done()
+			}()
 			req := esapi.CountRequest{
 				Index: indexes,
 				Body:  strings.NewReader(`{"query":{"match":{"sid":"` + sd + `"}}}`),
 			}
-			defer wg.Done()
 			resp, err := db.api.ProcessRespWithCli(req)
 			if err != nil {
 				return
@@ -227,7 +230,7 @@ func (db *DB) GetNoneStation() []string {
 			if result.Get("count").Int() == 0 {
 				empty <- sd
 			}
-		}()
+		}(st.Sid)
 	}
 	var sidx []string
 	go func() {

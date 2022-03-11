@@ -402,7 +402,8 @@ func (db *DB) SyncStationLogos() error {
 	if err != nil {
 		return err
 	}
-	queue := make(chan string, 50)
+	queue := make(chan bool, 50)
+	defer close(queue)
 	wg := sync.WaitGroup{}
 	var logos = map[string]string{}
 	for _, st := range stations {
@@ -418,7 +419,7 @@ func (db *DB) SyncStationLogos() error {
 	for _, logo := range logos {
 		if !tools.ExistObject(db.oss, "aqi/"+logo) {
 			wg.Add(1)
-			queue <- logo
+			queue <- true
 			go func(logoImg string) {
 				defer func() {
 					<-queue
