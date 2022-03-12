@@ -84,8 +84,8 @@ func New(cfg LogConfig) fiber.Handler {
 		errHandler fiber.ErrorHandler
 	)
 
-	var errPadding = 15
-	var latencyEnabled = contains("latency", cfg.Fields)
+	errPadding := 15
+	latencyEnabled := contains("latency", cfg.Fields)
 
 	// Return new handler
 	return func(c *fiber.Ctx) (err error) {
@@ -207,6 +207,5 @@ func contains(needle string, slice []string) bool {
 			return true
 		}
 	}
-
 	return false
 }
