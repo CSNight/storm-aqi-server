@@ -13,7 +13,7 @@ require (
 	github.com/jolestar/go-commons-pool/v2 v2.1.1
 	github.com/json-iterator/go v1.1.12
 	github.com/minio/minio-go/v7 v7.0.23
-	github.com/oschwald/maxminddb-golang v1.8.0
+	github.com/oschwald/maxminddb-golang v1.9.0
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.10.1
 	github.com/tidwall/gjson v1.14.0
@@ -63,7 +63,7 @@ require (
 	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/crypto v0.0.0-20220214200702-86341886e292 // indirect
 	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
-	golang.org/x/sys v0.0.0-20220227234510-4e6760a101f9 // indirect
+	golang.org/x/sys v0.0.0-20220325203850-36772127a21f // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/ini.v1 v1.66.2 // indirect
 )
