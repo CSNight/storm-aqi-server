@@ -14,7 +14,7 @@
 This API can be used to get/search for the station by many way
 ### AQI Station Get
 ```http request
-GET /aqi/station
+GET /station
 ```
 #### Query Params
 | Field | Type   | Required        | Description                                                |
@@ -40,7 +40,7 @@ GET /aqi/station
 #### Sample 
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/station?qType=_get&pType=sid&sid=0
+GET http://aqiserver/api/v1/station?qType=_get&pType=sid&sid=0
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json lines
@@ -98,7 +98,7 @@ GET http://aqiserver/api/v1/aqi/station?qType=_get&pType=sid&sid=0
 ```
 ### AQI Station Search
 ```http request
-GET /aqi/stations
+GET /stations
 ```
 #### Query Params
 | Field       | Type     | Required          | Description                                                 |
@@ -123,7 +123,7 @@ GET /aqi/stations
 #### Sample
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/stations?qType=_search&pType=name&size=1&name=beijing
+GET http://aqiserver/api/v1/stations?qType=_search&pType=name&size=1&name=beijing
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json
@@ -168,7 +168,7 @@ GET http://aqiserver/api/v1/aqi/stations?qType=_search&pType=name&size=1&name=be
 
 ### AQI Realtime Get
 ```http request
-GET /aqi/realtime
+GET /realtime
 ```
 #### Query Params
 | Field | Type   | Required          | Description                                                                          |
@@ -180,7 +180,7 @@ GET /aqi/realtime
 #### Sample
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/realtime?qType=_get&pType=all&sid=0
+GET http://aqiserver/api/v1/realtime?qType=_get&pType=all&sid=0
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json lines
@@ -225,7 +225,7 @@ GET http://aqiserver/api/v1/aqi/realtime?qType=_get&pType=all&sid=0
 ## AQI Forecast
 ### AQI Forecast Get
 ```http request
-GET /aqi/forecast
+GET /forecast
 ```
 #### Query Params
 | Field | Type   | Required          | Description                                                                          |
@@ -237,7 +237,7 @@ GET /aqi/forecast
 #### Sample
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/forecast?qType=_get&pType=single&sid=0&pol=pm25
+GET http://aqiserver/api/v1/forecast?qType=_get&pType=single&sid=0&pol=pm25
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json lines
@@ -310,7 +310,7 @@ GET http://aqiserver/api/v1/aqi/forecast?qType=_get&pType=single&sid=0&pol=pm25
 ## AQI History
 ### AQI History Get
 ```http request
-GET /aqi/history
+GET /history
 ```
 #### Query Params
 | Field  | Type   | Required          | Description                                                                                                 |
@@ -338,7 +338,7 @@ GET /aqi/history
 #### Sample by Range
 ##### Request 
 ```http request
-GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-09-02&end=2021-09-03&pol=all
+GET http://aqiserver/api/v1/history?qType=_get&pType=range&sid=0&start=2021-09-02&end=2021-09-03&pol=all
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json lines
@@ -444,7 +444,7 @@ GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=range&sid=0&start=2021-
 #### Sample by Recent
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=recent&sid=0&recent=lastDay&pol=all
+GET http://aqiserver/api/v1/history?qType=_get&pType=recent&sid=0&recent=lastDay&pol=all
 ```
 ##### Response 200 <font color=#2f5>OK</font>
 ```json lines
@@ -509,7 +509,7 @@ GET http://aqiserver/api/v1/aqi/history?qType=_get&pType=recent&sid=0&recent=las
 ## AQI Logo
 ### AQI Station Logo Get
 ```http request
-GET /aqi/logo/{logoName}
+GET /logo/{logoName}
 ```
 #### Path Params
 | Field    | Type   | Required | Description                      |
@@ -518,5 +518,5 @@ GET /aqi/logo/{logoName}
 #### Sample
 ##### Request
 ```http request
-GET http://aqiserver/api/v1/aqi/logo/Ontario-Ministry-of-the-Environment-and-Climate-Change.png
+GET http://aqiserver/api/v1/logo/Ontario-Ministry-of-the-Environment-and-Climate-Change.png
 ```
