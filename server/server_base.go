@@ -43,10 +43,9 @@ func New(conf *conf.GConfig) (*AQIServer, error) {
 		return nil, err
 	}
 	dbEs.RefreshCache()
-	server.Static("/static", "./assets/static")
 	api := server.Group("/api")
-	v1 := api.Group("v1")
-
+	v1 := api.Group("/v1")
+	v1.Static("/static", "./assets/static")
 	app := &AQIServer{
 		app: server,
 		log: logger,

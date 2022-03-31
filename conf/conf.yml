@@ -1,5 +1,5 @@
 app:
-  port: 9600
+  port: 30050
   enable_compress: true
 aqi:
   image_oss: https://aqicn.org/images/feeds/
@@ -8,7 +8,7 @@ aqi:
   realtime_index: aqi_real_time
 log:
   level: debug
-  filename: storm-aqi-server.log
+  filename: logs/storm-aqi-server.log
   max_size: 20
   max_age: 10
   max_backups: 10
@@ -33,6 +33,6 @@ elastic:
   remove_abandoned_on_maintenance: true
   remove_abandoned_timeout: 10
 minio:
-  server: 128.14.231.93:9000
+  server: 39.97.255.100:9000
   account: csnight
   secret: admin,./191
