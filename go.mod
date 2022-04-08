@@ -1,6 +1,6 @@
 module github.com/csnight/storm-aqi-server
 
-go 1.17
+go 1.18
 
 require (
 	github.com/abhinav/goldmark-toc v0.2.1
