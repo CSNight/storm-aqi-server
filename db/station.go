@@ -341,10 +341,25 @@ func (db *DB) SearchStationsByArea(bounds Bounds, size int) ([]AqiStationResp, e
 }
 
 func (db *DB) GetAllStations() ([]AqiStationResp, error) {
-	query := `{
-       "query":{"match_all":{}}
-    }`
-	return db.ScrollSearchStation(query)
+	if db.cache.EntryCount() == 0 {
+		query := `{
+           "query":{"match_all":{}}
+        }`
+		return db.ScrollSearchStation(query)
+	}
+	si := db.cache.NewIterator()
+	var sts []AqiStationResp
+	st := si.Next()
+	for st != nil {
+		var stc AqiStationResp
+		err := json.Unmarshal(st.Value, &stc)
+		if err != nil {
+			return nil, err
+		}
+		sts = append(sts, stc)
+		st = si.Next()
+	}
+	return sts, nil
 }
 
 func (db *DB) GetStationsByRange(st int, et int) ([]AqiStationResp, error) {
