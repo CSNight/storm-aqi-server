@@ -3,6 +3,7 @@ package db
 import (
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"go.uber.org/zap"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -64,9 +65,43 @@ type RealtimeResp struct {
 	Tms      string         `json:"tms"`
 }
 
+type RealtimeStItem struct {
+	Idx  int     `json:"idx"`
+	Sid  string  `json:"sid"`
+	Pol  string  `json:"pol"`
+	Data float64 `json:"data"`
+	Tz   string  `json:"tz"`
+	Tm   int64   `json:"tm"`
+	Tms  string  `json:"tms"`
+}
+
+type RealtimeStMap struct {
+	RealTimeMap map[string][]RealtimeStItem
+}
+
 type RealtimeItem struct {
 	EsSearchItem
 	Source AqiRealtime `json:"_source"`
+}
+
+type RealtimeAggResponse struct {
+	EsSearchRespMeta
+	Hits struct {
+		Total    EsRespTotal    `json:"total"`
+		MaxScore float64        `json:"max_score"`
+		Hits     []RealtimeItem `json:"hits"`
+	} `json:"hits"`
+	Aggregations struct {
+		Buckets struct {
+			Buckets []struct {
+				Key      string `json:"key"`
+				DocCount int    `json:"doc_count"`
+				Data     struct {
+					Value float64 `json:"value"`
+				} `json:"data"`
+			}
+		} `json:"buckets"`
+	} `json:"aggregations"`
 }
 
 type RealtimeSearchResponse struct {
@@ -76,6 +111,17 @@ type RealtimeSearchResponse struct {
 		MaxScore float64        `json:"max_score"`
 		Hits     []RealtimeItem `json:"hits"`
 	} `json:"hits"`
+}
+
+func (db *DB) GetAllAqiRealtime() (*RealtimeStMap, error) {
+	response := &RealtimeStMap{
+		RealTimeMap: map[string][]RealtimeStItem{},
+	}
+
+	resp, err := db.api.ProcessRespWithCli(search)
+	var esSearchResp RealtimeSearchResponse
+
+	return response, nil
 }
 
 func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
@@ -254,4 +300,57 @@ func (db *DB) GetForecast(sid string, pol string) (*ForecastResp, error) {
 		return response, nil
 	}
 	return response, nil
+}
+
+func (db *DB) getHalfRealtimeStation(from int, to int) (*RealtimeAggResponse, error) {
+	query := `{
+        "query": {
+            "bool": {
+                "must": {
+                    "range": {
+                        "idx": {
+                            "lt": ` + strconv.Itoa(to) + `,
+                            "gte": ` + strconv.Itoa(from) + `
+                        }
+                    }
+                }
+            }
+        },
+        "aggs": {
+            "buckets": {
+                "terms": {
+                    "field": "sid",
+                    "order": {
+                        "data": "desc"
+                    },
+                    "size": 20000
+                },
+                "aggs": {
+                    "data": {
+                        "max": {
+                            "field": "data"
+                        }
+                    }
+                }
+            }
+        }
+    }`
+	size := 0
+	search := &esapi.SearchRequest{
+		Index:          []string{db.Conf.RealtimeIndex},
+		Body:           strings.NewReader(query),
+		Size:           &size,
+		SourceExcludes: []string{"forecast", "daily"},
+		Timeout:        20 * time.Second,
+	}
+	resp, err := db.api.ProcessRespWithCli(search)
+	if err != nil {
+		return nil, err
+	}
+	var respEs RealtimeAggResponse
+	err = json.Unmarshal(resp, &respEs)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
