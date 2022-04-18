@@ -175,7 +175,7 @@ GET /realtime
 |-------|--------|-------------------|:-------------------------------------------------------------------------------------|
 | qType | string | true              | The query type for request, must be "_get"                                           |
 | pType | string | true              | The query method, must be one of all/single means all pollutants or single pollutant |
-| sid   | string | true              | The station sequence id number, from 0                                               |
+| sid   | string | when pType=single | The station sequence id number, from 0                                               |
 | pol   | string | when pType=single | The pollutant type want to get. See Pollutant Enum                                   |
 #### Sample
 ##### Request
