@@ -23,7 +23,7 @@ func (app *AQIServer) RealtimeGet(ctx *fiber.Ctx) error {
 		return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 	}
 	if query.PType == "all" {
-		return app.GetAllRealtime(query.Sid, ctx)
+		return app.GetAllRealtime(ctx)
 	} else {
 		return app.GetSingleRealtime(query.Sid, query.Pol, ctx)
 	}
@@ -46,8 +46,8 @@ func (app *AQIServer) ForecastGet(ctx *fiber.Ctx) error {
 	}
 }
 
-func (app *AQIServer) GetAllRealtime(sid string, ctx *fiber.Ctx) error {
-	rt, err := app.db.GetAqiRealtimeById(sid)
+func (app *AQIServer) GetAllRealtime(ctx *fiber.Ctx) error {
+	rt, err := app.db.GetAllAqiRealtime()
 	if err != nil {
 		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
 	}

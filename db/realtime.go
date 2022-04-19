@@ -1,10 +1,12 @@
 package db
 
 import (
+	"fmt"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"go.uber.org/zap"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -60,28 +62,27 @@ type RealtimeResp struct {
 	Loc      GeoPoint       `json:"loc"`
 	CityName string         `json:"city_name"`
 	Realtime []RealtimeInfo `json:"realtime"`
+	MainPol  string         `json:"main_pol"`
 	Tz       string         `json:"tz"`
 	Tm       int64          `json:"tm"`
 	Tms      string         `json:"tms"`
 }
 
-type RealtimeStItem struct {
-	Idx  int     `json:"idx"`
-	Sid  string  `json:"sid"`
-	Pol  string  `json:"pol"`
-	Data float64 `json:"data"`
-	Tz   string  `json:"tz"`
-	Tm   int64   `json:"tm"`
-	Tms  string  `json:"tms"`
-}
-
 type RealtimeStMap struct {
-	RealTimeMap map[string][]RealtimeStItem
+	RealTimeMap map[string]float64
 }
 
 type RealtimeItem struct {
 	EsSearchItem
 	Source AqiRealtime `json:"_source"`
+}
+
+type BucketItem struct {
+	Key      string `json:"key"`
+	DocCount int    `json:"doc_count"`
+	Data     struct {
+		Value float64 `json:"value"`
+	} `json:"data"`
 }
 
 type RealtimeAggResponse struct {
@@ -93,13 +94,7 @@ type RealtimeAggResponse struct {
 	} `json:"hits"`
 	Aggregations struct {
 		Buckets struct {
-			Buckets []struct {
-				Key      string `json:"key"`
-				DocCount int    `json:"doc_count"`
-				Data     struct {
-					Value float64 `json:"value"`
-				} `json:"data"`
-			}
+			Buckets []BucketItem `json:"buckets"`
 		} `json:"buckets"`
 	} `json:"aggregations"`
 }
@@ -115,12 +110,31 @@ type RealtimeSearchResponse struct {
 
 func (db *DB) GetAllAqiRealtime() (*RealtimeStMap, error) {
 	response := &RealtimeStMap{
-		RealTimeMap: map[string][]RealtimeStItem{},
+		RealTimeMap: map[string]float64{},
 	}
-
-	resp, err := db.api.ProcessRespWithCli(search)
-	var esSearchResp RealtimeSearchResponse
-
+	var wg sync.WaitGroup
+	resCh := make(chan BucketItem)
+	for _, s := range []int{0, 8000} {
+		wg.Add(1)
+		go func(st int) {
+			realResp, err := db.getHalfRealtimeStation(st, st+8000)
+			if err != nil {
+				return
+			}
+			for _, item := range realResp.Aggregations.Buckets.Buckets {
+				resCh <- item
+			}
+			wg.Done()
+		}(s)
+	}
+	go func() {
+		for item := range resCh {
+			response.RealTimeMap[item.Key] = item.Data.Value
+		}
+	}()
+	wg.Wait()
+	close(resCh)
+	fmt.Println(len(resCh))
 	return response, nil
 }
 
@@ -170,11 +184,16 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 		return nil, err
 	}
 	var rts []RealtimeInfo
+	maxVal := -1.0
+	mainPol := ""
 	if esSearchResp.Hits.Total.Value > 0 {
 		for _, item := range esSearchResp.Hits.Hits {
 			info := RealtimeInfo{
 				Pol:  item.Source.Pol,
 				Data: item.Source.Data,
+			}
+			if item.Source.Data > maxVal {
+				mainPol = item.Source.Pol
 			}
 			rts = append(rts, info)
 		}
@@ -182,6 +201,7 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 		response.Tz = esSearchResp.Hits.Hits[0].Source.Tz
 		response.Tm = esSearchResp.Hits.Hits[0].Source.Tm
 		response.Tms = esSearchResp.Hits.Hits[0].Source.Tms
+		response.MainPol = mainPol
 		return response, nil
 	}
 	return response, nil
@@ -352,5 +372,5 @@ func (db *DB) getHalfRealtimeStation(from int, to int) (*RealtimeAggResponse, er
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
+	return &respEs, nil
 }
