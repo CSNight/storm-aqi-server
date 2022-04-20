@@ -164,7 +164,7 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 		Index:          []string{db.Conf.RealtimeIndex},
 		Body:           strings.NewReader(query),
 		Size:           &size,
-		SourceExcludes: []string{"forecast", "daily"},
+		SourceExcludes: []string{"forecast"},
 		Timeout:        20 * time.Second,
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
@@ -190,8 +190,9 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 	if esSearchResp.Hits.Total.Value > 0 {
 		for _, item := range esSearchResp.Hits.Hits {
 			info := RealtimeInfo{
-				Pol:  item.Source.Pol,
-				Data: item.Source.Data,
+				Pol:   item.Source.Pol,
+				Data:  item.Source.Data,
+				Daily: item.Source.Daily,
 			}
 			if item.Source.Data > maxVal {
 				mainPol = item.Source.Pol
