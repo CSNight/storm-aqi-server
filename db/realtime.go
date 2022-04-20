@@ -30,8 +30,9 @@ type ForecastItem struct {
 }
 
 type RealtimeInfo struct {
-	Pol  string  `json:"pol"`
-	Data float64 `json:"data"`
+	Pol   string  `json:"pol"`
+	Data  float64 `json:"data"`
+	Daily string  `json:"daily"`
 }
 
 type ForecastInfo struct {
@@ -223,7 +224,7 @@ func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, e
 	search := &esapi.GetRequest{
 		Index:          db.Conf.RealtimeIndex,
 		DocumentID:     "rt_" + sid + "$" + pol,
-		SourceExcludes: []string{"forecast", "daily"},
+		SourceExcludes: []string{"forecast"},
 	}
 	resp, err := db.api.ProcessRespWithCli(search)
 	defer func() {
@@ -244,8 +245,9 @@ func (db *DB) GetAqiRealtimeByIdAndPol(sid string, pol string) (*RealtimeResp, e
 	}
 	if response.Found {
 		info := RealtimeInfo{
-			Pol:  response.Source.Pol,
-			Data: response.Source.Data,
+			Pol:   response.Source.Pol,
+			Data:  response.Source.Data,
+			Daily: response.Source.Daily,
 		}
 		infoResp.Realtime = []RealtimeInfo{info}
 		infoResp.Tz = response.Source.Tz

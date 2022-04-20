@@ -3,6 +3,7 @@
 ### Pollutant Enum
 | Value | Description                      |
 |-------|----------------------------------|
+| all   | all pollutant                    |
 | co    | carbon monoxide                  |
 | no2   | Nitrogen dioxide                 |
 | pm25  | Pulmonary particulate matter 2.5 |
