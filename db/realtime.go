@@ -114,7 +114,6 @@ func (db *DB) GetAllAqiRealtime() (*RealtimeStMap, error) {
 	}
 	var wg sync.WaitGroup
 	mu := sync.Mutex{}
-	var resCh []BucketItem
 	for _, s := range []int{0, 8000} {
 		wg.Add(1)
 		go func(st int) {
@@ -125,15 +124,12 @@ func (db *DB) GetAllAqiRealtime() (*RealtimeStMap, error) {
 			}
 			mu.Lock()
 			for _, item := range realResp.Aggregations.Buckets.Buckets {
-				resCh = append(resCh, item)
+				response.RealTimeMap[item.Key] = item.Data.Value
 			}
 			mu.Unlock()
 		}(s)
 	}
 	wg.Wait()
-	for _, item := range resCh {
-		response.RealTimeMap[item.Key] = item.Data.Value
-	}
 	return response, nil
 }
 
