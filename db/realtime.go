@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"go.uber.org/zap"
 	"strconv"
@@ -114,28 +113,27 @@ func (db *DB) GetAllAqiRealtime() (*RealtimeStMap, error) {
 		RealTimeMap: map[string]float64{},
 	}
 	var wg sync.WaitGroup
-	resCh := make(chan BucketItem)
+	mu := sync.Mutex{}
+	var resCh []BucketItem
 	for _, s := range []int{0, 8000} {
 		wg.Add(1)
 		go func(st int) {
+			defer wg.Done()
 			realResp, err := db.getHalfRealtimeStation(st, st+8000)
 			if err != nil {
 				return
 			}
+			mu.Lock()
 			for _, item := range realResp.Aggregations.Buckets.Buckets {
-				resCh <- item
+				resCh = append(resCh, item)
 			}
-			wg.Done()
+			mu.Unlock()
 		}(s)
 	}
-	go func() {
-		for item := range resCh {
-			response.RealTimeMap[item.Key] = item.Data.Value
-		}
-	}()
 	wg.Wait()
-	close(resCh)
-	fmt.Println(len(resCh))
+	for _, item := range resCh {
+		response.RealTimeMap[item.Key] = item.Data.Value
+	}
 	return response, nil
 }
 
