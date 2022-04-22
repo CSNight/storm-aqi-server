@@ -94,7 +94,7 @@ func InitEsPool(ctx context.Context, conf *conf.ESConfig) *pool.ObjectPool {
 		BlockWhenExhausted:      conf.BlockWhenExhausted,
 		NumTestsPerEvictionRun:  conf.NumTestsPerEvictionRun,
 		TimeBetweenEvictionRuns: time.Duration(conf.TimeBetweenEvictionRuns * int(time.Second)),
-		EvitionContext:          context.Background(),
+		EvictionContext:         context.Background(),
 	}
 	abConfig := &pool.AbandonedConfig{
 		RemoveAbandonedOnBorrow:      conf.RemoveAbandonedOnBorrow,
