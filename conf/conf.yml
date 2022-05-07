@@ -13,7 +13,7 @@ log:
   max_age: 10
   max_backups: 10
 elastic:
-  uri: [ http://128.14.231.93:29200 ]
+  uri: [ http://128.1.43.217:29200 ]
   username: elastic
   password: admin,./191
   enable_debug_logger: true
