@@ -6,13 +6,13 @@ require (
 	github.com/abhinav/goldmark-toc v0.2.1
 	github.com/alecthomas/chroma v0.10.0
 	github.com/coocood/freecache v1.2.1
-	github.com/elastic/go-elasticsearch/v8 v8.1.0
-	github.com/go-playground/validator/v10 v10.10.1
-	github.com/gofiber/fiber/v2 v2.32.0
+	github.com/elastic/go-elasticsearch/v8 v8.2.0
+	github.com/go-playground/validator/v10 v10.11.0
+	github.com/gofiber/fiber/v2 v2.33.0
 	github.com/gofiber/template v1.6.27
 	github.com/jolestar/go-commons-pool/v2 v2.1.2
 	github.com/json-iterator/go v1.1.12
-	github.com/minio/minio-go/v7 v7.0.24
+	github.com/minio/minio-go/v7 v7.0.26
 	github.com/oschwald/maxminddb-golang v1.9.0
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.11.0
