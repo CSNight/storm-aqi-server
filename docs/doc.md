@@ -521,3 +521,50 @@ GET /logo/{logoName}
 ```http request
 GET http://aqiserver/api/v1/logo/Ontario-Ministry-of-the-Environment-and-Climate-Change.png
 ```
+## AQI Image
+### AQI Image Get
+```http request
+GET /image
+```
+#### Query Params
+| Field | Type   | Required | Description                                        |
+|-------|--------|----------|:---------------------------------------------------|
+| time  | string | true     | time format like 2006-01-02T15:04:05Z              |
+| pol   | string | true     | The pollutant type want to get. See Pollutant Enum |
+
+#### Sample
+##### Request
+```http request
+GET http://aqiserver/api/v1/image?time=2022-05-12T10:00:00Z&pol=co
+```
+##### Response 200 <font color=#2f5>OK</font>
+```json lines
+{
+  "status": "OK",
+  "code": 200,
+  "body": {
+    "overlay": "http://oss-server/silam/2022-05-12/silam_AQ_co_2022-05-12T10%2400%2400Z.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=csnight%2F20220509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220509T043247Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=4f56cb94a8abbc3d2384131af538a95e5bea678e72ea3b51da2f6b21175d8653",
+    "data": "http://oss-server/silam/2022-05-12/silam_AQ_co_2022-05-12T10%2400%2400Z.jpeg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=csnight%2F20220509%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220509T043247Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=b3debf4d7c2e3fc6fcdcaea022c35e919fa658026c7ed94d63ea1a25c4e50af9",
+    "max": "17517.1",
+    "min": "45.1"
+  },
+  "msg": "Success",
+  "time": 1652070767760
+}
+```
+##### Response <font color=#f22>ERROR</font>
+```json
+{
+  "status": "Bad Request",
+  "code": 400,
+  "body": [
+    {
+      "FailedField": "ImageRequest.Pol",
+      "Rule": "oneof=no2 pm25 pm10 co so2 o3 dust",
+      "ErrValue": "co2"
+    }
+  ],
+  "msg": "",
+  "time": 1652071138887
+}
+```
