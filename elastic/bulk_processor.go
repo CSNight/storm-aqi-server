@@ -5,9 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/elastic/go-elasticsearch/v8"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"runtime"
 	"strconv"
@@ -15,6 +13,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/elastic/go-elasticsearch/v8"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 )
 
@@ -91,7 +90,7 @@ type BulkIndexerItem struct {
 	Routing         string
 	Version         *int64
 	VersionType     string
-	Body            io.Reader
+	Body            io.ReadSeeker
 	RetryOnConflict *int
 
 	OnSuccess func(context.Context, BulkIndexerItem, BulkIndexerResponseItem)        // Per item
@@ -403,7 +402,7 @@ func (w *worker) writeMeta(item BulkIndexerItem) error {
 		if item.DocumentID != "" {
 			w.buf.WriteRune(',')
 		}
-		w.buf.WriteString(`"_routing":`)
+		w.buf.WriteString(`"routing":`)
 		w.aux = strconv.AppendQuote(w.aux, item.Routing)
 		w.buf.Write(w.aux)
 		w.aux = w.aux[:0]
@@ -417,6 +416,15 @@ func (w *worker) writeMeta(item BulkIndexerItem) error {
 		w.buf.Write(w.aux)
 		w.aux = w.aux[:0]
 	}
+	if item.RetryOnConflict != nil && item.Action == "update" {
+		if item.DocumentID != "" || item.Routing != "" || item.Index != "" {
+			w.buf.WriteString(",")
+		}
+		w.buf.WriteString(`"retry_on_conflict":`)
+		w.aux = strconv.AppendInt(w.aux, int64(*item.RetryOnConflict), 10)
+		w.buf.Write(w.aux)
+		w.aux = w.aux[:0]
+	}
 	w.buf.WriteRune('}')
 	w.buf.WriteRune('}')
 	w.buf.WriteRune('\n')
@@ -427,27 +435,14 @@ func (w *worker) writeMeta(item BulkIndexerItem) error {
 //
 func (w *worker) writeBody(item *BulkIndexerItem) error {
 	if item.Body != nil {
-
-		var getBody func() io.Reader
-
-		if item.OnSuccess != nil || item.OnFailure != nil {
-			var buf bytes.Buffer
-			buf.ReadFrom(item.Body)
-			getBody = func() io.Reader {
-				r := buf
-				return ioutil.NopCloser(&r)
-			}
-			item.Body = getBody()
-		}
-
 		if _, err := w.buf.ReadFrom(item.Body); err != nil {
+			if w.bi.config.OnError != nil {
+				w.bi.config.OnError(context.Background(), nil, err)
+			}
 			return err
 		}
+		item.Body.Seek(0, io.SeekStart)
 		w.buf.WriteRune('\n')
-
-		if getBody != nil && (item.OnSuccess != nil || item.OnFailure != nil) {
-			item.Body = getBody()
-		}
 	}
 	return nil
 }
@@ -502,14 +497,14 @@ func (w *worker) flush(ctx context.Context) error {
 		Human:      w.bi.config.Human,
 		ErrorTrace: w.bi.config.ErrorTrace,
 		FilterPath: w.bi.config.FilterPath,
-		Header:     w.bi.config.Header,
+		Header:     w.bi.config.Header.Clone(),
 	}
 
 	// Add Header and MetaHeader to config if not already set
 	if req.Header == nil {
 		req.Header = http.Header{}
 	}
-	req.Header.Set("x-elastic-client-meta", "h=bp")
+	req.Header.Set(elasticsearch.HeaderClientMeta, "h=bp")
 
 	res, err := req.Do(ctx, w.bi.config.Client)
 	if err != nil {
