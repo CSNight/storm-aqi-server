@@ -94,6 +94,7 @@ func (db *DB) loadStations() {
 		db.log.Error("refresh stations cache error:", zap.String("err", err.Error()))
 		return
 	}
+	db.cache.Clear()
 	for _, st := range stations {
 		stb, err := json.Marshal(st)
 		if err != nil {
