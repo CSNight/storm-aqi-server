@@ -31,7 +31,16 @@ func NewCache(cfg CacheConfig) fiber.Handler {
 			c.Set(cfg.CacheHeader, "unreachable")
 			return c.Next()
 		}
-
+		if cacheTimeStr, ok := c.GetReqHeaders()["If-Modified-Since"]; ok {
+			cacheTime, err := time.Parse(time.RFC1123, cacheTimeStr)
+			noMatch := c.GetReqHeaders()["If-None-Match"]
+			if err == nil && time.Since(cacheTime).Minutes() < 10 {
+				expires := cacheTime.Add(time.Minute * 10)
+				c.Set("ETag", noMatch)
+				c.Set("Exipres", expires.Format(time.RFC1123))
+				return c.SendStatus(http.StatusNotModified)
+			}
+		}
 		// Get key from request
 		key := utils.CopyString(c.OriginalURL())
 
