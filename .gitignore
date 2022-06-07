@@ -1,4 +1,5 @@
 storm-aqi-server.log
 .idea
+.vscode
 aqi_server*
 aqi-server*
