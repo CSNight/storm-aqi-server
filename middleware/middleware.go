@@ -38,7 +38,7 @@ func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 
 	if config.AppConf.EnableCompress {
 		server.Use(compress.New(compress.Config{
-			Level: compress.LevelBestSpeed, // 1
+			Level: compress.LevelDefault, // 1
 		}))
 	}
 

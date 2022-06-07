@@ -1,11 +1,13 @@
 package middleware
 
 import (
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/coocood/freecache"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
-	"net/http"
-	"time"
 )
 
 type CacheConfig struct {
@@ -32,10 +34,14 @@ func NewCache(cfg CacheConfig) fiber.Handler {
 			return c.Next()
 		}
 		if cacheTimeStr, ok := c.GetReqHeaders()["If-Modified-Since"]; ok {
+			existTime := 10
+			if strings.Contains(c.Path(), "silam") {
+				existTime = 10 * 12
+			}
 			cacheTime, err := time.Parse(time.RFC1123, cacheTimeStr)
 			noMatch := c.GetReqHeaders()["If-None-Match"]
-			if err == nil && time.Since(cacheTime).Minutes() < 10 {
-				expires := cacheTime.Add(time.Minute * 10)
+			if err == nil && time.Since(cacheTime).Minutes() < float64(existTime) {
+				expires := cacheTime.Add(time.Duration(int(time.Minute) * existTime))
 				c.Set("ETag", noMatch)
 				c.Set("Exipres", expires.Format(time.RFC1123))
 				return c.SendStatus(http.StatusNotModified)
