@@ -11,6 +11,7 @@ func (app *AQIServer) Register(root fiber.Router) {
 	root.Get("/realtime", app.RealtimeGet)
 	root.Get("/forecast", app.ForecastGet)
 	root.Get("/image", app.ImageGet)
+	root.Get("/silam/:dir/:file", app.ImageDownload)
 	root.Get("/history", app.HistoryGet)
 	root.Get("/none_his", app.GetNoneStation)
 	root.Get("/logo/:logo", app.StationLogoGet)

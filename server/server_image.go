@@ -1,8 +1,11 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"net/http"
+	"time"
+
+	"github.com/csnight/storm-aqi-server/tools"
+	"github.com/gofiber/fiber/v2"
 )
 
 type ImageRequest struct {
@@ -24,5 +27,18 @@ func (app *AQIServer) ImageGet(ctx *fiber.Ctx) error {
 	if err != nil {
 		return FailWithDetailed(http.StatusBadRequest, err, "", ctx)
 	}
+
 	return OkWithData(resp, ctx)
+}
+
+func (app *AQIServer) ImageDownload(ctx *fiber.Ctx) error {
+	resp, err := app.db.DownloadImage(ctx.Params("dir"), ctx.Params("file"))
+	etag, err := tools.NewNanoId()
+	if err != nil {
+		return err
+	}
+	ctx.Set("Cache-Control", "max-age=7200")
+	ctx.Set("ETag", etag)
+	ctx.Set("Last-Modified", time.Now().Format(time.RFC1123))
+	return OkWithRaw("image/png", resp, ctx)
 }
