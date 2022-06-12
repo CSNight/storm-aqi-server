@@ -3,10 +3,9 @@ package db
 import (
 	"context"
 	"fmt"
+	"github.com/minio/minio-go/v7"
 	"io/ioutil"
 	"strings"
-
-	"github.com/minio/minio-go/v7"
 )
 
 type ImageResponse struct {
@@ -35,7 +34,6 @@ func (db *DB) GetImage(tm string, pol string) (*ImageResponse, error) {
 }
 
 func (db *DB) DownloadImage(dir string, file string) ([]byte, error) {
-	fmt.Println(file)
 	imgObj, err := db.oss.GetObject(context.Background(), bucket, dir+"/"+file, minio.GetObjectOptions{})
 	if err != nil {
 		return nil, err

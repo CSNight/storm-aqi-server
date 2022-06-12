@@ -5,13 +5,11 @@ import (
 	"github.com/coocood/freecache"
 	"github.com/csnight/storm-aqi-server/conf"
 	"github.com/csnight/storm-aqi-server/elastic"
-	"github.com/csnight/storm-aqi-server/tools"
 	pool "github.com/jolestar/go-commons-pool/v2"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 	"go.uber.org/zap"
-	"os"
 	"runtime"
 	"time"
 )
@@ -19,7 +17,6 @@ import (
 type DB struct {
 	Conf  *conf.AQIConfig
 	api   *elastic.EsAPI
-	ipDB  *tools.Reader
 	pool  *pool.ObjectPool
 	log   *zap.Logger
 	cache *freecache.Cache
@@ -45,14 +42,6 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 		FailQueue: []elastic.BulkIndexerItem{},
 	}
 	elasticApi.Init()
-	pwd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-	ipDB, err := tools.Open(pwd + string(os.PathSeparator) + "assets" + string(os.PathSeparator) + "GeoLite2-City.mmdb")
-	if err != nil {
-		return nil, err
-	}
 
 	ossCli, err := minio.New(conf.OssConf.Server, &minio.Options{
 		Creds:  credentials.NewStaticV4(conf.OssConf.Account, conf.OssConf.Secret, ""),
@@ -67,7 +56,6 @@ func Init(conf *conf.GConfig, logger *zap.Logger) (*DB, error) {
 	return &DB{
 		Conf:  conf.AQIConf,
 		api:   elasticApi,
-		ipDB:  ipDB,
 		pool:  poolEs,
 		cache: cache,
 		log:   logger.Named("\u001B[33m[db]\u001B[0m"),

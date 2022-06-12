@@ -4,7 +4,6 @@ import (
 	"github.com/csnight/storm-aqi-server/tools"
 	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"go.uber.org/zap"
-	"net"
 	"strconv"
 	"strings"
 	"sync"
@@ -264,27 +263,6 @@ func (db *DB) SearchStationByRadius(x string, y string, dis float64, unit string
 	}
 	return []AqiStationResp{}, nil
 
-}
-
-func (db *DB) GetStationByIp(ip string) (*AqiStationResp, error) {
-	ipNet := net.ParseIP(ip)
-	city, err := db.ipDB.City(ipNet.To4())
-	if err != nil {
-		db.log.Error("GetStationByIp(). ipDB.City(). err:", zap.Error(err))
-		return nil, err
-	}
-	loc := city.Location
-	x := strconv.FormatFloat(loc.Longitude, 'f', 10, 64)
-	y := strconv.FormatFloat(loc.Latitude, 'f', 10, 64)
-	sts, err := db.SearchStationByRadius(x, y, 10, "km", 10)
-	if err != nil {
-		db.log.Error("GetStationByIp(). db.SearchStationByRadius(). err:", zap.Error(err))
-		return nil, err
-	}
-	if len(sts) == 0 {
-		return nil, nil
-	}
-	return &sts[0], nil
 }
 
 func (db *DB) SearchStationsByArea(bounds Bounds, size int) ([]AqiStationResp, error) {

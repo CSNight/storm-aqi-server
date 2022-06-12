@@ -9,11 +9,10 @@ import (
 
 type StationGetRequest struct {
 	QType string `json:"qType" validate:"required,oneof=_get"`
-	PType string `json:"pType" validate:"required,oneof=sid ip name city loc"`
+	PType string `json:"pType" validate:"required,oneof=sid name city loc"`
 	Sid   string `json:"sid" validate:"required_if=QType _get PType sid,omitempty,number"`
 	Name  string `json:"name" validate:"required_if=QType _get PType name,omitempty,excludesall=@?*%"`
 	City  string `json:"city" validate:"required_if=QType _get PType city,omitempty,excludesall=@?*%"`
-	Ip    string `json:"ip" validate:"required_if=QType _get PType ip,omitempty,ip4_addr"`
 	Lon   string `json:"lon" validate:"required_if=QType _get PType loc,omitempty,longitude"`
 	Lat   string `json:"lat" validate:"required_if=QType _get PType loc,omitempty,latitude"`
 }
@@ -49,9 +48,8 @@ func (app *AQIServer) StationGet(ctx *fiber.Ctx) error {
 		return app.GetStationByCity(query.City, ctx)
 	} else if query.PType == "loc" {
 		return app.GetStationByLoc(query.Lon, query.Lat, ctx)
-	} else {
-		return app.GetStationByIp(query.Ip, ctx)
 	}
+	return FailWithDetailed(http.StatusBadRequest, errResp, "", ctx)
 }
 
 func (app *AQIServer) StationSearch(ctx *fiber.Ctx) error {
@@ -144,17 +142,6 @@ func (app *AQIServer) GetStationByLoc(x string, y string, ctx *fiber.Ctx) error 
 		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
 	}
 	return OkWithData(st[0], ctx)
-}
-
-func (app *AQIServer) GetStationByIp(ip string, ctx *fiber.Ctx) error {
-	st, err := app.db.GetStationByIp(ip)
-	if err != nil {
-		return FailWithMessage(http.StatusInternalServerError, err.Error(), ctx)
-	}
-	if st == nil {
-		return OkWithNotFound(fiber.MIMEApplicationJSON, ctx)
-	}
-	return OkWithData(st, ctx)
 }
 
 func (app *AQIServer) SearchStationsByName(name string, size int, ctx *fiber.Ctx) error {
