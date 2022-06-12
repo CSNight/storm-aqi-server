@@ -25,7 +25,7 @@ func NewCache(cfg CacheConfig) fiber.Handler {
 			return c.Next()
 		}
 	}
-	manager := freecache.NewCache(500 * 1024 * 1024)
+	manager := freecache.NewCache(100 * 1024 * 1024)
 	// Return new handler
 	return func(c *fiber.Ctx) error {
 		// Only cache GET methods
