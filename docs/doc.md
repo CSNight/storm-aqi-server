@@ -25,7 +25,6 @@ GET /station
 | sid   | string | when pType=sid  | The station sequence id number, from 0                     |
 | name  | string | when pType=name | The full name or brief name of the station, like "beijing" |
 | city  | string | when pType=city | The full name or brief name of a city, like "beijing"      |
-| ip    | string | when pType=ip   | Can be ipv4/ipv6 like 192.168.1.1 or ipv6 address          |
 | lon   | double | when pType=loc  | longitude, between -180 to 180 degree                      |
 | lat   | double | when pType=loc  | latitude, between -90 to 90 degree                         |
 
@@ -35,7 +34,6 @@ GET /station
 | sid   | station unique identify                    |
 | name  | station name                               |
 | city  | the city where station locate at           |
-| ip    | get station by ip  address                 |
 | loc   | get station by longitude/latitude location |
 
 #### Sample 
