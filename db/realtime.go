@@ -1,12 +1,13 @@
 package db
 
 import (
-	"github.com/elastic/go-elasticsearch/v8/esapi"
-	"go.uber.org/zap"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/elastic/go-elasticsearch/v8/esapi"
+	"go.uber.org/zap"
 )
 
 type AqiRealtime struct {
@@ -189,6 +190,7 @@ func (db *DB) GetAqiRealtimeById(sid string) (*RealtimeResp, error) {
 				Daily: item.Source.Daily,
 			}
 			if item.Source.Data > maxVal {
+				maxVal = item.Source.Data
 				mainPol = item.Source.Pol
 			}
 			rts = append(rts, info)
