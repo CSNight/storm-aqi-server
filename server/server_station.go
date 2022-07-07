@@ -1,10 +1,11 @@
 package server
 
 import (
-	"github.com/csnight/storm-aqi-server/db"
-	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"strconv"
+
+	"github.com/csnight/storm-aqi-server/db"
+	"github.com/gofiber/fiber/v2"
 )
 
 type StationGetRequest struct {
@@ -185,13 +186,10 @@ func (app *AQIServer) SearchStationsByRadius(center []float64, unit string, radi
 	default:
 	case "kilometers":
 		unitMark = "km"
-		break
 	case "miles":
 		unitMark = "mi"
-		break
 	case "meters":
 		unitMark = "m"
-		break
 	}
 	sts, err := app.db.SearchStationByRadius(x, y, radius, unitMark, size)
 	if err != nil {
