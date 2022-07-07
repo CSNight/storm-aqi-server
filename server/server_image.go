@@ -10,7 +10,7 @@ import (
 
 type ImageRequest struct {
 	Time string `json:"time" validate:"required,datetime=2006-01-02T15:04:05Z"`
-	Pol  string `json:"pol" validate:"required,oneof=no2 pm25 pm10 co so2 o3 dust"`
+	Pol  string `json:"pol" validate:"required,oneof=no2 pm25 pm10 co so2 o3 dust pmFRP"`
 }
 
 func (app *AQIServer) ImageGet(ctx *fiber.Ctx) error {
@@ -33,6 +33,9 @@ func (app *AQIServer) ImageGet(ctx *fiber.Ctx) error {
 
 func (app *AQIServer) ImageDownload(ctx *fiber.Ctx) error {
 	resp, err := app.db.DownloadImage(ctx.Params("dir"), ctx.Params("file"))
+	if err != nil {
+		return err
+	}
 	etag, err := tools.NewNanoId()
 	if err != nil {
 		return err
