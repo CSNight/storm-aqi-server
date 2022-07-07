@@ -1,9 +1,10 @@
 package server
 
 import (
+	"net/http"
+
 	"github.com/csnight/storm-aqi-server/db"
 	"github.com/gofiber/fiber/v2"
-	"net/http"
 )
 
 type RealtimeRequest struct {

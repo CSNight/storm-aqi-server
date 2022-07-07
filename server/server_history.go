@@ -1,9 +1,10 @@
 package server
 
 import (
-	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 type HistoryRequest struct {
