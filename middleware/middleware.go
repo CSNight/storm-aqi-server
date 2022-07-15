@@ -5,6 +5,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	rcp "github.com/gofiber/fiber/v2/middleware/recover"
 	"go.uber.org/zap"
@@ -15,6 +16,10 @@ func Use(server *fiber.App, config *conf.GConfig) *zap.Logger {
 	logger := InitLogger(config.LogConf)
 
 	server.Use(rcp.New())
+
+	server.Use(etag.New(etag.Config{
+		Weak: true,
+	}))
 
 	server.Use(New(LogConfig{
 		Next:         nil,

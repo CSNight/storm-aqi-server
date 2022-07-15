@@ -1,10 +1,10 @@
 package server
 
 import (
-	"github.com/csnight/storm-aqi-server/tools"
-	"github.com/gofiber/fiber/v2"
 	"net/http"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 type Response struct {
@@ -34,12 +34,7 @@ func OkWithMessage(message string, c *fiber.Ctx) error {
 }
 
 func OkWithData(data interface{}, c *fiber.Ctx) error {
-	etag, err := tools.NewNanoId()
-	if err != nil {
-		return err
-	}
 	c.Set("Cache-Control", "max-age=600")
-	c.Set("ETag", etag)
 	c.Set("Last-Modified", time.Now().Format(time.RFC1123))
 	return Result(http.StatusOK, data, "Success", c)
 }

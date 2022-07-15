@@ -1,6 +1,8 @@
 package server
 
 import (
+	"strconv"
+
 	"github.com/csnight/storm-aqi-server/conf"
 	"github.com/csnight/storm-aqi-server/db"
 	"github.com/csnight/storm-aqi-server/middleware"
@@ -9,7 +11,6 @@ import (
 	"github.com/gofiber/template/html"
 	jsoniter "github.com/json-iterator/go"
 	"go.uber.org/zap"
-	"strconv"
 )
 
 type AQIServer struct {
